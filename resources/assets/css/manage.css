@@ -1,0 +1,14 @@
+#manage .manage-box {
+  background: #ffffff;
+}
+#manage .manage-box .tab-content {
+  padding: 25px;
+}
+#manage .manage-box .tab-content .select-time {
+  width: 150px;
+}
+#manage .manage-box .tab-content .message-list {
+  border-top: 1px solid #dddddd;
+  margin-top: 20px;
+  padding: 20px 0;
+}

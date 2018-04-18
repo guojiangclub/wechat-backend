@@ -1,0 +1,8 @@
+.text-hidden{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.hide-show{
+    display: none;
+}

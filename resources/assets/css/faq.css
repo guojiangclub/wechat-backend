@@ -1,0 +1,45 @@
+#TagList .taglist-box {
+    background: #ffffff;
+    padding: 20px 0;
+}
+#TagList .taglist-box .tag-table {
+    padding: 20px 15px;
+}
+#TagList .taglist-box .tag-table tr th {
+    background: #ffffff;
+}
+#TagList .taglist-box .tag-table tr .table-input {
+    width: 20px;
+}
+#TagList .taglist-box .tag-table tr .operation {
+    width: 150px;
+}
+#TagList .taglist-box .tag-table tr .operation-item span {
+    margin-right: 10px;
+    color: #4097ce;
+    cursor: pointer;
+}
+.right_title
+{
+    height:50px;display:flex; align-items: center;border-bottom: 1px solid #f3f3f4
+}
+.col-md-4
+{
+    border-right:1px solid #f3f3f4
+}
+.top_title
+{
+    border-bottom: 1px dashed #f3f3f4;height:50px;width:100%;display:flex; align-items: center; justify-content: space-between;
+}
+.top_picture
+{
+    display:flex; justify-content: center;align-items:center;
+}
+.t-table
+{
+    height:80px;overflow: auto
+}
+.col-md-5
+{
+    border-right:1px solid #f3f3f4
+}

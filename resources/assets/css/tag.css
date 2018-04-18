@@ -1,0 +1,25 @@
+#TagList .taglist-box {
+  background: #ffffff;
+  padding: 20px 0;
+}
+#TagList .taglist-box .tag-table {
+  padding: 20px 15px;
+}
+#TagList .taglist-box .tag-table tr th {
+  background: #ffffff;
+}
+#TagList .taglist-box .tag-table tr .table-input {
+  width: 20px;
+}
+#TagList .taglist-box .tag-table tr .operation {
+  width: 150px;
+}
+#TagList .taglist-box .tag-table tr .operation-item span {
+  margin-right: 10px;
+  color: #4097ce;
+  cursor: pointer;
+}
+.add-tag .tag-name {
+  display: inline-block;
+  width: 166px;
+}

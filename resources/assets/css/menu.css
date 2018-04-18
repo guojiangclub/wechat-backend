@@ -1,0 +1,116 @@
+#menu .mennu-box {
+  background: #ffffff;
+}
+#menu .mennu-box .phone {
+  position: relative;
+  margin-bottom: 20px;
+  float: left;
+  margin: 0 0;
+  width: 400px;
+  height: 700px;
+  background: url("../img/preview_phone_short.jpg") no-repeat center;
+}
+#menu .mennu-box .phone .frame {
+  position: absolute;
+  left: 0;
+  margin: 100px 0 0 40px;
+  width: 320px;
+  border: 2px solid #333;
+  background: #666;
+  height: 491px;
+  width: 325px;
+  overflow: hidden;
+}
+#menu .mennu-box .phone .frame .wx-menu {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #fff;
+}
+#menu .mennu-box .phone .frame .wx-menu .keyboard {
+  float: left;
+  width: 44px;
+  height: 50px;
+  background: url("../img/wx_menu_keyboard_icon.png") no-repeat;
+  background-size: 100% 100%;
+  border-right: 1px solid #CCC;
+}
+#menu .mennu-box .phone .frame .wx-menu .menu {
+  display: -webkit-box;
+  height: 50px;
+  float: left;
+  width: 277px;
+}
+#menu .mennu-box .phone .frame .wx-menu .menu > div {
+  -webkit-box-flex: 1;
+  display: block;
+  line-height: 50px;
+  color: #434343;
+  text-align: center;
+  border-right: 1px solid #ccc;
+  position: relative;
+  cursor: pointer;
+}
+#menu .mennu-box .phone .frame .wx-menu .menu p {
+  margin: 0;
+}
+#menu .mennu-box .phone .frame .wx-menu .menu .fat_menu {
+  position: relative;
+}
+#menu .mennu-box .phone .frame .wx-menu .menu .fat_menu:hover .sub_menu {
+  display: block;
+}
+#menu .mennu-box .phone .frame .wx-menu .menu .fat_menu .sub_menu {
+  display: none;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+}
+#menu .mennu-box .phone .frame .wx-menu .menu .fat_menu .sub_menu p {
+  border-bottom: 1px solid #dddddd;
+}
+#menu .mennu-box .menu-list {
+  margin-top: 15px;
+  float: left;
+  width: calc(100% - 415px);
+}
+#menu .mennu-box .menu-list .table .action-tools {
+  width: 150px;
+  text-align: center;
+}
+#menu .mennu-box .menu-list .table .action-tools span {
+  margin-right: 10px;
+}
+#menu .mennu-box .menu-list .table .add {
+  color: #4097ce;
+  background: #ffffff;
+  cursor: pointer;
+}
+#menu .mennu-box .menu-list .table .operation {
+  background: #ffffff;
+}
+#menu .mennu-box .menu-list .table .compile {
+  color: #4097ce;
+  cursor: pointer;
+}
+#menu .mennu-box .menu-list .table .delete {
+  color: #4097ce;
+  cursor: pointer;
+}
+#menu .mennu-box .menu-list .table .second-menu td:first-child {
+  padding-left: 25px;
+}
+#menu .mennu-box .issue {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #dddddd;
+}
+#menu .mennu-box .issue button {
+  padding: 5px 25px;
+  background: #1cc09f;
+  border: none;
+}

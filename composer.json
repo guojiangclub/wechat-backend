@@ -1,0 +1,33 @@
+{
+	"name": "ibrand/wechat-backend",
+	"description": "wechat backend for Laravel Application.",
+	"keywords": [
+		"ibrand",
+		"wechat ",
+		"backend",
+		"laravel"
+	],
+	"authors": [
+		{
+			"name": "peter chen",
+			"email": "chenhao@element.vip"
+		}
+	],
+	"require": {
+		"php": ">=5.5",
+		"laravel/framework": "5.5.*",
+		"ibrand/backend": "~1.0",
+		"overtrue/wechat": "~4.0",
+		"prettus/l5-repository": "^2.1",
+		"arrilot/laravel-widgets": "^3.7"
+	},
+	"autoload": {
+		"files": [
+			"src/helpers.php"
+		],
+		"psr-4": {
+			"iBrand\\Wechat\\Backend\\": "src/"
+		}
+	},
+	"license": "MIT"
+}
