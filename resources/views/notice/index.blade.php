@@ -1,8 +1,8 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '公众号管理 | 模板消息模板列表')
 
-@section('breadcrumbs')
+@section('breadcrumbs')--}}
     <h2>我的模板</h2>
     <ol class="breadcrumb">
         <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
@@ -10,9 +10,9 @@
         <li class="">模板消息</li>
         <li class="active">我的模板</li>
     </ol>
-@endsection
+{{--@endsection
 
-@section('content')
+@section('content')--}}
     @if (session()->has('flash_notification.message'))
         <div class="alert alert-{{ session('flash_notification.level') }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -99,5 +99,5 @@
             </div>
         </div>
     </div>
-@endsection
+{{--@endsection--}}
 

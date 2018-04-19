@@ -1,8 +1,8 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '基本功能 | 自动回复')
 
-@section('after-styles-end')
+@section('after-styles-end')--}}
     {{--<!-- 引入element-ui样式 -->--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
@@ -24,10 +24,10 @@
             background: #ffffff;
         }
     </style>
-@stop
+{{--@stop
 
 
-@section('breadcrumbs')
+@section('breadcrumbs')--}}
     @if(session()->has('account_name'))
         <h2>{{wechat_name()}}</h2>
     @endif
@@ -36,11 +36,11 @@
         <li><a href="">基本功能</a></li>
         <li class=" active">自动回复</li>
     </ol>
-@endsection
+{{--@endsection
 
 
 
-@section('content')
+@section('content')--}}
     @if(Session::has('message'))
         <div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -83,10 +83,10 @@
         @include('Wechat::events.includes.show')
 
     </div>
-@endsection
+{{--@endsection
 
 
-@section('after-scripts-end')
+@section('after-scripts-end')--}}
 
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
@@ -94,7 +94,7 @@
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/toastr/toastr.min.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
 
-@endsection
+{{--@endsection--}}
 
 
 

@@ -5,6 +5,10 @@ use iBrand\Wechat\Backend\Repository\ScanRepository;
 
 use Illuminate\Http\Request;
 use iBrand\Wechat\Backend\Facades\QRCodeService;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 /**
  * 扫描统计.
  *
@@ -41,7 +45,11 @@ class ScansController extends Controller
 
         $FOLLOW_SCANS_Count= $this->scanRepository->getScansPaginated(['app_id'=>$app_id,'type'=>self::FOLLOW_SCANS],0)->count();
 
-        return view('Wechat::scans.index',compact('type','AllCount','DEFAULT_SCANS_Count','FOLLOW_SCANS_Count'));
+	    return Admin::content(function (Content $content) use ($type, $AllCount, $DEFAULT_SCANS_Count, $FOLLOW_SCANS_Count) {
+
+		    $content->body(view('Wechat::scans.index',compact('type','AllCount','DEFAULT_SCANS_Count','FOLLOW_SCANS_Count')));
+	    });
+
     }
 
 

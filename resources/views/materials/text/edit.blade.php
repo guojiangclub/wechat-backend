@@ -1,8 +1,8 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '素材管理 | 添加文本素材')
 
-@section('after-styles-end')
+@section('after-styles-end')--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/emoji/css/emojipicker.ff.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/emoji/css/jquery.emojipicker.css') !!}
     <style>
@@ -13,11 +13,11 @@
 
         }
     </style>
-@stop
+{{--@stop
 
 
 
-@section('breadcrumbs')
+@section('breadcrumbs')--}}
     <h2>
         @if(session()->has('account_name'))
             <h2>{{wechat_name()}}</h2>
@@ -29,9 +29,9 @@
         <li><a href="{{route('admin.wechat.material.index')}}"></i>素材管理</a></li>
         <li class="active">添加文本素材</li>
     </ol>
-@endsection
+{{--@endsection
 
-@section('content')
+@section('content')--}}
     <div class="ibox float-e-margins">
         <div class="ibox-content" style="display: block;">
             <div class="row">
@@ -57,9 +57,9 @@
             </div>
         </div>
     </div>
-@stop
+{{--@stop
 
-@section('after-scripts-end')
+@section('after-scripts-end')--}}
     <script>
         var id="{{$id}}";
     </script>
@@ -140,5 +140,5 @@
 
         })
     </script>
-@endsection
+{{--@endsection--}}
 

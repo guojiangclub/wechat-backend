@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '微信管理 | 创建菜单')
 
@@ -11,14 +11,14 @@
         <li>基本功能</li>
         <li>自定义菜单</li>
     </ol>
-@endsection
+@endsection--}}
 
 
-@section('after-styles-end')
+{{--@section('after-styles-end')--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/menu.css') !!}
-@stop
+{{--@stop
 
-@section('content')
+@section('content')--}}
     <div class="ibox float-e-margins">
         <div class="ibox-content" style="display: block;">
             <div class="row">
@@ -172,9 +172,9 @@
         </div>
     </div>
 
-@stop
+{{--@stop
 
-@section('before-scripts-end')
+@section('before-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/js/common.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/js/menu.js') !!}
     @include('wechat-backend::menu.script')
@@ -199,4 +199,4 @@
             });
         })
     </script>
-@stop
+{{--@stop--}}

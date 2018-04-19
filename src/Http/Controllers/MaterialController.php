@@ -11,6 +11,10 @@ use iBrand\Wechat\Backend\Facades\AccountService;
 use Session;
 use iBrand\Wechat\Backend\Facades\MaterialService;
 use Log;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 
 
 class MaterialController extends Controller
@@ -66,9 +70,11 @@ class MaterialController extends Controller
             if($v->media_id)return $v;
         })->count();
 
-         return view('Wechat::materials.index',compact('type','countImage','countVideo','countText','countArticle'));
 
+	    return Admin::content(function (Content $content) use ($type, $countImage, $countVideo, $countText, $countArticle) {
 
+		    $content->body(view('Wechat::materials.index',compact('type','countImage','countVideo','countText','countArticle')));
+	    });
     }
 
 
@@ -77,7 +83,12 @@ class MaterialController extends Controller
      */
 
     public function upload(){
-        return view('Wechat::file.upload');
+
+
+	    return Admin::content(function (Content $content){
+
+		    $content->body(view('Wechat::file.upload'));
+	    });
     }
 
 
@@ -124,7 +135,10 @@ class MaterialController extends Controller
 
     public function createVideo()
     {
-        return view('Wechat::materials.video.create');
+	    return Admin::content(function (Content $content) {
+
+		    $content->body(view('Wechat::materials.video.create'));
+	    });
     }
 
     /**
@@ -134,7 +148,10 @@ class MaterialController extends Controller
 
     public function createVoice()
     {
-        return view('Wechat::material.includes.voice_create');
+	    return Admin::content(function (Content $content) {
+
+		    $content->body(view('Wechat::material.includes.voice_create'));
+	    });
     }
 
 
@@ -145,7 +162,10 @@ class MaterialController extends Controller
 
     public function createArticle()
     {
-        return view('Wechat::materials.article.create');
+	    return Admin::content(function (Content $content) {
+
+		    $content->body(view('Wechat::materials.article.create'));
+	    });
     }
 
 
@@ -156,7 +176,10 @@ class MaterialController extends Controller
 
     public function createText()
     {
-        return view('Wechat::materials.text.create');
+	    return Admin::content(function (Content $content) {
+
+		    $content->body(view('Wechat::materials.text.create'));
+	    });
     }
 
     /**
@@ -167,7 +190,11 @@ class MaterialController extends Controller
     public function editText($id)
     {
         $text=$this->materialRepository->find($id);
-        return view('Wechat::materials.text.edit',compact('text','id'));
+
+	    return Admin::content(function (Content $content) use ($text, $id) {
+
+		    $content->body(view('Wechat::materials.text.edit',compact('text','id')));
+	    });
     }
 
     /**
@@ -496,7 +523,10 @@ class MaterialController extends Controller
 
         //编辑图文素材
         public function EditArticle($id){
-            return view('Wechat::materials.article.edit',compact('id'));
+	        return Admin::content(function (Content $content) use ($id){
+
+		        $content->body(view('Wechat::materials.article.edit',compact('id')));
+	        });
         }
 
 

@@ -5,6 +5,10 @@ use iBrand\Wechat\Backend\Repository\MenuRepository;
 use iBrand\Wechat\Backend\Facades\MenuService;
 use Illuminate\Http\Request;
 use iBrand\Wechat\Backend\Repository\MaterialRepository;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 
 /**
  * 菜单管理.
@@ -41,7 +45,10 @@ class MenuController extends Controller
 
             $menus=$this->menuRepository->getByAccountId(wechat_id());
 
-            return view('Wechat::menu.index',compact('menus','push_time'));
+	    return Admin::content(function (Content $content) use ($menus, $push_time) {
+
+		    $content->body(view('Wechat::menu.index',compact('menus','push_time')));
+	    });
     }
 
 
@@ -55,12 +62,12 @@ class MenuController extends Controller
             $menusNumber=$this->menuRepository->getFirstMenuNumber(wechat_id());
         }
 
-        if($menusNumber<3&&$pid===0){
-            return view('Wechat::menu.create');
-        }
+        if(($menusNumber<3&&$pid===0) || ($menusNumber<5&&$pid!==0)){
 
-        if($menusNumber<5&&$pid!==0){
-            return view('Wechat::menu.create');
+	        return Admin::content(function (Content $content) {
+
+		        $content->body(view('Wechat::menu.create'));
+	        });
         }
 
         flash('一级菜单最多3个，二级菜单最多5个', 'danger');
@@ -137,7 +144,11 @@ class MenuController extends Controller
 
         }
 
-        return view('Wechat::menu.edit',compact('menu','material'));
+
+	    return Admin::content(function (Content $content) use ($menu, $material) {
+
+		    $content->body(view('Wechat::menu.edit',compact('menu','material')));
+	    });
     }
 
 

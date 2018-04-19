@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '卡券管理 | 卡券列表')
 
@@ -14,7 +14,7 @@
 
 
 
-@section('content')
+@section('content')--}}
     @if (session()->has('flash_notification.message'))
         <div class="alert alert-{{ session('flash_notification.level') }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -143,4 +143,5 @@
             {{--</div>--}}
         {{--</div>--}}
     {{--</div>--}}
-@endsection
+{{--
+@endsection--}}

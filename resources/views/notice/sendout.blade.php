@@ -1,8 +1,8 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '公众号管理 | 模板消息模板列表')
 
-@section('breadcrumbs')
+@section('breadcrumbs')--}}
     <h2>我的模板</h2>
     <ol class="breadcrumb">
         <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
@@ -11,9 +11,9 @@
         <li><a href="{!!route('admin.wechat.notice.index')!!}"></a>我的模板</li>
         <li class="active">{{isset($notice['title'])?$notice['title']:''}}</li>
     </ol>
-@endsection
+{{--@endsection
 
-@section('after-styles-end')
+@section('after-styles-end')--}}
     {{--<!-- 引入element-ui样式 -->--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
@@ -23,12 +23,12 @@
             display: none;
         }
     </style>
-@stop
+{{--@stop
 
 
 
 
-@section('content')
+@section('content')--}}
     @if (session()->has('flash_notification.message'))
         <div class="alert alert-{{ session('flash_notification.level') }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -104,9 +104,9 @@
             </div>
         </div>
     </div>
-@endsection
+{{--@endsection
 
-@section('before-scripts-end')
+@section('before-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.zh-CN.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/vue.js') !!}
@@ -202,6 +202,6 @@
             {{--});--}}
         {{--})--}}
     {{--</script>--}}
-@stop
+{{--@stop--}}
 
 

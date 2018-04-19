@@ -12,6 +12,10 @@ use iBrand\Wechat\Backend\Repository\EventRepository;
 use iBrand\Wechat\Backend\Facades\AccountService;
 use Session;
 use Laracasts\Flash;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 
 
 class WechatController extends Controller
@@ -32,7 +36,11 @@ class WechatController extends Controller
         if (!Session::has('account_app_id')) {
             return redirect()->route('admin.wechat.account.index');
         }
-        return view('Wechat::wechat.index');
+
+	    return Admin::content(function (Content $content) {
+
+		    $content->body(view('Wechat::wechat.index'));
+	    });
     }
 
 
@@ -47,7 +55,10 @@ class WechatController extends Controller
          // 微信初始化
         public function wechatInit(){
 
-            return view('Wechat::index');
+	        return Admin::content(function (Content $content) {
+
+		        $content->body(view('Wechat::index'));
+	        });
         }
 
       // 授权

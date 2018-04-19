@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '微信管理 | 授权设置')
 
@@ -11,7 +11,7 @@
 @endsection
 
 
-@section('content')
+@section('content')--}}
     <div class="ibox float-e-margins">
         <div class="ibox-content" style="display: block;">
             <div class="row">
@@ -72,9 +72,9 @@
                     </div>
             </div>
 
-@stop
+{{--@stop
 
-@section('before-scripts-end')
+@section('before-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/jquery.form.min.js') !!}
     <script>
         $('#base-form').ajaxForm({
@@ -104,4 +104,4 @@
 
         });
     </script>
-@stop
+{{--@stop--}}

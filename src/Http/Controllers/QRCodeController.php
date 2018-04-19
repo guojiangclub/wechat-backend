@@ -6,6 +6,11 @@ use iBrand\Wechat\Backend\Repository\ScanRepository;
 
 use Illuminate\Http\Request;
 use iBrand\Wechat\Backend\Facades\QRCodeService;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
+
 /**
  * 二维码管理.
  *
@@ -47,7 +52,10 @@ class QRCodeController extends Controller
 
         $temporary_count=$this->QRCodeRepository->findWhere(['account_id'=>$account_id,'type'=>self::QRCode_TYPE_TEMPORARY])->count();
 
-        return view('Wechat::QRCode.index',compact('codes','type','forever_count','temporary_count'));
+	    return Admin::content(function (Content $content) use ($codes, $type, $forever_count, $temporary_count) {
+
+		    $content->body(view('Wechat::QRCode.index',compact('codes','type','forever_count','temporary_count')));
+	    });
     }
 
 
@@ -83,7 +91,10 @@ class QRCodeController extends Controller
 
           $FOLLOW_SCANS_Count= $this->scanRepository->getScansPaginated(['ticket'=>$ticket,'type'=>self::FOLLOW_SCANS],0)->count();
 
-          return view('Wechat::QRCode.scans.index',compact('ticket','type','AllCount','DEFAULT_SCANS_Count','FOLLOW_SCANS_Count'));
+	      return Admin::content(function (Content $content) use ($ticket, $type, $AllCount, $DEFAULT_SCANS_Count, $FOLLOW_SCANS_Count) {
+
+		      $content->body(view('Wechat::QRCode.scans.index',compact('ticket','type','AllCount','DEFAULT_SCANS_Count','FOLLOW_SCANS_Count')));
+	      });
       }
 
 

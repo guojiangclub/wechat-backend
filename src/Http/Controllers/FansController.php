@@ -8,7 +8,10 @@ use iBrand\Wechat\Backend\Repository\FanGroupRepository;
 use iBrand\Wechat\Backend\Models\Fan;
 use iBrand\Wechat\Backend\Models\FanGroup;
 use iBrand\Component\User\Models\UserBind;
-
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 use Log;
 
 
@@ -42,7 +45,10 @@ class FansController extends Controller
 
         $count=$this->fanRepository->findWhere(['account_id'=>$account_id])->count();
 
-        return view('Wechat::fans.index',compact('pull_time','count'));
+	    return Admin::content(function (Content $content) use ($pull_time, $count) {
+
+		    $content->body(view('Wechat::fans.index',compact('pull_time','count')));
+	    });
     }
 
 

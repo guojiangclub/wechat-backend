@@ -1,8 +1,8 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '微信管理 | 创建用户')
 
-@section('breadcrumbs')
+@section('breadcrumbs')--}}
     @if(session()->has('account_name'))
         <h2>{{wechat_name()}}</h2>
     @endif
@@ -10,9 +10,9 @@
         <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
         <li>微信管理</li>
     </ol>
-@endsection
+{{--@endsection
 
-@section('content')
+@section('content')--}}
 
     <div class="ibox float-e-margins">
         <div class="ibox-content" style="display: block;">
@@ -23,4 +23,5 @@
             </div>
         </div>
     </div>
-@stop
+{{--
+@stop--}}

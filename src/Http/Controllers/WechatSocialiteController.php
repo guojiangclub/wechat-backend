@@ -6,6 +6,10 @@ use Overtrue\Socialite\SocialiteManager;
 use iBrand\Component\User\Models\UserBind;
 use Auth;
 use iBrand\Component\User\Models\User;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 
 
 
@@ -67,10 +71,12 @@ class WechatSocialiteController extends Controller
 
         if(empty($userBind->user_id)){
             $bind_id=$userBind->id;
-            return view('store-frontend::login.index', compact('bind_id'));
-        }
 
-        
+	        return Admin::content(function (Content $content) use ($bind_id) {
+
+		        $content->body(view('store-frontend::login.index', compact('bind_id')));
+	        });
+        }
     }
 
 

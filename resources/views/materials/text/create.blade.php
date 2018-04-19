@@ -1,8 +1,8 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '素材管理 | 添加文本素材')
 
-@section('after-styles-end')
+@section('after-styles-end')--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/emoji/css/emojipicker.ff.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/emoji/css/jquery.emojipicker.css') !!}
     <style>
@@ -13,11 +13,11 @@
 
         }
     </style>
-@stop
+{{--@stop
 
 
 
-@section('breadcrumbs')
+@section('breadcrumbs')--}}
     <h2>
         @if(session()->has('account_name'))
             <h2>{{wechat_name()}}</h2>
@@ -57,9 +57,9 @@
             </div>
         </div>
     </div>
-@stop
+{{--@stop
 
-@section('after-scripts-end')
+@section('after-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/emoji/js/jquery.emojipicker.me.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/emoji/js/jquery.emojipicker.wx.js') !!}
     <script type="text/javascript">
@@ -137,5 +137,5 @@
 
         })
     </script>
-@endsection
+{{--@endsection--}}
 

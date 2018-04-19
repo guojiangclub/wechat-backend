@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '公众号管理 | 添加公众号')
 
@@ -12,7 +12,7 @@
     </ol>
 @endsection
 
-@section('content')
+@section('content')--}}
 
     <div class="ibox float-e-margins">
         <div class="ibox-content" style="display: block;">
@@ -78,9 +78,9 @@
             </div>
         </div>
     </div>
-@stop
+{{--@stop
 
-@section('after-scripts-end')
+@section('after-scripts-end')--}}
     {!! Html::script('libs/formvalidation/dist/js/formValidation.min.js') !!}
     {!! Html::script('libs/formvalidation/dist/js/framework/bootstrap.min.js') !!}
     {!! Html::script('libs/formvalidation/dist/js/language/zh_CN.js') !!}
@@ -194,6 +194,6 @@
             });
         })
     </script>
-@stop
+{{--@stop--}}
 
 

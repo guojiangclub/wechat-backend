@@ -3,6 +3,11 @@ namespace iBrand\Wechat\Backend\Http\Controllers;
 
 use Illuminate\Http\Request;
 use iBrand\Wechat\Backend\Facades\NoticeService;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
+
 
 /**
  * 模板消息管理.
@@ -22,7 +27,11 @@ class NoticeController extends Controller
      */
     public function index(){
         $notices=NoticeService::getLists();
-        return view('Wechat::notice.index',compact('notices'));
+
+	    return Admin::content(function (Content $content) use ($notices) {
+
+		    $content->body(view('Wechat::notice.index',compact('notices')));
+	    });
     }
 
 
@@ -32,7 +41,11 @@ class NoticeController extends Controller
      */
     public function show($id){
         $notice=NoticeService::show($id);
-        return view('Wechat::notice.show',compact('notice'));
+
+	    return Admin::content(function (Content $content) use ($notice) {
+
+		    $content->body(view('Wechat::notice.show',compact('notice')));
+	    });
     }
 
     /**
@@ -44,7 +57,10 @@ class NoticeController extends Controller
         $notice=NoticeService::show($id);
         $name=$this->formatDataGetName($notice['content']);
 
-        return view('Wechat::notice.sendout',compact('notice','name','id'));
+	    return Admin::content(function (Content $content) use ($id, $name, $notice) {
+
+		    $content->body(view('Wechat::notice.sendout',compact('notice','name','id')));
+	    });
     }
 
 

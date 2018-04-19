@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use iBrand\Wechat\Backend\Repository\EventRepository;
 use iBrand\Wechat\Backend\Repository\MaterialRepository;
 use iBrand\Wechat\Backend\Models\Event;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 
 /**
  *自动回复事件管理
@@ -35,7 +39,10 @@ class EventsController extends Controller
 
     public function index()
     {
-        return view('Wechat::events.index');
+	    return Admin::content(function (Content $content) {
+
+		    $content->body(view('Wechat::events.index'));
+	    });
     }
 
 
@@ -111,7 +118,11 @@ class EventsController extends Controller
 
     public function create(){
         $m_type=!empty(request('m_type'))?request('m_type'):0;
-        return view('Wechat::events.includes.create.index',compact('m_type'));
+
+	    return Admin::content(function (Content $content) use ($m_type) {
+
+		    $content->body(view('Wechat::events.includes.create.index',compact('m_type')));
+	    });
     }
 
     //创建

@@ -1,8 +1,8 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '微信二维码管理')
 
-@section('after-styles-end')
+@section('after-styles-end')--}}
     {{--<!-- 引入element-ui样式 -->--}}
     {{--{!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
@@ -10,10 +10,10 @@
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/upload.css') !!}
-@stop
+{{--@stop
 
 
-@section('breadcrumbs')
+@section('breadcrumbs')--}}
     @if(session()->has('account_name'))
         <h2>{{wechat_name()}}</h2>
     @endif
@@ -22,11 +22,11 @@
         <li><a href="">二维码管理</a></li>
         <li class=" active">二维码列表</li>
     </ol>
-@endsection
+{{--@endsection
 
 
 
-@section('content')
+@section('content')--}}
     @if(Session::has('message'))
         <div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -80,10 +80,10 @@
         </div>
 
     </div>
-@endsection
+{{--@endsection
 
 
-@section('after-scripts-end')
+@section('after-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.min.js') !!}
@@ -98,7 +98,7 @@
         var type="{{$type}}"
     </script>
     @include('Wechat::QRCode.includes.script')
-@endsection
+{{--@endsection--}}
 
 
 

@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '卡券管理 | 新建卡券')
 
@@ -12,12 +12,12 @@
     </ol>
 @endsection
 
-@section('after-styles-end')
+@section('after-styles-end')--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
-@stop
+{{--@stop
 
 
-@section('content')
+@section('content')--}}
     <div class="tabs-container">
         <ul class="nav nav-tabs">
             <li class="active"><a aria-expanded="true" data-toggle="tab" href="#tab-1">基础信息</a></li>
@@ -55,14 +55,14 @@
 
 
 
-@endsection
+{{--@endsection
 
-@section('before-scripts-end')
+@section('before-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/jquery.form.min.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
-@stop
+{{--@stop
 
-@section('after-scripts-end')
+@section('after-scripts-end')--}}
     <script>
         $(function () {
             $('#base-form').ajaxForm({
@@ -84,4 +84,4 @@
             });
         })
     </script>
-@stop
+{{--@stop--}}

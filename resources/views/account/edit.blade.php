@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '公众号管理 | 编辑公众号')
 
@@ -11,7 +11,7 @@
     </ol>
 @endsection
 
-@section('content')
+@section('content')--}}
     @if (session()->has('flash_notification.message'))
         <div class="alert alert-{{ session('flash_notification.level') }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -83,9 +83,9 @@
             </div>
         </div>
     </div>
-@stop
+{{--@stop
 
-@section('after-scripts-end')
+@section('after-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/jquery.form.min.js') !!}
     <script>
         $('#base-form').ajaxForm({
@@ -105,6 +105,6 @@
             }
         });
     </script>
-@stop
+{{--@stop--}}
 
 

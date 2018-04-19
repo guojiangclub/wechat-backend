@@ -10,6 +10,10 @@ use iBrand\Wechat\Backend\Repository\AccountRepository;
 use iBrand\Wechat\Backend\Repository\EventRepository;
 use iBrand\Wechat\Backend\Facades\AccountService;
 use Session;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Column;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 
 
 
@@ -45,8 +49,10 @@ class AccountController extends Controller
             $accounts=$this->accountRepository->createAccountByAppID($accounts);
         }
 
+	    return Admin::content(function (Content $content) use ($accounts) {
 
-        return view('Wechat::account.index',compact('accounts'));
+		    $content->body(view('wechat-backend::account.index',compact('accounts')));
+	    });
     }
 
 
@@ -58,7 +64,10 @@ class AccountController extends Controller
 
     public function create()
     {
-        return view('Wechat::account.create');
+	    return Admin::content(function (Content $content) {
+
+		    $content->body(view('wechat-backend::account.create'));
+	    });
     }
 
 
@@ -122,7 +131,11 @@ class AccountController extends Controller
 
         public function edit($id){
             $account= $this->accountRepository->findOrThrowException($id);
-            return view('Wechat::account.edit',compact('account'));
+
+	        return Admin::content(function (Content $content) use ($account) {
+
+		        $content->body(view('wechat-backend::account.edit',compact('account')));
+	        });
         }
 
         /**

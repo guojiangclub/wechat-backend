@@ -1,7 +1,7 @@
 <!-- 数据列表 -->
-@section('after-styles-end')
+{{--@section('after-styles-end')--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/addmenu.css') !!}
-@stop
+{{--@stop--}}
 
 <div class="data-table"  style="margin-top:20px;">
     <div class="loading" style="text-align: center;height: 400px;">

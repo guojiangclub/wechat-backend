@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '粉丝管理 | 粉丝列表')
 
@@ -12,7 +12,7 @@
     @endsection
 
 
-    @section('after-styles-end')
+    @section('after-styles-end')--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.min.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
@@ -54,7 +54,7 @@
         }
 
     </style>
-@stop
+{{--@stop--}}
 
 <style>
     .Switch{
@@ -63,7 +63,7 @@
 </style>
 
 
-@section('content')
+{{--@section('content')--}}
     @if (session()->has('flash_notification.message'))
         <div class="alert alert-{{ session('flash_notification.level') }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -412,9 +412,9 @@
     </div>
 
 
-@endsection
+{{--@endsection
 
-@section('before-scripts-end')
+@section('before-scripts-end')--}}
     <script>
         var moveUsers="{{route('admin.wechat.fans.move.users')}}";
         var getInfo="{{route('admin.wechat.fans.info','#')}}";
@@ -509,4 +509,4 @@
             });
         })
     </script>
-@stop
+{{--@stop--}}

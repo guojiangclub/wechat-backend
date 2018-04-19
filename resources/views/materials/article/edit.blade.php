@@ -1,8 +1,8 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '素材管理 | 添加图文素材')
 
-@section('after-styles-end')
+@section('after-styles-end')--}}
         <!-- 引入样式 -->
 {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
 {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/reply.css') !!}
@@ -14,9 +14,9 @@
 
 
 
-@stop
+{{--@stop
 
-@section('breadcrumbs')
+@section('breadcrumbs')--}}
     <h2>
         @if(session()->has('account_name'))
             <h2>{{wechat_name()}}</h2>
@@ -27,11 +27,11 @@
         <li><a href="{{route('admin.wechat.material.index')}}"></i>素材管理</a></li>
         <li class="active">编辑图文素材</li>
     </ol>
-@endsection
+{{--@endsection
 
 
 
-@section('content')
+@section('content')--}}
     <div id="app-tu">
         <div class="ibox float-e-margins">
             <div class="ibox-content" style="display: block;">
@@ -252,9 +252,9 @@
 
 
     </div>
-@stop
+{{--@stop
 
-@section('after-scripts-end')
+@section('after-scripts-end')--}}
     <script>
         var materialApi="{{route('admin.wechat.material.api')}}";
         var storeArticle="{{route('admin.wechat.material.store_article')}}";
@@ -885,6 +885,6 @@
 
         })
     </script>
-@endsection
+{{--@endsection--}}
 
 

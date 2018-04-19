@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '微信管理 | 添加菜单')
 
@@ -15,7 +15,7 @@
 @endsection
 
 
-@section('after-styles-end')
+@section('after-styles-end')--}}
     {{--<!-- 引入样式 -->--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/reply.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
@@ -37,11 +37,11 @@
           color:#676a6c;
       }
     </style>
-@stop
+{{--@stop
 
 
 
-@section('content')
+@section('content')--}}
     <div class="ibox float-e-margins" id="app">
         <div class="ibox-content" style="display: block;">
             <div class="row">
@@ -194,9 +194,9 @@
     </div>
 
 
-@stop
+{{--@stop
 
-@section('before-scripts-end')
+@section('before-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.zh-CN.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/vue.js') !!}
@@ -347,4 +347,4 @@
 
     @include('Wechat::widgets.image_uploader_script')
     @include('Wechat::widgets.material.js.materials_js')
-@stop
+{{--@stop--}}

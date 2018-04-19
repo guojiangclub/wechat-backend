@@ -1,4 +1,4 @@
-@extends('wechat-backend::layouts.master')
+{{--@extends('wechat-backend::layouts.master')
 
 @section ('title',  '公众号管理 | 公众号列表')
 
@@ -11,7 +11,7 @@
     </ol>
 @endsection
 
-@section('content')
+@section('content')--}}
     @if (session()->has('flash_notification.message'))
         <div class="alert alert-{{ session('flash_notification.level') }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -31,8 +31,7 @@
                         <div class="col-md-12">
                             <div class="btn-group">
                                 @if(settings('wechat_api_client_id')&&settings('wechat_api_client_secret')&&settings('wechat_api_url'))
-                                <a class="btn btn-primary "
-                                   href="{{route('admin.wechat.platform.auth')}}">添加公众号</a>
+                                <a class="btn btn-primary" href="{{route('admin.wechat.platform.auth')}}">添加公众号</a>
                                 @endif
                             </div>
                             <div class="btn-group">
@@ -125,9 +124,9 @@
         </div>
     </div>
 
-@endsection
+{{--@endsection
 
-@section('before-scripts-end')
+@section('before-scripts-end')--}}
     <script>
         $('.del').on('click',function () {
             var postUrl=$(this).data('url');
@@ -159,4 +158,4 @@
     </script>
     {!! Html::script(env("APP_URL").'/assets/backend/libs/jquery.zclip/jquery.zclip.js') !!}
 
-@stop
+{{--@stop--}}
