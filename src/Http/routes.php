@@ -15,7 +15,7 @@ $router->group(['middleware' => 'web'], function () use ($router) {
 
 //$router->group(['prefix' => 'admin/wechat'], function () use ($router) {
 
-    $router->group(['prefix' => 'admin/wechat','middleware' => 'auth.admin:admin'], function () use ($router) {
+    $router->group(['prefix' => 'admin/wechat','middleware' => 'admin'], function () use ($router) {
 
         $router->get('/init','WechatController@wechatInit')->name('admin.wechat.init');
 

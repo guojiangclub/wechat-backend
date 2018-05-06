@@ -1,52 +1,12 @@
-{{--@extends('wechat-backend::layouts.master')
-
-@section ('title',  '自动回复 | 创建消息')
-
-@section('after-styles-end')--}}
-    {{--<!-- 引入样式 -->--}}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/reply.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
     <style>
         .el-radio .el-radio__label{
             display: none;
         }
     </style>
-{{--@stop
-
-
-@section('breadcrumbs')--}}
     @if(session()->has('account_name'))
         <h2>{{wechat_name()}}</h2>
     @endif
-    <ol class="breadcrumb">
-        <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li><a href="">基本功能</a></li>
-        <li><a href="{{route('admin.wechat.events.index',['m_type'=>1])}}">自动回复</a></li>
-        @if(!isset($id))
-            @if(empty(request('m_type'))||request('m_type')==1)
-            <li class=" active">创建文本消息</li>
-            @elseif(request('m_type')==2)
-            <li class=" active">创建图片消息</li>
-            @elseif(request('m_type')==3)
-                <li class=" active">创建图文消息</li>
-            @elseif(request('m_type')==4)
-                <li class=" active">创建视频消息</li>
-            @endif
-         @else
-            <li class=" active">编辑自动回复消息</li>
-        @endif
 
-
-
-    </ol>
-{{--@endsection--}}
-
-
-
-{{--@section('content')--}}
     @if(Session::has('message'))
         <div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -188,16 +148,11 @@
         </div>
     </div>
 
-
-{{--@endsection
-
-
-@section('after-scripts-end')--}}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.zh-CN.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/vue.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/index.js') !!}
     <script>
+        $(document).on('ready pjax:end', function(event) {
+	        $(event.target).initializeVue();
+        })
+
         var materialApi="{{route('admin.wechat.material.api')}}";
         var storeApi="{{route('admin.wechat.events.store')}}";
         var locationUrl="{{route('admin.wechat.events.index',['m_type'=>'#'])}}";
@@ -214,46 +169,9 @@
         var etime="";
         var m_type="{{$m_type}}";
     </script>
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/toastr/toastr.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
 
     <script>
         $(function () {
-            $('.form_datetime').datetimepicker({
-                minView: 0,
-                format: "yyyy-mm-dd hh:ii",
-                autoclose: 1,
-                language: 'zh-CN',
-                weekStart: 1,
-                todayBtn: 1,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: true,
-                minuteStep: 1,
-                maxView: 4
-            });
-
-//            开始
-            $('.form_datetime_stime').on('changeDate', function (ev) {
-                stime = timeDate(ev.date);
-            })
-//            截止
-            $('.form_datetime_etime').on('changeDate', function (ev) {
-                etime = timeDate(ev.date);
-            })
-            function timeDate(d) {
-                var date = (d.getFullYear()) + "-" +
-                        (d.getMonth() + 1) + "-" +
-                        (d.getDate()) + " " +
-                        (d.getHours()) + ":" +
-                        (d.getMinutes());
-                return date;
-            }
-
             $('.delSearch').click(function () {
                 $('.form_datetime_stime input').val('');
                 $('.form_datetime_etime input').val('');
@@ -262,24 +180,8 @@
                 $('.form_datetime_stime input').val('');
                 $('.form_datetime_etime input').val('');
             })
-
-            //保存
-
-
-
-
         });
     </script>
 
-
     @include('Wechat::widgets.image_uploader_script')
     @include('Wechat::events.includes.create.script')
-{{--@endsection--}}
-
-
-
-
-
-
-
-

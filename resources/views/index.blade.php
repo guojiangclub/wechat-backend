@@ -1,17 +1,3 @@
-{{--@extends('wechat-backend::layouts.master')
-
-@section ('title',  '微信管理 | 授权设置')
-
-@section('breadcrumbs')
-    <h2>授权设置</h2>
-    <ol class="breadcrumb">
-        <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li>授权设置</li>
-    </ol>
-@endsection
-
-
-@section('content')--}}
     <div class="ibox float-e-margins">
         <div class="ibox-content" style="display: block;">
             <div class="row">
@@ -61,6 +47,16 @@
                                                                  value="{{settings('mini_program_secret')}}"></div>
                                 </div>
 
+                                <div class="form-group"><label class="col-sm-3 control-label">微信登录验证码template_id</label>
+                                    <div class="col-sm-9"><input type="text" name="wechat_login_code" placeholder="" class="form-control"
+                                                                 value="{{settings('wechat_login_code')}}"></div>
+                                </div>
+
+                                <div class="form-group"><label class="col-sm-3 control-label">微信登录验证码长度</label>
+                                    <div class="col-sm-9"><input type="text" name="wechat_login_code_length" placeholder="5" class="form-control"
+                                                                 value="{{settings('wechat_login_code_length')}}"></div>
+                                </div>
+
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
@@ -71,11 +67,6 @@
                         </div>
                     </div>
             </div>
-
-{{--@stop
-
-@section('before-scripts-end')--}}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/jquery.form.min.js') !!}
     <script>
         $('#base-form').ajaxForm({
             beforeSubmit:function () {
@@ -104,4 +95,3 @@
 
         });
     </script>
-{{--@stop--}}

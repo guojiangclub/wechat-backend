@@ -6,11 +6,9 @@ use iBrand\Wechat\Backend\Http\Middleware\AccountRequestMiddleware;
 use iBrand\Wechat\Backend\Services\PlatformService;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Menu;
 use iBrand\Wechat\Backend\Services\MaterialService;
 use iBrand\Wechat\Backend\Services\AccountService;
 use iBrand\Wechat\Backend\Services\MessageService;
-
 use iBrand\Wechat\Backend\Services\MenuService;
 use iBrand\Wechat\Backend\Composers\WechatComposer;
 use iBrand\Wechat\Backend\Services\NoticeService;
@@ -19,12 +17,19 @@ use iBrand\Wechat\Backend\Services\FanService;
 use iBrand\Wechat\Backend\Services\QRCodeService;
 use iBrand\Wechat\Backend\Services\CouponService;
 use Illuminate\Support\Fluent;
-
-
-
+use Event;
 
 class BackendServiceProvider extends ServiceProvider
 {
+    /**
+     * 要注册的订阅者类。
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        'iBrand\Wechat\Backend\Listeners\WeChatLoginEventListener',
+    ];
+
     /**
      * This namespace is applied to your controller routes.
      *
@@ -45,27 +50,22 @@ class BackendServiceProvider extends ServiceProvider
             $this->mapWebRoutes();
         }
 
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'wechat-backend');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'wechat-backend');
 
 
         //publish a config file
         $this->publishes([
             __DIR__ . '/../../config/backendwechat.php' => config_path('backend-wechat.php'),
-        ],'backend-wechat-config');
+        ], 'backend-wechat-config');
 
         //publish a config file
         $this->publishes([
             __DIR__ . '/../../config/material.php' => config_path('wechat-material.php'),
-        ],'wechat-material-config');
+        ], 'wechat-material-config');
 
         $this->publishes([
             __DIR__ . '/../../config/wechat-error-code.php' => config_path('wechat-error-code.php'),
-        ],'wechat-error-code-config');
-
-
-
-
-
+        ], 'wechat-error-code-config');
 
         if ($this->app->runningInConsole()) {
 
@@ -75,74 +75,76 @@ class BackendServiceProvider extends ServiceProvider
 
             $this->registerMigrations();
         }
-        $this->registerMenu();
+        //$this->registerMenu();
 
         // 使用类来指定视图组件
-        if(request()->is('admin/wechat/*')) {
+        if (request()->is('admin/wechat/*')) {
             view()->composer('*', 'iBrand\Wechat\Backend\Composers\WechatComposer');
         }
 
         // view()->share('key', 'value444');
 
+        foreach ($this->subscribe as $item) {
+            Event::subscribe($item);
+        }
     }
-
-
 
     /**
      *
      */
-    public function register(){
+    public function register()
+    {
 
         $this->mergeConfigFrom($this->configPath(), 'backendwechat');
 
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'Wechat');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'Wechat');
 
 
-//        注册服务
+        //注册服务
         $this->app->singleton('AccountService', function ($app) {
-             return new AccountService();
-         });
+            return new AccountService();
+        });
 
         $this->app->singleton('MenuService', function ($app) {
             return new MenuService();
         });
 
-//        $this->app->singleton('ServerService', function ($app) {
-//            return new ServerService();
-//        });
+        /*$this->app->singleton('ServerService', function ($app) {
+           return new ServerService();
+        });*/
 
-        $this->app->singleton('wechat.platform',function ($app){
+        $this->app->singleton('wechat.platform', function ($app) {
             return new PlatformService();
         });
 
-        $this->app->singleton('MaterialService',function ($app){
+        $this->app->singleton('MaterialService', function ($app) {
             return new MaterialService();
         });
 
-        $this->app->singleton('NoticeService',function ($app){
+        $this->app->singleton('NoticeService', function ($app) {
             return new NoticeService();
         });
 
 
-        /*$this->app[\Illuminate\Routing\Router::class]->middleware('wechat_account', AccountRequestMiddleware::class);*/
+        $this->app[\Illuminate\Routing\Router::class]->aliasMiddleware('wechat_account', AccountRequestMiddleware::class);
 
-        $this->app->singleton('CardService',function ($app){
+        $this->app->singleton('CardService', function ($app) {
             return new CardService();
         });
 
-        $this->app->singleton('CouponService',function ($app){
+        $this->app->singleton('CouponService', function ($app) {
             return new CouponService();
         });
 
-        $this->app->singleton('FanService',function ($app){
+        $this->app->singleton('FanService', function ($app) {
             return new FanService();
         });
 
-        $this->app->singleton('MessageService',function ($app){
+        $this->app->singleton('MessageService', function ($app) {
             return new MessageService();
         });
 
-        $this->app->singleton('QRCodeService',function ($app){
+        $this->app->singleton('QRCodeService', function ($app) {
             return new QRCodeService();
         });
 
@@ -166,12 +168,12 @@ class BackendServiceProvider extends ServiceProvider
         });
     }
 
-    private function registerMenu()
+    /*private function registerMenu()
     {
        Menu::make('topMenu', function($menu){
             $menu->add('微信管理',['url' => 'admin/wechat', 'secure' => env('SECURE')])->active('admin/wechat/*');
        });
-    }
+    }*/
 
 
     /**
@@ -179,22 +181,13 @@ class BackendServiceProvider extends ServiceProvider
      */
     protected function registerMigrations()
     {
-        return $this->loadMigrationsFrom(__DIR__.'/../../migrations');
+        return $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
     }
-
-
 
     protected function configPath()
     {
         return __DIR__ . '/../../config/backendwechat.php';
-
     }
-
-
-
-
-
-
 
 
 }

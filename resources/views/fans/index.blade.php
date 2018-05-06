@@ -1,24 +1,3 @@
-{{--@extends('wechat-backend::layouts.master')
-
-@section ('title',  '粉丝管理 | 粉丝列表')
-
-@section('breadcrumbs')
-    <h2>粉丝列表</h2>
-    <ol class="breadcrumb">
-        <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li><a href="{!!route('admin.wechat.fans.index')!!}"></i>粉丝管理</a></li>
-        <li class="active">粉丝列表</li>
-    </ol>
-    @endsection
-
-
-    @section('after-styles-end')--}}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/fans.css') !!}
-            <!-- 引入样式 -->
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
     <style>
 
         .el-tag + .el-tag {
@@ -54,7 +33,6 @@
         }
 
     </style>
-{{--@stop--}}
 
 <style>
     .Switch{
@@ -62,16 +40,12 @@
     }
 </style>
 
-
-{{--@section('content')--}}
     @if (session()->has('flash_notification.message'))
         <div class="alert alert-{{ session('flash_notification.level') }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             {!! session('flash_notification.message') !!}
         </div>
     @endif
-
-
 
     <div class="tabs-container" id="app">
         <ul class="nav nav-tabs">
@@ -411,102 +385,40 @@
         </div><!-- /.modal -->
     </div>
 
-
-{{--@endsection
-
-@section('before-scripts-end')--}}
     <script>
         var moveUsers="{{route('admin.wechat.fans.move.users')}}";
         var getInfo="{{route('admin.wechat.fans.info','#')}}";
         var fansApi="{{route('admin.wechat.fans.api')}}";
-        var storeFansGroup="{{route('admin.wechat.fans.group.store')}}"
-        var delFansGroup="{{route('admin.wechat.fans.group.del')}}"
-        var editFansGroup="{{route('admin.wechat.fans.group.update')}}"
+        var storeFansGroup="{{route('admin.wechat.fans.group.store')}}";
+        var delFansGroup="{{route('admin.wechat.fans.group.del')}}";
+        var editFansGroup="{{route('admin.wechat.fans.group.update')}}";
         var stime="";
         var etime="";
-        var moveTag="{{route('admin.wechat.fans.move.tag')}}"
+        var moveTag="{{route('admin.wechat.fans.move.tag')}}";
 
+        $.getScript('/assets/wechat-backend/libs/element/vue.js', function () {
+            @include('wechat-backend::fans.includes.script')
+        });
+
+        $('#release').ajaxForm({
+	        beforeSubmit:function () {
+		        $('#releasebtn').ladda().ladda('start');
+	        },
+	        success: function (result) {
+		        if (!result.status) {
+			        swal("同步失败!", result.message, "error")
+		        } else {
+			        swal({
+				        title: "同步成功！",
+				        text: "",
+				        type: "success"
+			        }, function () {
+				        $('#releasebtn').ladda().ladda('stop');
+				        $.pjax.reload('#pjax-container');
+			        });
+		        }
+
+	        }
+
+        });
     </script>
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.zh-CN.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/vue.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/index.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/js/common.js') !!}
-
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
-
-    @include('wechat-backend::fans.includes.script')
-    <script>
-        $(function () {
-
-            $('.form_datetime').datetimepicker({
-                minView: 0,
-                format: "yyyy-mm-dd hh:ii",
-                autoclose: 1,
-                language: 'zh-CN',
-                weekStart: 1,
-                todayBtn: 1,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: true,
-                minuteStep: 1,
-                maxView: 4
-            });
-
-//            开始
-            $('.form_datetime_stime').on('changeDate', function (ev) {
-                stime = timeDate(ev.date);
-            })
-//            截止
-            $('.form_datetime_etime').on('changeDate', function (ev) {
-                etime = timeDate(ev.date);
-            })
-            function timeDate(d) {
-                var date = (d.getFullYear()) + "-" +
-                        (d.getMonth() + 1) + "-" +
-                        (d.getDate()) + " " +
-                        (d.getHours()) + ":" +
-                        (d.getMinutes());
-                return date;
-            }
-
-            $('.delSearch').click(function () {
-                $('.form_datetime_stime input').val('');
-                $('.form_datetime_etime input').val('');
-            });
-            $('.material_btn').click(function () {
-                $('.form_datetime_stime input').val('');
-                $('.form_datetime_etime input').val('');
-            })
-
-
-
-            $('#release').ajaxForm({
-                beforeSubmit:function () {
-                    $('#releasebtn').ladda().ladda('start');
-                },
-                success: function (result) {
-                    if (!result.status) {
-                        swal("同步失败!", result.message, "error")
-                    } else {
-                        swal({
-                            title: "同步成功！",
-                            text: "",
-                            type: "success"
-                        }, function () {
-                            $('#releasebtn').ladda().ladda('stop');
-                            location = '{!!route('admin.wechat.fans.index')!!}'
-                        });
-                    }
-
-                }
-
-            });
-        })
-    </script>
-{{--@stop--}}

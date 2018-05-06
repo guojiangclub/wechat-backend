@@ -63,18 +63,16 @@ class NoticeService
 
 
     public function sendMessage($data=[],$app_id=null){
-        $app_id=!empty($appid)?$appid:wechat_app_id();
-
+        $app_id=!empty($app_id)?$app_id:wechat_app_id();
         $url = self::$appUrl . "api/notice/send?appid=" . $app_id;
 
         $urlAll=self::$appUrl . "api/notice/sendall?appid=" . $app_id;
 
-        if(isset($data['touser'])&&count($data['touser'])>0) {
+        if(isset($data['touser']) && count($data['touser'])>0) {
             $res=wechat_platform()->wxCurl($urlAll,$data);
         }else{
             $res=wechat_platform()->wxCurl($url,$data);
         }
-
         return $res;
 
     }

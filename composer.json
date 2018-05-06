@@ -9,8 +9,8 @@
 	],
 	"authors": [
 		{
-			"name": "peter chen",
-			"email": "chenhao@element.vip"
+			"name": "shjchen",
+			"email": "ibrand.shjchen@foxmail.com"
 		}
 	],
 	"require": {
@@ -19,7 +19,8 @@
 		"ibrand/backend": "~1.0",
 		"overtrue/wechat": "~4.0",
 		"prettus/l5-repository": "^2.1",
-		"arrilot/laravel-widgets": "^3.7"
+		"arrilot/laravel-widgets": "^3.7",
+		"laracasts/flash": "^2.0"
 	},
 	"autoload": {
 		"files": [

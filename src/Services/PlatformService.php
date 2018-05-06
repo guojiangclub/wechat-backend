@@ -118,7 +118,6 @@ class PlatformService
     {
 
         $headers[] = 'Authorization:Bearer ' . $this->token->getToken();
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
 

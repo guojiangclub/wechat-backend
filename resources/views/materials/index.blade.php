@@ -1,13 +1,3 @@
-{{--@extends('wechat-backend::layouts.master')
-
-@section ('title',  '基本功能 | 素材管理')
-
-@section('after-styles-end')--}}
-    {{--<!-- 引入element-ui样式 -->--}}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/upload.css') !!}
     <style>
         .picture_action span{ width:50%; float:left; height:40px; line-height:40px; text-align:center; color:#888; background:#eee;cursor:pointer }
         .picture_action span:hover{ background:#ddd;}
@@ -15,22 +5,6 @@
         .appmsg_action span{ width:50%; float:left; height:40px; line-height:40px; text-align:center; color:#888; background:#eee;cursor:pointer }
         .appmsg_action span:hover{ background:#ddd;}
     </style>
-{{--@stop
-
-
-@section('breadcrumbs')--}}
-    @if(session()->has('account_name'))
-        <h2>{{wechat_name()}}</h2>
-    @endif
-    <ol class="breadcrumb">
-        <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li class=" active"><a href="">素材管理</a></li>
-    </ol>
-{{--@endsection
-
-
-
-@section('content')--}}
     @if(Session::has('message'))
         <div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -72,18 +46,8 @@
         @include('Wechat::materials.show')
 
     </div>
-{{--@endsection
 
-
-@section('after-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/jquery.zclip/jquery.zclip.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.zh-CN.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
     <script>
         var type="{{$type}}";
         var materialApi="{{route('admin.wechat.material.api')}}";
@@ -154,12 +118,3 @@
 
         })
     </script>
-{{--@endsection--}}
-
-
-
-
-
-
-
-

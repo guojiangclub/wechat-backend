@@ -1,30 +1,13 @@
-{{--@extends('wechat-backend::layouts.master')
-
-@section ('title',  '素材管理 | 添加视频素材')
-
-@section('after-styles-end')--}}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/common.css') !!}
     {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/upload.css') !!}
-{{--@stop
-
-
-@section('breadcrumbs')--}}
     <h2>
         @if(session()->has('account_name'))
             <h2>{{wechat_name()}}</h2>
         @endif
     </h2>
 
-    <ol class="breadcrumb">
-        <li><a href="{{route('admin.wechat.index')}}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li><a href="{{route('admin.wechat.material.index')}}"></i>素材管理</a></li>
-        <li class="active">添加视频素材</li>
-    </ol>
-{{--@endsection
-
-@section('content')--}}
     <div class="ibox float-e-margins">
         <div class="ibox-content" style="display: block;">
             <div class="row">
@@ -71,10 +54,6 @@
             </div>
         </div>
     </div>
-
-{{--@stop
-
-@section('after-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/formvalidation/dist/js/formValidation.min.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/formvalidation/dist/js/framework/bootstrap.min.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/formvalidation/dist/js/language/zh_CN.js') !!}
@@ -141,8 +120,3 @@
         })
 
     </script>
-
-
-{{--@stop--}}
-
-

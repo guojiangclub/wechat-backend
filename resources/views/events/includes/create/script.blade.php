@@ -42,7 +42,7 @@
 
         },
         methods:{
-// ----------------------------------------时间筛选
+    // ----------------------------------------时间筛选
             decodeURI:function(str){
                 return this.htmlspecialchars_decode(decodeURIComponent(str));
             },
@@ -104,7 +104,7 @@
                 });
             },
 
-// ----------------------------- 搜索----------------------------
+    // ----------------------------- 搜索----------------------------
             Search:function () {
                 this.stime=stime;
                 this.etime=etime;
@@ -119,7 +119,7 @@
                 this.getData();
             },
 
-// -----------------------------关闭模态框-----------------------------
+    // -----------------------------关闭模态框-----------------------------
             ModalDel:function () {
                 $('.data-show').show();
                 var that=this;
@@ -504,11 +504,11 @@
             start:function(){
                 var _token=$('meta[name="_token"]').attr('content');
                 this._token=_token;
-//                if(action==2){
-//                    this.action=2;
-//                    $('#custom').hide();
-//                    $('#instationMaterial').show();
-//                }
+    //                if(action==2){
+    //                    this.action=2;
+    //                    $('#custom').hide();
+    //                    $('#instationMaterial').show();
+    //                }
                 this.data_img=data_img;
                 this.data_time=data_time;
                 this.data_title=data_title;
@@ -524,7 +524,7 @@
                     this.getEdit(editId);
                 }
 
-//                this.getData();
+    //                this.getData();
 
             }
         },
@@ -536,9 +536,5 @@
             this.start();
         }
 
-    })
+    });
 </script>
-
-
-
-

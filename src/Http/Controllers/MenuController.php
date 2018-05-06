@@ -1,4 +1,5 @@
 <?php
+
 namespace iBrand\Wechat\Backend\Http\Controllers;
 
 use iBrand\Wechat\Backend\Repository\MenuRepository;
@@ -6,9 +7,7 @@ use iBrand\Wechat\Backend\Facades\MenuService;
 use Illuminate\Http\Request;
 use iBrand\Wechat\Backend\Repository\MaterialRepository;
 use Encore\Admin\Facades\Admin;
-use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Layout\Row;
 
 /**
  * 菜单管理.
@@ -16,205 +15,186 @@ use Encore\Admin\Layout\Row;
  */
 class MenuController extends Controller
 {
+	protected $menuRepository;
+	protected $materialRepository;
 
-    protected $menuRepository;
-    protected $materialRepository;
+	public function __construct(MenuRepository $menuRepository,
+	                            MaterialRepository $materialRepository
 
+	)
+	{
+		$this->menuRepository     = $menuRepository;
+		$this->materialRepository = $materialRepository;
+	}
 
-    public function __construct(MenuRepository $menuRepository,
-                                MaterialRepository $materialRepository
+	/**
+	 * 菜单.
+	 */
+	public function index()
+	{
+		$push_time = settings('wechat_push_menu_time');
+		$menus     = $this->menuRepository->getByAccountId(wechat_id());
 
-    )
-    {
-        $this->menuRepository = $menuRepository;
-        $this->materialRepository = $materialRepository;
-    }
+		return Admin::content(function (Content $content) use ($menus, $push_time) {
+			$content->description('自定义菜单');
+			$view = view('Wechat::menu.index', compact('menus', 'push_time'))->render();
+			$content->row($view);
+		});
+	}
 
-    /**
-     * 菜单.
-     */
-    public function index()
-    {
+	public function create()
+	{
+		$pid = !empty(request('pid')) ? request('pid') : 0;
 
-//        $menus=$this->menuRepository->getByAccountId(6);
-//
-//        return MenuService::saveToRemote($menus);
+		if (!empty($pid)) {
+			$menusNumber = $this->menuRepository->getTwoMenuNumber(wechat_id(), $pid);
+		} else {
+			$menusNumber = $this->menuRepository->getFirstMenuNumber(wechat_id());
+		}
 
+		if (($menusNumber < 3 && $pid === 0) || ($menusNumber < 5 && $pid !== 0)) {
 
-            $push_time=settings('wechat_push_menu_time');
+			return Admin::content(function (Content $content) {
+				$content->description('添加菜单');
+				$view = view('Wechat::menu.create')->render();
+				$content->row($view);
+			});
+		}
 
-            $menus=$this->menuRepository->getByAccountId(wechat_id());
+		flash('一级菜单最多3个，二级菜单最多5个', 'danger');
 
-	    return Admin::content(function (Content $content) use ($menus, $push_time) {
+		return redirect()->back();
+	}
 
-		    $content->body(view('Wechat::menu.index',compact('menus','push_time')));
-	    });
-    }
+	public function store(Request $request)
+	{
+		$data       = $request->except('_token');
+		$account_id = wechat_id();
+		$pid        = !empty(request('pid')) ? request('pid') : 0;
 
+		if (!empty($pid)) {
+			$menusNumber = $this->menuRepository->getTwoMenuNumber(wechat_id(), $pid);
+		} else {
+			$menusNumber = $this->menuRepository->getFirstMenuNumber(wechat_id());
+		}
 
-    public function create()
-    {
-        $pid=!empty(request('pid'))?request('pid'):0;
+		if ($menusNumber >= 3 && $pid === 0) {
+			return $this->api(false, 400, '一级菜单最多3个', []);
+		}
 
-        if(!empty($pid)){
-            $menusNumber=$this->menuRepository->getTwoMenuNumber(wechat_id(),$pid);
-        }else{
-            $menusNumber=$this->menuRepository->getFirstMenuNumber(wechat_id());
-        }
+		if ($menusNumber >= 5 && $pid !== 0) {
+			return $this->api(false, 400, '二级菜单最多5个', []);
+		}
 
-        if(($menusNumber<3&&$pid===0) || ($menusNumber<5&&$pid!==0)){
+		$data = [
+			'name'       => $data['name'],
+			'parent_id'  => $pid,
+			'type'       => $data['type'],
+			'key'        => $data['key'],
+			'sort'       => $data['sort'],
+			'account_id' => $account_id,
+		];
 
-	        return Admin::content(function (Content $content) {
+		if ($data['type'] === 'media_id') {
+			$media_id    = $data['key'];
+			$res         = $this->materialRepository->find($media_id);
+			$data['key'] = $res->media_id;
+		}
 
-		        $content->body(view('Wechat::menu.create'));
-	        });
-        }
+		$res = $this->menuRepository->create($data);
 
-        flash('一级菜单最多3个，二级菜单最多5个', 'danger');
+		return $this->api(true, 200, '', $res);
+	}
 
-        return redirect()->back();
+	public function edit($id)
+	{
 
-    }
+		$menu      = $this->menuRepository->findByField('id', $id)->first();
+		$material  = [];
+		$materials = [];
 
+		if ($menu->type === 'media_id') {
+			$materials = $this->materialRepository->findWhere(['media_id' => $menu->key])->first();
+		}
 
-    public function store(Request $request)
-    {
-        $data=$request->except('_token');
-        $account_id=wechat_id();
-        $pid=!empty(request('pid'))?request('pid'):0;
+		if (count($materials) > 0) {
+			$material['data_selected'] = $materials->id;
+			$material['data_type']     = $materials->type;
+			$material['data_img']      = $materials->source_url;
+			if ($materials->type === "article") {
+				$material['data_title'] = $materials->title;
+				$material['data_img']   = $materials->cover_url;
+				$material['data_time']  = $materials->updated_at;
+			} elseif ($materials->type === "video") {
+				$material['data_title'] = $materials->title;
+			}
+		}
 
-        if(!empty($pid)){
-            $menusNumber=$this->menuRepository->getTwoMenuNumber(wechat_id(),$pid);
-        }else{
-            $menusNumber=$this->menuRepository->getFirstMenuNumber(wechat_id());
-        }
+		return Admin::content(function (Content $content) use ($menu, $material) {
 
-        if($menusNumber>=3&&$pid===0){
-            return $this->api(false,400,'一级菜单最多3个',[]);
-        }
+			$content->body(view('Wechat::menu.edit', compact('menu', 'material')));
+		});
+	}
 
-        if($menusNumber>=5&&$pid!==0){
-            return $this->api(false,400,'二级菜单最多5个',[]);
-        }
+	public function update(Request $request)
+	{
+		$data       = $request->except('_token');
+		$account_id = wechat_id();
 
-        $data=[
-           'name'=>$data['name'],
-            'parent_id'=>$pid,
-            'type'=>$data['type'],
-            'key'=>$data['key'],
-            'sort'=>$data['sort'],
-            'account_id'=>$account_id,
-        ];
+		$data = [
+			'id'   => $data['id'],
+			'name' => $data['name'],
+			'type' => $data['type'],
+			'key'  => $data['key'],
+			'sort' => $data['sort'],
+		];
 
-        if($data['type']==='media_id'){
-            $media_id=$data['key'];
-            $res=$this->materialRepository->find($media_id);
-            $data['key']=$res->media_id;
-        }
+		if ($data['type'] === 'media_id') {
+			$media_id    = $data['key'];
+			$res         = $this->materialRepository->find($media_id);
+			$data['key'] = $res->media_id;
+		}
 
-        $res=$this->menuRepository->create($data);
+		if ($this->menuRepository->find($data['id'])->update($data)) {
+			return $this->api(true, 200, '', []);
+		}
 
-        return $this->api(true,200,'',$res);
+		return $this->api(false, 400, '保存失败', []);
+	}
 
-    }
+	public function destroy($id)
+	{
 
+		$account_id = wechat_id();
+		$menus      = $this->menuRepository->findWhere(['account_id' => $account_id, 'parent_id' => $id]);
+		if (count($menus) > 0) {
+			flash('含有二级级菜单删除失败', 'danger');
+		} else {
+			$this->menuRepository->delete($id);
+			flash('删除成功', 'success');
+		}
 
-    public function edit($id)
-    {
+		return redirect()->back();
+	}
 
-        $menu=$this->menuRepository->findByField('id',$id)->first();
-        $material=[];
-        $materials=[];
+	//发布菜单
 
-        if($menu->type==='media_id'){
-            $materials=$this->materialRepository->findWhere(['media_id'=>$menu->key])->first();
-        }
+	public function releaseMenu()
+	{
+		$app_id     = wechat_app_id();
+		$account_id = wechat_id();
+		$menus      = $this->menuRepository->getByAccountId($account_id);
+		if (count($menus) > 0) {
+			if (MenuService::saveToRemote($menus)) {
+				settings()->setSetting(['wechat_push_menu_time' => time()]);
 
-        if(count($materials)>0){
-            $material['data_selected']=$materials->id;
-            $material['data_type']=$materials->type;
-            $material['data_img']=$materials->source_url;
-            if($materials->type==="article"){
-                $material['data_title']=$materials->title;
-                $material['data_img']=$materials->cover_url;
-                $material['data_time']=$materials->updated_at;
-            }elseif ($materials->type==="video"){
-                $material['data_title']=$materials->title;
-            }
+				return $this->api(true, 200, '', []);
+			} else {
+				return $this->api(false, 400, '发布失败', []);
+			}
+		}
 
-        }
-
-
-	    return Admin::content(function (Content $content) use ($menu, $material) {
-
-		    $content->body(view('Wechat::menu.edit',compact('menu','material')));
-	    });
-    }
-
-
-
-
-    public function update(Request $request){
-        $data=$request->except('_token');
-        $account_id=wechat_id();
-
-        $data=[
-            'id'=>$data['id'],
-            'name'=>$data['name'],
-            'type'=>$data['type'],
-            'key'=>$data['key'],
-            'sort'=>$data['sort'],
-        ];
-
-
-        if($data['type']==='media_id'){
-            $media_id=$data['key'];
-            $res=$this->materialRepository->find($media_id);
-            $data['key']=$res->media_id;
-        }
-
-
-        if($this->menuRepository->find($data['id'])->update($data)){
-            return $this->api(true,200,'',[]);
-        }
-        return $this->api(false,400,'保存失败',[]);
-    }
-
-
-
-    public function destroy($id)
-    {
-
-        $account_id=wechat_id();
-        $menus=$this->menuRepository->findWhere(['account_id'=>$account_id,'parent_id'=>$id]);
-        if(count($menus)>0) {
-            flash('含有二级级菜单删除失败', 'danger');
-        }else{
-            $this->menuRepository->delete($id);
-            flash('删除成功', 'success');
-        }
-
-        return redirect()->back();
-    }
-
-
-    //发布菜单
-
-    public function releaseMenu(){
-        $app_id=wechat_app_id();
-        $account_id=wechat_id();
-        $menus=$this->menuRepository->getByAccountId($account_id);
-        if(count($menus)>0){
-            if(MenuService::saveToRemote($menus)){
-                settings()->setSetting(['wechat_push_menu_time' =>time()]);
-                return $this->api(true,200,'',[]);
-            }else{
-                return $this->api(false,400,'发布失败',[]);
-            }
-        }
-
-        return $this->api(false,400,'请先添加菜单',[]);
-    }
-
+		return $this->api(false, 400, '请先添加菜单', []);
+	}
 
 }

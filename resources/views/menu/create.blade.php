@@ -1,35 +1,10 @@
-{{--@extends('wechat-backend::layouts.master')
-
-@section ('title',  '微信管理 | 添加菜单')
-
-@section('breadcrumbs')
-    @if(session()->has('account_name'))
-        <h2>{{wechat_name()}}</h2>
-    @endif
-    <ol class="breadcrumb">
-        <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li>基本功能</li>
-        <li><a href="{{route('admin.wechat.menu.index')}}">自定义菜单</a></li>
-        <li>添加菜单</li>
-    </ol>
-@endsection
-
-
-@section('after-styles-end')--}}
-    {{--<!-- 引入样式 -->--}}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/reply.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/addmenu.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
     <style>
       #text-checkbox{
           display: none;
       }
-       #m_type_1{
-           display: none;
-       }
+      #m_type_1{
+          display: none;
+      }
       #upload-img{
           display: none;
       }
@@ -37,11 +12,7 @@
           color:#676a6c;
       }
     </style>
-{{--@stop
 
-
-
-@section('content')--}}
     <div class="ibox float-e-margins" id="app">
         <div class="ibox-content" style="display: block;">
             <div class="row">
@@ -49,11 +20,11 @@
                 <div class="wrapper wrapper-content animated fadeInRight" id="AddMenu">
                     <div class="addmenu-box">
                         {{--<div class="hint">--}}
-                            {{--<p>--}}
-                                {{--<i class="fa fa-info-circle"></i>注意<br>--}}
-                                {{--1.自定义菜单最多包括3个一级菜单，每个一级菜单最多包含5个二级菜单。<br>--}}
-                                {{--2.编辑中的菜单不会马上被用户看到，请放心调试。<br>--}}
-                            {{--</p>--}}
+                        {{--<p>--}}
+                        {{--<i class="fa fa-info-circle"></i>注意<br>--}}
+                        {{--1.自定义菜单最多包括3个一级菜单，每个一级菜单最多包含5个二级菜单。<br>--}}
+                        {{--2.编辑中的菜单不会马上被用户看到，请放心调试。<br>--}}
+                        {{--</p>--}}
                         {{--</div>--}}
 
                         {!! Form::open(['route' => 'admin.wechat.menu.store', 'class' => 'form-horizontal',
@@ -105,44 +76,44 @@
                                                                     </label>
                                                                 </a>
                                                                 {{--<a class="check-item">--}}
-                                                                    {{--<input type="radio" name="type" id="scancode_push" data-href="scancode_push" value="scancode_push">--}}
-                                                                    {{--<label for="scancode_push">--}}
-                                                                        {{--扫码推事件--}}
-                                                                    {{--</label>--}}
+                                                                {{--<input type="radio" name="type" id="scancode_push" data-href="scancode_push" value="scancode_push">--}}
+                                                                {{--<label for="scancode_push">--}}
+                                                                {{--扫码推事件--}}
+                                                                {{--</label>--}}
                                                                 {{--</a>--}}
                                                                 {{--<a class="check-item">--}}
-                                                                    {{--<input type="radio" name="type" id="scancode_waitmsg" data-href="scancode_waitmsg" value="scancode_waitmsg">--}}
-                                                                    {{--<label for="scancode_waitmsg">--}}
-                                                                        {{--扫码带提示--}}
-                                                                    {{--</label>--}}
-                                                                {{--</a>--}}
-
-                                                                {{--<a class="check-item">--}}
-                                                                    {{--<input type="radio" name="type"  id="pic_sysphoto" data-href="pic_sysphoto" value="pic_sysphoto">--}}
-                                                                    {{--<label for="pic_sysphoto">--}}
-                                                                        {{--弹出系统拍照发图--}}
-                                                                    {{--</label>--}}
+                                                                {{--<input type="radio" name="type" id="scancode_waitmsg" data-href="scancode_waitmsg" value="scancode_waitmsg">--}}
+                                                                {{--<label for="scancode_waitmsg">--}}
+                                                                {{--扫码带提示--}}
+                                                                {{--</label>--}}
                                                                 {{--</a>--}}
 
                                                                 {{--<a class="check-item">--}}
-                                                                    {{--<input type="radio" name="type" id="pic_weixin" data-href="pic_weixin" value="pic_weixin">--}}
-                                                                    {{--<label for="pic_weixin">--}}
-                                                                        {{--弹出微信相册发图器--}}
-                                                                    {{--</label>--}}
+                                                                {{--<input type="radio" name="type"  id="pic_sysphoto" data-href="pic_sysphoto" value="pic_sysphoto">--}}
+                                                                {{--<label for="pic_sysphoto">--}}
+                                                                {{--弹出系统拍照发图--}}
+                                                                {{--</label>--}}
                                                                 {{--</a>--}}
 
                                                                 {{--<a class="check-item">--}}
-                                                                    {{--<input type="radio" name="type" id="pic_photo_or_album" data-href="pic_photo_or_album" value="pic_photo_or_album">--}}
-                                                                    {{--<label for="pic_photo_or_album">--}}
-                                                                        {{--弹出拍照或者相册发图--}}
-                                                                    {{--</label>--}}
+                                                                {{--<input type="radio" name="type" id="pic_weixin" data-href="pic_weixin" value="pic_weixin">--}}
+                                                                {{--<label for="pic_weixin">--}}
+                                                                {{--弹出微信相册发图器--}}
+                                                                {{--</label>--}}
                                                                 {{--</a>--}}
 
                                                                 {{--<a class="check-item">--}}
-                                                                    {{--<input type="radio" name="type" id="location_select" data-href="location_select" value="location_select">--}}
-                                                                    {{--<label for="location_select">--}}
-                                                                        {{--弹出地理位置选择器--}}
-                                                                    {{--</label>--}}
+                                                                {{--<input type="radio" name="type" id="pic_photo_or_album" data-href="pic_photo_or_album" value="pic_photo_or_album">--}}
+                                                                {{--<label for="pic_photo_or_album">--}}
+                                                                {{--弹出拍照或者相册发图--}}
+                                                                {{--</label>--}}
+                                                                {{--</a>--}}
+
+                                                                {{--<a class="check-item">--}}
+                                                                {{--<input type="radio" name="type" id="location_select" data-href="location_select" value="location_select">--}}
+                                                                {{--<label for="location_select">--}}
+                                                                {{--弹出地理位置选择器--}}
+                                                                {{--</label>--}}
                                                                 {{--</a>--}}
                                                             </div>
 
@@ -154,12 +125,12 @@
                                                             </div>
 
                                                             {{--<div class="tab-content">--}}
-                                                                {{--<div class="tab-pane fade in active select form-group" id="click" >--}}
-                                                                    {{--{!! Form::label('meta_keywords', '关联关键词:', ['class' => 'control-label pull-left col-sm-2']) !!}--}}
-                                                                    {{--<div class="col-sm-11">--}}
-                                                                        {{--<input type="text" name="" class="form-control col-sm-11 hinge text-content">--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
+                                                            {{--<div class="tab-pane fade in active select form-group" id="click" >--}}
+                                                            {{--{!! Form::label('meta_keywords', '关联关键词:', ['class' => 'control-label pull-left col-sm-2']) !!}--}}
+                                                            {{--<div class="col-sm-11">--}}
+                                                            {{--<input type="text" name="" class="form-control col-sm-11 hinge text-content">--}}
+                                                            {{--</div>--}}
+                                                            {{--</div>--}}
                                                             {{--</div>--}}
                                                         </div>
                                                     </div>
@@ -170,7 +141,7 @@
 
                                     <div class="form-group">
                                             {!! Form::label('meta_keywords', '*排序:（数值越大越靠前）', ['class' => 'control-label pull-left col-sm-2']) !!}
-                                            <div class="col-sm-10">
+                                        <div class="col-sm-10">
                                                 <input type="number"  name="sort" class="number form-control" placeholder="1-100正整数" >
                                             </div>
                                     </div>
@@ -193,10 +164,6 @@
         </div>
     </div>
 
-
-{{--@stop
-
-@section('before-scripts-end')--}}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.zh-CN.js') !!}
     {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/vue.js') !!}
@@ -224,127 +191,121 @@
 
     <script>
         $(function () {
-            $('.form_datetime').datetimepicker({
-                minView: 0,
-                format: "yyyy-mm-dd hh:ii",
-                autoclose: 1,
-                language: 'zh-CN',
-                weekStart: 1,
-                todayBtn: 1,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: true,
-                minuteStep: 1,
-                maxView: 4
+	        $('input').iCheck({
+		        checkboxClass: 'icheckbox_square-blue',
+		        radioClass: 'iradio_square-blue',
+		        increaseArea: '20%' // optional
+	        });
+
+	        $('.form_datetime').datetimepicker({
+		        format: 'yyyy-mm-dd'
             });
 
 //            开始
-            $('.form_datetime_stime').on('changeDate',function (ev) {
-                stime=timeDate(ev.date);
-            })
+	        $('.form_datetime_stime').on('changeDate',function (ev) {
+		        stime=timeDate(ev.date);
+	        })
 //            截止
-            $('.form_datetime_etime').on('changeDate',function (ev) {
-                etime=timeDate(ev.date);
-            })
-            function timeDate (d) {
-                var date = (d.getFullYear()) + "-" +
-                        (d.getMonth() + 1) + "-" +
-                        (d.getDate()) + " " +
-                        (d.getHours()) + ":" +
-                        (d.getMinutes());
-                return date;
-            }
+	        $('.form_datetime_etime').on('changeDate',function (ev) {
+		        etime=timeDate(ev.date);
+	        })
+	        function timeDate (d) {
+		        var date = (d.getFullYear()) + "-" +
+			        (d.getMonth() + 1) + "-" +
+			        (d.getDate()) + " " +
+			        (d.getHours()) + ":" +
+			        (d.getMinutes());
+		        return date;
+	        }
 
-            $('.delSearch').click(function () {
-                $('.form_datetime_stime input').val('');
-                $('.form_datetime_etime input').val('');
-            });
-            $('.material_btn').click(function () {
-                $('.form_datetime_stime input').val('');
-                $('.form_datetime_etime input').val('');
-            })
+	        $('.delSearch').click(function () {
+		        $('.form_datetime_stime input').val('');
+		        $('.form_datetime_etime input').val('');
+	        });
+	        $('.material_btn').click(function () {
+		        $('.form_datetime_stime input').val('');
+		        $('.form_datetime_etime input').val('');
+	        })
 
-            $('.m_type_image').show();
+	        $('.m_type_image').show();
 
-            $('#instationMaterial .check-item input').on('ifChecked', function(event){
-                var type=$(this).data('type');
-                $('#upload-img').hide();
-                $('.m_type').hide();
-                $('#m_type_'+type).show();
-            });
+	        $('#instationMaterial .check-item input').on('ifChecked', function(event){
+		        var type=$(this).data('type');
+		        $('#upload-img').hide();
+		        $('.m_type').hide();
+		        $('#m_type_'+type).show();
+	        });
 
-            $('input[name=type]').on('ifChecked', function(event){
-                var type=$(this).data('href');
-                var menu=$('#menu');
-                menu.data('type',type);
-            });
-            $('#base-form').submit(function () {
-                return false;
-            })
-            $('#menu').click(function () {
-                var name=$('input[name=name]').val();
-                var sort=$('input[name=sort]').val();
-                var action=$('input[name=action]').val();
-                var key=$('input[name=key]').val();
-                var media_id=$('input[name=material]').val();
-                var pid=$('input[name=pid]').val();
-                var type=$(this).data('type');
+	        $('input[name=type]').on('ifChecked', function(event){
+		        var type=$(this).data('href');
+		        var menu=$('#menu');
+		        menu.data('type',type);
+	        });
+	        $('#base-form').submit(function () {
+		        return false;
+	        })
+	        $('#menu').click(function () {
+		        var name=$('input[name=name]').val();
+		        var sort=$('input[name=sort]').val();
+		        var action=$('input[name=action]').val();
+		        var key=$('input[name=key]').val();
+		        var media_id=$('input[name=material]').val();
+		        var pid=$('input[name=pid]').val();
+		        var type=$(this).data('type');
 
-                if(name==''){
-                    toastr.error('请输入菜单名');
-                    return false;
-                }else if(action==1&&key==''){
-                    toastr.error('请输入关联的关键字或URL');
-                    return false;
-                }else if(action==2&&media_id==''){
-                    toastr.error('请选择相关素材');
-                    return false;
-                }else if(sort==''||parseInt(sort)<0||parseInt(sort)>100){
-                    toastr.error('1-100正整数');
-                    return false;
-                }
-                var data={
-                    name:name,
-                    key:key,
-                    type:type,
-                    sort:sort,
-                    pid:pid,
-                }
+		        if(name==''){
+			        toastr.error('请输入菜单名');
+			        return false;
+		        }else if(action==1&&key==''){
+			        toastr.error('请输入关联的关键字或URL');
+			        return false;
+		        }else if(action==2&&media_id==''){
+			        toastr.error('请选择相关素材');
+			        return false;
+		        }else if(sort==''||parseInt(sort)<0||parseInt(sort)>100){
+			        toastr.error('1-100正整数');
+			        return false;
+		        }
+		        var data={
+			        name:name,
+			        key:key,
+			        type:type,
+			        sort:sort,
+			        pid:pid,
+		        }
 
-                if(action==2){
-                    data.type='media_id';
-                    data.key=media_id;
-                }
+		        if(action==2){
+			        data.type='media_id';
+			        data.key=media_id;
+		        }
 
-                $.ajax({
-                    type:"post",
-                    url:"{{route('admin.wechat.menu.store')}}",
-                    data:data,
-                    success:function(res){
-                        if(res.status){
-                            swal({
-                                title: "保存成功！",
-                                text: "",
-                                type: "success"
-                            }, function () {
-                                location = '{!!route('admin.wechat.menu.index')!!}'
-                            });
-                        }else{
-                            swal({
-                                title: "保存失败！",
-                                text:res.message,
-                                type: "error"
-                            });
-                        }
-                    }
-                });
+		        $.ajax({
+			        type:"post",
+			        url:"{{route('admin.wechat.menu.store')}}",
+			        data:data,
+			        success:function(res){
+				        if(res.status){
+					        swal({
+						        title: "保存成功！",
+						        text: "",
+						        type: "success"
+					        }, function () {
+						        location = '{!!route('admin.wechat.menu.index')!!}'
+					        });
+				        }else{
+					        swal({
+						        title: "保存失败！",
+						        text:res.message,
+						        type: "error"
+					        });
+				        }
+			        }
+		        });
 
-            })
+	        })
         })
 
     </script>
 
     @include('Wechat::widgets.image_uploader_script')
     @include('Wechat::widgets.material.js.materials_js')
-{{--@stop--}}

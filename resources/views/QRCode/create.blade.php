@@ -1,13 +1,3 @@
-{{--@extends('wechat-backend::layouts.master')
-
-@section ('title',  '微信二维码管理')
-
-@section('after-styles-end')--}}
-    {{--<!-- 引入element-ui样式 -->--}}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/upload.css') !!}
     <style>
         .switchType2{
             width:100px;
@@ -26,28 +16,10 @@
             z-index: 200000;
         }
     </style>
-{{--@stop
-
-
-@section('breadcrumbs')--}}
     @if(session()->has('account_name'))
         <h2>{{wechat_name()}}</h2>
     @endif
-    <ol class="breadcrumb">
-        <li><a href="{!!route('admin.wechat.index')!!}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li><a href="">二维码管理</a></li>
-        <li class="">二维码列表</li>
-        @if(empty($id))
-        <li class=" active">创建二维码</li>
-         @else
-         <li class=" active">编辑二维码</li>
-        @endif
-    </ol>
-{{--@endsection
 
-
-
-@section('content')--}}
     @if(Session::has('message'))
         <div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -55,7 +27,6 @@
             {{ Session::get('message')}}
         </div>
     @endif
-
 
     <div class="ibox-content" style="display: block;" id="app">
         <div class="row">
@@ -127,15 +98,7 @@
             </div>
         </div>
     </div>
-{{--@endsection
 
-
-@section('after-scripts-end')--}}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/toastr/toastr.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
     <script>
         var CodesList="{{route('admin.wechat.QRCode.index')}}"
         var storeApi="{{route('admin.wechat.QRCode.store')}}"
@@ -144,24 +107,6 @@
         var editId="{{isset($id)?$id:''}}";
 
         var editGetDataUrl="{{route('admin.wechat.QRCode.api.edit',['id'=>'#'])}}";
-
-        {{--var name="{{isset($data->name)?$data->name:''}}";--}}
-        {{--var key="{{isset($data->key)?$data->name:''}}";--}}
-        {{--var type="{{isset($data->type)?$data->type:2}}";--}}
-        {{--var expire_seconds="{{isset($data->expire_seconds)?$data->expire_seconds:2592000}}";--}}
-        {{--var scene_str="{{isset($data->scene_str)?$data->scene_str:''}}";--}}
-
-
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
     </script>
     @include('Wechat::QRCode.script')
-{{--@endsection--}}
-
-
-
-
-
-
-
-
-
-

@@ -50,8 +50,9 @@ class AccountController extends Controller
         }
 
 	    return Admin::content(function (Content $content) use ($accounts) {
-
-		    $content->body(view('wechat-backend::account.index',compact('accounts')));
+			$content->description('公众号列表');
+			$view = view('wechat-backend::account.index',compact('accounts'))->render();
+		    $content->row($view);
 	    });
     }
 

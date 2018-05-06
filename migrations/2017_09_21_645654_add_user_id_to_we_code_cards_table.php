@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 
 
-class AddServiceTypeInfoToWeAccountsTable extends Migration
+class AddUserIdToWeCodeCardsTable extends Migration
 {
     /**
      * Run the migrations.
