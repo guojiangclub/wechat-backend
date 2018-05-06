@@ -1,22 +1,26 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
-
-use Prettus\Repository\Eloquent\BaseRepository;
-use iBrand\Wechat\Backend\Facades\AccountService;
 use iBrand\Wechat\Backend\Models\Event;
-
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Event Repository.
  */
 class EventRepository extends BaseRepository
 {
-
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -25,10 +29,9 @@ class EventRepository extends BaseRepository
         return Event::class;
     }
 
-
     public function getEventsPaginated($where, $limit, $order_by = 'id', $sort = 'desc')
     {
-        $data= $this->scopeQuery(function ($query) use ($where) {
+        $data = $this->scopeQuery(function ($query) use ($where) {
             if (is_array($where)) {
                 foreach ($where as $key => $value) {
                     if (is_array($value)) {
@@ -39,28 +42,25 @@ class EventRepository extends BaseRepository
                     }
                 }
             }
+
             return $query->orderBy('updated_at', 'desc');
         })->with('material');
 
-        if($limit>0){
+        if ($limit > 0) {
             return $data->paginate($limit);
-        }else{
-            return $data->all();
         }
+
+        return $data->all();
     }
 
-
-
     /**
-     *
-     *
      * @param string $eventKey eventKey
      *
      * @return Event event
      */
     public function getEventByKey($eventId)
     {
-       return $this->findByField('key',$eventId)->first();
+        return $this->findByField('key', $eventId)->first();
     }
 
     /**
@@ -75,7 +75,7 @@ class EventRepository extends BaseRepository
 
     /**
      * 存储一个文字回复类型事件.
-     * 
+     *
      * @param int    $accountId 公众号id
      * @param string $text      回复内容
      *
@@ -83,28 +83,29 @@ class EventRepository extends BaseRepository
      */
     public function storeTextEvent($accountId, $text)
     {
-        $key=$this->getEventByKey();
+        $key = $this->getEventByKey();
+
         return $this->create([
-            'account_id' =>$accountId,
-            'key'=>$key,
-           'value'=>$text,
-            'type'=>'material',
+            'account_id' => $accountId,
+            'key' => $key,
+           'value' => $text,
+            'type' => 'material',
         ]);
     }
 
     /**
-     * 更新事件
+     * 更新事件.
      *
-     * @param string $eventId   事件ID
-     * @param string $text      文字回复内容
+     * @param string $eventId 事件ID
+     * @param string $text    文字回复内容
      */
     public function updateEvent($eventId, $text)
     {
-        $date['value']=$text;
-        $date['type']='material';
-       return $this->update($date,$eventId);
-    }
+        $date['value'] = $text;
+        $date['type'] = 'material';
 
+        return $this->update($date, $eventId);
+    }
 
     /**
      * 是否属于自己的事件.
@@ -127,5 +128,4 @@ class EventRepository extends BaseRepository
     {
         return 'V_EVENT_'.strtoupper(uniqid());
     }
-
 }

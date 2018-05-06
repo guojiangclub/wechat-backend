@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Services;
 
 use EasyWeChat\Foundation\Application;
@@ -7,11 +17,9 @@ use iBrand\Wechat\Backend\Repository\MenuRepository;
 
 /**
  * 菜单服务提供类.
-
  */
 class MenuService
 {
-
     protected static $appUrl;
 
 //    protected $menuRepository;
@@ -26,15 +34,15 @@ class MenuService
         self::$appUrl = settings('wechat_api_url');
     }
 
-
     /**
      * 取得远程公众号的菜单.
+     *
      * @return array 菜单信息
      */
     private function getFromRemote(AccountModel $account)
     {
-        $wechat=new Application(['app_id'=>$account->app_id,'sectet'=>$account->app_secret]);
-        $menus=$wechat->menu;
+        $wechat = new Application(['app_id' => $account->app_id, 'sectet' => $account->app_secret]);
+        $menus = $wechat->menu;
         $menus = $menu->current();
 
 //        return with(new WechatMenu($account->app_id, $account->app_secret))->current();
@@ -128,7 +136,9 @@ class MenuService
 
     /**
      * 解析文字类型的菜单 [转换为事件].
-     * @param array                   $menu
+     *
+     * @param array $menu
+     *
      * @return array
      */
     private function resolveTextMenu(AccountModel $account, $menu)
@@ -191,7 +201,6 @@ class MenuService
         return $menu;
     }
 
-
     /**
      * 解析点击事件类型的菜单 [自己的保留，否则丢弃].
      *
@@ -208,8 +217,6 @@ class MenuService
         return $menu;
     }
 
-
-
     /**
      * 解析跳转图文MediaIdUrl类型的菜单[将被转换为View类型].
      *
@@ -219,7 +226,7 @@ class MenuService
      */
     private function resolveViewLimitedMenu($menu)
     {
-        return false; //暂时关闭这个功能 
+        return false; //暂时关闭这个功能
 
         $menu['type'] = 'view';
 
@@ -236,73 +243,66 @@ class MenuService
         return $menu;
     }
 
-
-
     /**
      * 提交菜单到微信
-     *
      */
-    public function saveToRemote($menus,$app_id=null)
+    public function saveToRemote($menus, $app_id = null)
     {
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $newMenus = $this->formatToWechat($menus);
 
-        $newMenus=$this->formatToWechat($menus);
+        $url = self::$appUrl.'api/menu/store?appid='.$app_id;
 
-        $url = self::$appUrl . "api/menu/store?appid=" . $app_id;
+        $res = wechat_platform()->wxCurl($url, $newMenus);
 
-        $res=wechat_platform()->wxCurl($url,$newMenus);
-
-        if(isset($res->errmsg)&&$res->errmsg==="ok"){
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return true;
         }
-        return false;
 
+        return false;
     }
 
     /**
      * 格式化为微信菜单.
      */
-    private  function formatToWechat($menus)
+    private function formatToWechat($menus)
     {
         $saveMenus = [];
-        $subMenuArr=[];
-        $i=-1;
-        $j=-1;
-        foreach ($menus as $key=>$item) {
-            $i++;
-            if(isset($item['child'])&&count($item['child'])>0){
+        $subMenuArr = [];
+        $i = -1;
+        $j = -1;
+        foreach ($menus as $key => $item) {
+            ++$i;
+            if (isset($item['child']) && count($item['child']) > 0) {
                 foreach ($item['child'] as $subMenu) {
-                    $j++;
-                    if($item['id']===$subMenu['parent_id']){
-                        $subMenuArr[$i]['sub_button'][$j]['name']=$subMenu['name'];
-                        $subMenuArr[$i]['sub_button'][$j]['type']=$subMenu['type'];
-                        if($subMenu['type']==='view'){
-                          $subMenuArr[$i]['sub_button'][$j]['url']=$subMenu['key'];
-                        }elseif ($subMenu['type']==='media_id'){
-                            $subMenuArr[$i]['sub_button'][$j]['media_id']=$subMenu['key'];
+                    ++$j;
+                    if ($item['id'] === $subMenu['parent_id']) {
+                        $subMenuArr[$i]['sub_button'][$j]['name'] = $subMenu['name'];
+                        $subMenuArr[$i]['sub_button'][$j]['type'] = $subMenu['type'];
+                        if ('view' === $subMenu['type']) {
+                            $subMenuArr[$i]['sub_button'][$j]['url'] = $subMenu['key'];
+                        } elseif ('media_id' === $subMenu['type']) {
+                            $subMenuArr[$i]['sub_button'][$j]['media_id'] = $subMenu['key'];
+                        } else {
+                            $subMenuArr[$i]['sub_button'][$j]['key'] = $subMenu['key'];
                         }
-                        else{
-                           $subMenuArr[$i]['sub_button'][$j]['key']=$subMenu['key'];
-                      }
                     }
                 }
-                $j=-1;
-                $saveMenus['buttons'][$i]['name']=$item['name'];
-                $saveMenus['buttons'][$i]['sub_button']=$subMenuArr[$i]['sub_button'];
-
-            }else{
-                  $saveMenus['buttons'][$i]['name']=$item['name'];
-                  $saveMenus['buttons'][$i]['type']=$item['type'];
-                  if($item['type']==='view'){
-                      $saveMenus['buttons'][$i]['url']=$item['key'];
-                  }elseif ($item['type']==='media_id'){
-                      $saveMenus['buttons'][$i]['media_id']=$item['key'];
-                  }
-                  else{
-                      $saveMenus['buttons'][$i]['key']=$item['key'];
-                  }
-              }
+                $j = -1;
+                $saveMenus['buttons'][$i]['name'] = $item['name'];
+                $saveMenus['buttons'][$i]['sub_button'] = $subMenuArr[$i]['sub_button'];
+            } else {
+                $saveMenus['buttons'][$i]['name'] = $item['name'];
+                $saveMenus['buttons'][$i]['type'] = $item['type'];
+                if ('view' === $item['type']) {
+                    $saveMenus['buttons'][$i]['url'] = $item['key'];
+                } elseif ('media_id' === $item['type']) {
+                    $saveMenus['buttons'][$i]['media_id'] = $item['key'];
+                } else {
+                    $saveMenus['buttons'][$i]['key'] = $item['key'];
+                }
+            }
         }
 
         return $saveMenus;

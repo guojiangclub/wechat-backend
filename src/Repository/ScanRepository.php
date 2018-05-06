@@ -1,8 +1,16 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
-use App\Exceptions;
 use iBrand\Wechat\Backend\Models\Scan;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -11,9 +19,8 @@ use Prettus\Repository\Eloquent\BaseRepository;
  */
 class ScanRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -22,9 +29,9 @@ class ScanRepository extends BaseRepository
         return Scan::class;
     }
 
-    public function getScansPaginated($where, $limit, $time='',$order_by = 'id', $sort = 'desc')
+    public function getScansPaginated($where, $limit, $time = '', $order_by = 'id', $sort = 'desc')
     {
-        $data= $this->scopeQuery(function ($query) use ($where,$time,$limit) {
+        $data = $this->scopeQuery(function ($query) use ($where,$time,$limit) {
             if (is_array($where)) {
                 foreach ($where as $key => $value) {
                     if (is_array($value)) {
@@ -45,17 +52,14 @@ class ScanRepository extends BaseRepository
                     }
                 }
             }
-            return $query->with(['QrCode','fans'])->orderBy('updated_at', 'desc');
+
+            return $query->with(['QrCode', 'fans'])->orderBy('updated_at', 'desc');
         });
 
-        if($limit>0){
+        if ($limit > 0) {
             return $data->paginate($limit);
-        }else{
-            return $data->all();
         }
+
+        return $data->all();
     }
-
-
-
-
 }

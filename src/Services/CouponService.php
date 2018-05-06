@@ -1,260 +1,245 @@
 <?php
-namespace iBrand\Wechat\Backend\Services;
 
-use iBrand\Wechat\Backend\Models\Card;
-use iBrand\Wechat\Backend\Repository\CardRepository;
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace iBrand\Wechat\Backend\Services;
 
 /**
  * 卡券优惠券服务提供类.
-
  */
 class CouponService
 {
-
     protected static $appUrl;
     protected static $code;
 
     public function __construct()
     {
         self::$appUrl = settings('wechat_api_url');
-        self::$code=config('wechat-error-code');
-
+        self::$code = config('wechat-error-code');
     }
-    
 
     // 创建卡券
-    public function create($data,$app_id=null){
+    public function create($data, $app_id = null)
+    {
+        $return = [];
 
-        $return=[];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'api/coupon/create?appid='.$app_id;
 
-        $url = self::$appUrl . "api/coupon/create?appid=" . $app_id;
+        $code = self::$code;
 
-        $code=self::$code;
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        $res=wechat_platform()->wxCurl($url,$data);
-
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
         }
 
-        if(isset($res->errmsg) && $res->errmsg === 'ok')
-        {
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return $res;
         }
 
         return $return;
-
     }
- 
+
     //  更新卡券信息
-    public function  update($data,$app_id=null){
+    public function update($data, $app_id = null)
+    {
+        $return = [];
 
-        $return=[];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'/api/coupon/update?appid='.$app_id;
 
-        $url = self::$appUrl . "/api/coupon/update?appid=" . $app_id;
+        $code = self::$code;
 
-        $code=self::$code;
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        $res=wechat_platform()->wxCurl($url,$data);
-
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
         }
 
-        if(isset($res->errmsg) && $res->errmsg === 'ok')
-        {
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return $res;
         }
 
         return $return;
-
     }
-
 
     // 卡券颜色
-    public function cardColors($app_id=null){
+    public function cardColors($app_id = null)
+    {
+        $return = [];
 
-        $return=[];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'api/coupon/colors?appid='.$app_id;
 
-        $url = self::$appUrl . "api/coupon/colors?appid=" . $app_id;
+        $code = self::$code;
 
-        $code=self::$code;
+        $res = wechat_platform()->wxCurl($url);
 
-        $res=wechat_platform()->wxCurl($url);
-
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
         }
 
-        if(isset($res->errmsg) && $res->errmsg === 'ok')
-        {
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return $res;
         }
 
         return $return;
-
     }
 
     //获取卡券信息
-    public function getCardInfo($data,$app_id=null){
+    public function getCardInfo($data, $app_id = null)
+    {
+        $return = [];
 
-        $return=[];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'api/coupon/getinfo?appid='.$app_id;
 
-        $url = self::$appUrl . "api/coupon/getinfo?appid=".$app_id;
+        $code = self::$code;
 
-        $code=self::$code;
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        $res=wechat_platform()->wxCurl($url,$data);
-
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
         }
 
-        if(isset($res->errmsg) && $res->errmsg === 'ok')
-        {
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return $res;
         }
 
         return $return;
-
     }
 
     // 卡券生成二维码
-    public function getCardQRCode($data,$app_id=null){
+    public function getCardQRCode($data, $app_id = null)
+    {
+        $return = [];
 
-        $return=[];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'api/coupon/QRCode?appid='.$app_id;
 
-        $url = self::$appUrl . "api/coupon/QRCode?appid=".$app_id;
+        $code = self::$code;
 
-        $code=self::$code;
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        $res=wechat_platform()->wxCurl($url,$data);
-
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
         }
 
-        if(isset($res->errmsg) && $res->errmsg === 'ok')
-        {
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return $res;
         }
 
         return $return;
-
     }
 
     // 查询Code接口
-    public function getCode($data,$app_id=null){
+    public function getCode($data, $app_id = null)
+    {
+        $return = [];
 
-        $return=[];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'api/coupon/getcode?appid='.$app_id;
 
-        $url = self::$appUrl . "api/coupon/getcode?appid=".$app_id;
+        $code = self::$code;
 
-        $code=self::$code;
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        $res=wechat_platform()->wxCurl($url,$data);
-
-        if(isset($res->errmsg)&&!empty($res->errmsg!=="ok")){
-            $return['errcode']=500;
-            $return['errmsg']=$res->errmsg;
-        }else{
+        if (isset($res->errmsg) && !empty('ok' !== $res->errmsg)) {
+            $return['errcode'] = 500;
+            $return['errmsg'] = $res->errmsg;
+        } else {
             return $res;
         }
 
         return $return;
-
     }
-
 
     // 核销Code接口
-    public function consumeCode($data,$app_id=null){
+    public function consumeCode($data, $app_id = null)
+    {
+        $return = [];
 
-        $return=[];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'api/coupon/consumeCode?appid='.$app_id;
 
-        $url = self::$appUrl . "api/coupon/consumeCode?appid=".$app_id;
+        $code = self::$code;
 
-        $code=self::$code;
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        $res=wechat_platform()->wxCurl($url,$data);
-
-        if(isset($res->errmsg)&&!empty($res->errmsg!=="ok")){
-            $return['errcode']=500;
-            $return['errmsg']=$res->errmsg;
-        }else{
+        if (isset($res->errmsg) && !empty('ok' !== $res->errmsg)) {
+            $return['errcode'] = 500;
+            $return['errmsg'] = $res->errmsg;
+        } else {
             return $res;
         }
 
         return $return;
-
     }
-
-
 
     //更新卡券库存
-    public function updateQuantity($data,$app_id=null){
-        $return=[];
+    public function updateQuantity($data, $app_id = null)
+    {
+        $return = [];
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $url = self::$appUrl . "api/coupon/update/quantityt?appid=".$app_id;
+        $url = self::$appUrl.'api/coupon/update/quantityt?appid='.$app_id;
 
-        $code=self::$code;
+        $code = self::$code;
 
-        $res=wechat_platform()->wxCurl($url,$data);
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
         }
 
-        if(isset($res->errmsg) && $res->errmsg === 'ok')
-        {
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return $res;
         }
 
         return $return;
     }
 
-
     //删除卡券
-    public function deleteCard($data,$app_id=null){
-        $return=[];
+    public function deleteCard($data, $app_id = null)
+    {
+        $return = [];
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $url = self::$appUrl . "api/coupon/delete?appid=".$app_id;
+        $url = self::$appUrl.'api/coupon/delete?appid='.$app_id;
 
-        $code=self::$code;
+        $code = self::$code;
 
-        $res=wechat_platform()->wxCurl($url,$data);
+        $res = wechat_platform()->wxCurl($url, $data);
 
-
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
         }
 
-        if(isset($res->errmsg) && $res->errmsg === 'ok')
-        {
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return $res;
         }
 
@@ -262,42 +247,27 @@ class CouponService
     }
 
     //指定卡券失效
-    public function disableCard($data,$app_id=null){
-        $return=[];
+    public function disableCard($data, $app_id = null)
+    {
+        $return = [];
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $url = self::$appUrl . "api/coupon/disable?appid=".$app_id;
+        $url = self::$appUrl.'api/coupon/disable?appid='.$app_id;
 
-        $code=self::$code;
+        $code = self::$code;
 
-        $res=wechat_platform()->wxCurl($url,$data);
+        $res = wechat_platform()->wxCurl($url, $data);
 
-
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
         }
 
-        if(isset($res->errmsg) && $res->errmsg === 'ok')
-        {
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return $res;
         }
 
         return $return;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

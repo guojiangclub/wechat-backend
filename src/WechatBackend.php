@@ -1,21 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/5/6
- * Time: 15:09
+
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 namespace iBrand\Wechat\Backend;
 
+use Encore\Admin\Admin;
 use Encore\Admin\Extension;
-use iBrand\Backend\Models\Menu;
+use iBrand\Wechat\Backend\Seeds\WechatBackendTablesSeeder;
+use Illuminate\Support\Facades\Artisan;
 
 class WechatBackend extends Extension
 {
     /**
      * Bootstrap this package.
-     *
-     * @return void
      */
     public static function boot()
     {
@@ -27,43 +31,8 @@ class WechatBackend extends Extension
      */
     public static function import()
     {
-        $lastOrder = Menu::max('order');
-        $root = [
-            'parent_id' => 0,
-            'order'     => $lastOrder++,
-            'title'     => 'Helpers',
-            'icon'      => 'fa-gears',
-            'uri'       => '',
-        ];
-        $root = Menu::create($root);
-        $menus = [
-            [
-                'title'     => 'Scaffold',
-                'icon'      => 'fa-keyboard-o',
-                'uri'       => 'helpers/scaffold',
-            ],
-            [
-                'title'     => 'Database terminal',
-                'icon'      => 'fa-database',
-                'uri'       => 'helpers/terminal/database',
-            ],
-            [
-                'title'     => 'Laravel artisan',
-                'icon'      => 'fa-terminal',
-                'uri'       => 'helpers/terminal/artisan',
-            ],
-            [
-                'title'     => 'Routes',
-                'icon'      => 'fa-list-alt',
-                'uri'       => 'helpers/routes',
-            ],
-        ];
-        foreach ($menus as $menu) {
-            $menu['parent_id'] = $root->id;
-            $menu['order'] = $lastOrder++;
-            Menu::create($menu);
-        }
-        parent::createPermission('Admin helpers', 'ext.helpers', 'helpers/*');
-    }
+        Artisan::call('migrate', ['--path' => __DIR__.'/../seeds']);
 
+        Artisan::call('db:seed', ['--class' => WechatBackendTablesSeeder::class]);
+    }
 }

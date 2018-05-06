@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
 use iBrand\Wechat\Backend\Models\FanReport;
@@ -10,7 +20,7 @@ use Prettus\Repository\Eloquent\BaseRepository;
 class FanReportRepository extends BaseRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,7 +36,6 @@ class FanReportRepository extends BaseRepository
      */
     public function store($input)
     {
-
         /*
          * 准备插入的数据
          */

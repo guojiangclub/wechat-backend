@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
 use iBrand\Wechat\Backend\Models\FanGroup;
@@ -13,15 +23,13 @@ use Prettus\Repository\Eloquent\BaseRepository;
  *
  */
 
-
 /**
  * Fans Repository.
  */
 class FanGroupRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -30,9 +38,7 @@ class FanGroupRepository extends BaseRepository
         return FanGroup::class;
     }
 
-
-
-    public function getIdBygroupid($accountId, $groupid,$insert)
+    public function getIdBygroupid($accountId, $groupid, $insert)
     {
         /*
          * 通过openid查询
@@ -42,29 +48,28 @@ class FanGroupRepository extends BaseRepository
             ->where('group_id', $groupid)
             ->first();
         if ($fan) {
-            $this->update($insert,$fan->id);
+            $this->update($insert, $fan->id);
+
             return $fan;
-        } else {
-            /*
-             * 若无返回结果，创建后返回
-             */
-             $res=$this->create($insert);
-             return $res;
         }
+        /*
+         * 若无返回结果，创建后返回
+         */
+        $res = $this->create($insert);
+
+        return $res;
     }
 
-
-
     /**
-     * 创建数据
+     * 创建数据.
+     *
      * @param $accountId
      * @param $input
+     *
      * @return mixed
      */
-
     public function store($accountId, $input)
     {
-
         /*
          * 准备插入的数据
          */
@@ -130,8 +135,8 @@ class FanGroupRepository extends BaseRepository
     /**
      * 使用 粉丝组自增ID 查找分组.
      *
-     * @param Int $id        粉丝组自增ID
-     * @param Int $accountId Account ID
+     * @param int $id        粉丝组自增ID
+     * @param int $accountId Account ID
      *
      * @return Object
      */
@@ -143,8 +148,8 @@ class FanGroupRepository extends BaseRepository
     /**
      * 使用 粉丝组group_id 查找分组.
      *
-     * @param Int $accountId Account ID
-     * @param Int $groupId   粉丝组自增ID
+     * @param int $accountId Account ID
+     * @param int $groupId   粉丝组自增ID
      *
      * @return Object
      */
@@ -156,8 +161,8 @@ class FanGroupRepository extends BaseRepository
     /**
      * update.
      *
-     * @param Int   $accountId Account ID
-     * @param Int   $addId     加粉丝的组自增ID
+     * @param int   $accountId Account ID
+     * @param int   $addId     加粉丝的组自增ID
      * @param array $groupIds  粉丝组group_id
      * @param array $count     数量
      */

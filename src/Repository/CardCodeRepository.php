@@ -1,8 +1,16 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
-use App\Exceptions;
 use iBrand\Wechat\Backend\Models\CardCode;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -11,9 +19,8 @@ use Prettus\Repository\Eloquent\BaseRepository;
  */
 class CardCodeRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -21,10 +28,4 @@ class CardCodeRepository extends BaseRepository
     {
         return CardCode::class;
     }
-
-
-
-
-
-
 }

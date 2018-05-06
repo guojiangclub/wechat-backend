@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
 use iBrand\Wechat\Backend\Models\Fan;
@@ -8,10 +17,10 @@ use Prettus\Repository\Eloquent\BaseRepository;
 /**
  * Fans Repository.
  */
-class FanRepository  extends BaseRepository
+class FanRepository extends BaseRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -20,16 +29,17 @@ class FanRepository  extends BaseRepository
         return Fan::class;
     }
 
-
     /**
-     * 获取粉丝列表
+     * 获取粉丝列表.
+     *
      * @param $where
-     * @param int $limit
+     * @param int    $limit
      * @param string $order_by
      * @param string $sort
+     *
      * @return mixed
      */
-    public function getFansPaginated($where, $limit = 50, $time=[],$order_by = 'subscribed_at', $sort = 'desc')
+    public function getFansPaginated($where, $limit = 50, $time = [], $order_by = 'subscribed_at', $sort = 'desc')
     {
         return $this->scopeQuery(function ($query) use ($where,$order_by,$sort,$time) {
             if (is_array($where)) {
@@ -40,7 +50,6 @@ class FanRepository  extends BaseRepository
                     } else {
                         $query = $query->where($key, $value);
                     }
-
                 }
             }
 
@@ -54,10 +63,10 @@ class FanRepository  extends BaseRepository
                     }
                 }
             }
-            return $query->orderBy($order_by,$sort);
+
+            return $query->orderBy($order_by, $sort);
         })->paginate($limit);
     }
-
 
     /**
      * 通过openid获取fans的id，无数据时创建后返回.
@@ -67,7 +76,7 @@ class FanRepository  extends BaseRepository
      *
      * @return int fansID
      */
-    public function getIdByOpenid($accountId, $openId,$insert)
+    public function getIdByOpenid($accountId, $openId, $insert)
     {
         /*
          * 通过openid查询
@@ -78,12 +87,11 @@ class FanRepository  extends BaseRepository
                 ->first();
         if ($fan) {
             return $fan->id;
-        } else {
-            /*
-             * 若无返回结果，创建后返回
-             */
-            return $this->create($insert);
         }
+        /*
+         * 若无返回结果，创建后返回
+         */
+        return $this->create($insert);
     }
 
     /**
@@ -115,8 +123,8 @@ class FanRepository  extends BaseRepository
     /**
      * 通过粉丝ID 更改粉丝所属组(支持批量).
      *
-     * @param Array $ids       粉丝自增ID
-     * @param Int   $toGroupId 粉丝组group_id
+     * @param array $ids       粉丝自增ID
+     * @param int   $toGroupId 粉丝组group_id
      */
     public function moveFanGroupByFansid($ids, $toGroupId)
     {
@@ -131,7 +139,7 @@ class FanRepository  extends BaseRepository
     /**
      * 通过粉丝ID 获取粉丝组group_id和粉丝人数[支持批量].
      *
-     * @param Array $ids 粉丝自增ID
+     * @param array $ids 粉丝自增ID
      */
     public function getFanGroupByfanIds($ids)
     {
@@ -155,12 +163,11 @@ class FanRepository  extends BaseRepository
     /**
      * 通过粉丝组ID 更改粉丝所属组(支持批量).
      *
-     * @param Array $ids       粉丝自增ID
-     * @param Int   $toGroupId 粉丝组group_id
+     * @param array $ids       粉丝自增ID
+     * @param int   $toGroupId 粉丝组group_id
      */
     public function moveFanGroupByGroupid($accountId, $fromGroupId, $toGroupId)
     {
-
         //根据粉丝ID查询
         return $this->model->where('account_id', $accountId)
                     ->where('group_id', $fromGroupId)
@@ -178,25 +185,16 @@ class FanRepository  extends BaseRepository
         return $fan->fill($input)->save();
     }
 
-
-
-
-    public function getFansByOpenid($accountId, $openId,$insert)
+    public function getFansByOpenid($accountId, $openId, $insert)
     {
         $fan = $this->model
             ->where('account_id', $accountId)
             ->where('openid', $openId)
             ->first();
         if ($fan) {
-           return $this->update($insert,$fan->id);
-        } else {
-            return $this->create($insert);
+            return $this->update($insert, $fan->id);
         }
+
+        return $this->create($insert);
     }
-
-
-
-
-
-
 }

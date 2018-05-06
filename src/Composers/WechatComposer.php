@@ -1,16 +1,25 @@
 <?php
+
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Composers;
 
+use Auth;
+use iBrand\Wechat\Backend\Facades\AccountService;
 use iBrand\Wechat\Backend\Repository\AccountRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
-use iBrand\Wechat\Backend\Facades\AccountService;
-use Auth;
 
 /**
  * 后台视图组织.
- *
  */
 class WechatComposer
 {
@@ -23,7 +32,6 @@ class WechatComposer
 
     /**
      * accountService.
-     *
      */
     private $accountRepository;
 
@@ -31,7 +39,6 @@ class WechatComposer
         Request $request,
         AccountRepository $accountRepository
     ) {
-
         $this->request = $request;
         $this->accountRepository = $accountRepository;
     }
@@ -43,15 +50,12 @@ class WechatComposer
      */
     public function compose(View $view)
     {
-
-            //        $menus = $this->request->is('admin/account*') ? config('menu.account') : config('menu.func');
-            $global = new Fluent();
-            $global->user = Auth::user();
+        //        $menus = $this->request->is('admin/account*') ? config('menu.account') : config('menu.func');
+        $global = new Fluent();
+        $global->user = Auth::user();
 //        $global->menus = $menus;
-            $global->current_account = app('AccountService');
-            $global->accounts = $this->accountRepository->getAccountPaginated([]);
-            $view->with('global', $global);
-
-
+        $global->current_account = app('AccountService');
+        $global->accounts = $this->accountRepository->getAccountPaginated([]);
+        $view->with('global', $global);
     }
 }

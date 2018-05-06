@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Platform\Utils;
 
 /**
@@ -9,7 +18,6 @@ namespace iBrand\Wechat\Backend\Platform\Utils;
  */
 class Http
 {
-
     /**
      * Constants for available HTTP methods.
      */
@@ -54,14 +62,12 @@ class Http
         return $this->curl;
     }
 
-
-
-    protected function request($url, $method = self::GET, $params = array(), $request_header = array())
+    protected function request($url, $method = self::GET, $params = [], $request_header = [])
     {
-        $request_header = array('Content-Type' => 'application/x-www-form-urlencoded');
-        if ($method === self::GET || $method === self::DELETE) {
+        $request_header = ['Content-Type' => 'application/x-www-form-urlencoded'];
+        if (self::GET === $method || self::DELETE === $method) {
             $url .= (stripos($url, '?') ? '&' : '?').http_build_query($params);
-            $params = array();
+            $params = [];
         }
 
         $ch = curl_init();
@@ -69,18 +75,15 @@ class Http
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $request_header);
-        if($method === self::POST){
+        if (self::POST === $method) {
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
         }
         $output = curl_exec($ch);
         curl_close($ch);
+
         return $output;
-
     }
-
-    
-    
 
     /**
      * make cURL file.
@@ -107,7 +110,7 @@ class Http
      */
     protected function splitHeaders($rawHeaders)
     {
-        $headers = array();
+        $headers = [];
 
         $lines = explode("\n", trim($rawHeaders));
         $headers['HTTP'] = array_shift($lines);
@@ -138,10 +141,10 @@ class Http
 
         $curlInfo = curl_getinfo($this->curl);
 
-        $results = array(
+        $results = [
                     'curl_info' => $curlInfo,
                     'response' => $response,
-                   );
+                   ];
 
         return $results;
     }

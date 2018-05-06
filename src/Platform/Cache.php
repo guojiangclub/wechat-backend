@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Platform;
 
 use Exception;
@@ -53,10 +62,10 @@ class Cache
             return call_user_func_array(self::$cacheSetter, func_get_args());
         }
 
-        $data = array(
+        $data = [
                  'data' => $value,
                  'expired_at' => time() + $lifetime,
-                );
+                ];
 
         if (!file_put_contents($this->getCacheFile($key), serialize($data))) {
             throw new Exception('Access toekn 缓存失败');

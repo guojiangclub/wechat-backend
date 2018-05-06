@@ -1,10 +1,18 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class LandPage extends Model
 {
@@ -17,10 +25,9 @@ class LandPage extends Model
     public function getCardAttribute()
     {
         $cardTitle = '';
-        foreach ($this->card_id as $item)
-        {
+        foreach ($this->card_id as $item) {
             $card = Card::find($item);
-            $cardTitle = $cardTitle. '<br>' . $card->title;
+            $cardTitle = $cardTitle.'<br>'.$card->title;
         }
 
         return $cardTitle;
@@ -35,6 +42,4 @@ class LandPage extends Model
     {
         $this->attributes['card_id'] = implode(',', $value);
     }
-
-
 }

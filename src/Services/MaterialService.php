@@ -1,11 +1,18 @@
 <?php
+
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Services;
 
-
-use iBrand\Wechat\Backend\Repository\MaterialRepository;
 use iBrand\Wechat\Backend\Models\Material;
-use Log;
-
+use iBrand\Wechat\Backend\Repository\MaterialRepository;
 
 /**
  * 素材服务.
@@ -17,7 +24,6 @@ class MaterialService
      */
     const MATERIAL_DEFAULT_OFFSET = 0;
 
-
     /**
      * 拉取素材的最大数量.
      */
@@ -25,7 +31,6 @@ class MaterialService
 
     /**
      * materialRepository.
-     *
      */
     private $materialRepository;
 
@@ -33,21 +38,17 @@ class MaterialService
 
     /**
      * media.
-     *
      */
     private $mediaService;
 
     protected static $appUrl;
     protected static $code;
 
-
-
     public function __construct()
     {
         self::$appUrl = settings('wechat_api_url');
-        self::$code=config('wechat-error-code');
+        self::$code = config('wechat-error-code');
     }
-
 
     /**
      * 保存图文消息.
@@ -112,96 +113,78 @@ class MaterialService
         return $this->materialRepository->isExists($this->account->id, $materialId);
     }
 
-
-
-
     /**
-     * 删除永久素材
+     * 删除永久素材.
      */
-    public function Delete($Data,$app_id=null)
+    public function Delete($Data, $app_id = null)
     {
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $url = self::$appUrl . "api/medias/delete?appid=" . $app_id;
+        $url = self::$appUrl.'api/medias/delete?appid='.$app_id;
 
-        $res=wechat_platform()->wxCurl($url,$Data);
+        $res = wechat_platform()->wxCurl($url, $Data);
 
         return $res;
     }
 
     //获取素材信息
-    public function getMaterialInfo($material_id,$app_id=null){
+    public function getMaterialInfo($material_id, $app_id = null)
+    {
+        $return = [];
 
-        $return=[];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $data['mediaId'] = $material_id;
 
-        $data['mediaId']=$material_id;
+        $url = self::$appUrl.'api/medias/get?appid='.$app_id;
 
-        $url = self::$appUrl . "api/medias/get?appid=" . $app_id;
+        $code = self::$code;
 
-        $code=self::$code;
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        $res=wechat_platform()->wxCurl($url,$data);
-
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
-        }else{
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
+        } else {
             return $res;
         }
+
         return $return;
-
-
     }
-
 
     //   --------------------- 图片----------------------
 
-
     /**
      * 上传图片到远程服务.
+     *
      * @return string 微信素材id
      */
-    public function postRemoteImage($path,$app_id=null)
+    public function postRemoteImage($path, $app_id = null)
     {
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'api/medias/remote/image?appid='.$app_id;
 
-        $url = self::$appUrl . "api/medias/remote/image?appid=" . $app_id;
-
-        $image=wechat_platform()->upload('image',$path,$url);
+        $image = wechat_platform()->upload('image', $path, $url);
 
         return $image;
-
     }
-
 
     /**
      * 上传图文图片内容到远程服务.
+     *
      * @return string 微信素材id
      */
-    public function postRemoteArticleImage($path,$app_id=null)
+    public function postRemoteArticleImage($path, $app_id = null)
     {
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $url = self::$appUrl.'api/medias/remote/article/image?appid='.$app_id;
 
-        $url = self::$appUrl . "api/medias/remote/article/image?appid=" . $app_id;
-
-        $image=wechat_platform()->upload('image',$path,$url);
+        $image = wechat_platform()->upload('image', $path, $url);
 
         return $image;
-
     }
-
-
-
-
-
-
-
-
-
 
     //   --------------------- 视频----------------------
 
@@ -210,152 +193,141 @@ class MaterialService
      *
      * @return string 微信素材id
      */
-    public function postRemoteVideo($path,$data,$app_id=null)
+    public function postRemoteVideo($path, $data, $app_id = null)
     {
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
-        $title=$data['title'];
-        $description=$data['description'];
-        $url = self::$appUrl . "api/medias/remote/video?appid=" . $app_id."&title=".$title.'&description='.$description;
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
+        $title = $data['title'];
+        $description = $data['description'];
+        $url = self::$appUrl.'api/medias/remote/video?appid='.$app_id.'&title='.$title.'&description='.$description;
 
-        $video=wechat_platform()->upload('video',$path,$url);
+        $video = wechat_platform()->upload('video', $path, $url);
 
         return $video;
     }
 
-//   --------------------- 图文-----------------------
+    //   --------------------- 图文-----------------------
+
     /**
      * 上传图文到远程服务.
      *
      * @return string 微信素材id
      */
-    public function postRemoteArticle($data,$app_id=null)
+    public function postRemoteArticle($data, $app_id = null)
     {
-        $return=[];
+        $return = [];
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $url = self::$appUrl . "api/medias/remote/article?appid=" . $app_id;
+        $url = self::$appUrl.'api/medias/remote/article?appid='.$app_id;
 
-        $code=self::$code;
+        $code = self::$code;
 
-        $article=$this->RemoteArticleData($data);
-
+        $article = $this->RemoteArticleData($data);
 
         \Log::info($article);
 
-        $res=wechat_platform()->wxCurl($url,$article);
+        $res = wechat_platform()->wxCurl($url, $article);
 
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
 
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
             return $return;
         }
 
-        if(isset($res->media_id)&&!empty($res->media_id)){
+        if (isset($res->media_id) && !empty($res->media_id)) {
             return $res->media_id;
         }
+
         return null;
     }
 
-
-
     /**
-     * 修改图文
+     * 修改图文.
      *
      * @return string 微信素材id
      */
-    public function UpdatepostRemoteArticle($mediaId,$data,$index=null,$app_id=null)
+    public function UpdatepostRemoteArticle($mediaId, $data, $index = null, $app_id = null)
     {
-        $return=[];
+        $return = [];
 
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $url = self::$appUrl . "api/medias/update/article?appid=" . $app_id;
+        $url = self::$appUrl.'api/medias/update/article?appid='.$app_id;
 
-        $code=self::$code;
+        $code = self::$code;
 
         $article['title'] = $data['title'];
         $article['author'] = $data['author'];
         $article['digest'] = $data['description'];
-        $article['thumb_media_id']=$data['cover_media_id'];
-        $article['show_cover'] =intval($data['show_cover']);
+        $article['thumb_media_id'] = $data['cover_media_id'];
+        $article['show_cover'] = intval($data['show_cover']);
         $article['content'] = $data['content'];
         $article['content_source_url'] = $data['content_url'];
 
-        $articleDate=[
-            'mediaId'=>$mediaId,
-            'data'=>$article,
+        $articleDate = [
+            'mediaId' => $mediaId,
+            'data' => $article,
         ];
 
-        if($index!==null){
-            $articleDate['index']=$index;
+        if (null !== $index) {
+            $articleDate['index'] = $index;
         }
 
+        $res = wechat_platform()->wxCurl($url, $articleDate);
 
-        $res=wechat_platform()->wxCurl($url,$articleDate);
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
 
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
             return $return;
         }
 
-
-        if(isset($res->errmsg)&&$res->errmsg==="ok"){
+        if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return true;
         }
-        return false;
 
+        return false;
     }
 
-
-
-
-
     //处理图文格式化数据
-    protected function RemoteArticleData($articles){
+    protected function RemoteArticleData($articles)
+    {
 //        判断多个与单个
         if (count($articles) >= 2) {
             return $this->storeMultiArticle($articles);
-
-        } else {
-            return $this->storeSimpleArticle(array_shift($articles));
         }
-    }
 
+        return $this->storeSimpleArticle(array_shift($articles));
+    }
 
     /**
      * 处理单图文格式数据.
      */
     private function storeSimpleArticle($data)
     {
-
-        $article=[];
+        $article = [];
         $article['title'] = $data['title'];
         $article['author'] = $data['author'];
         $article['digest'] = $data['description'];
-        $article['thumb_media_id']=$data['cover_media_id'];
-        $article['show_cover'] =$data['show_cover'];
+        $article['thumb_media_id'] = $data['cover_media_id'];
+        $article['show_cover'] = $data['show_cover'];
         $article['content'] = $data['content'];
         $article['source_url'] = $data['content_url'];
+
         return $article;
     }
 
-
-   //处理多图文格式数据.
+    //处理多图文格式数据.
     private function storeMultiArticle($articles)
     {
-
-        $data=[];
+        $data = [];
         foreach ($articles as $article) {
-            $data[]=$this->storeSimpleArticle($article);
+            $data[] = $this->storeSimpleArticle($article);
         }
 
         return $data;
-
     }
-
 
     /**
      * 同步远程素材到本地.
@@ -481,8 +453,6 @@ class MaterialService
         );
     }
 
-
-
     /**
      * 将图文消息中的素材转换为本地.
      *
@@ -494,11 +464,9 @@ class MaterialService
     private function localizeNewsCoverMaterialId($account, $newsItems)
     {
         $newsItems = array_map(function ($item) {
-
             $item['cover_url'] = $this->mediaIdToSourceUrl($item['thumb_media_id']);
 
             return $item;
-
         }, $newsItems);
 
         return $newsItems;
@@ -516,135 +484,118 @@ class MaterialService
         return $this->materialRepository->mediaIdToSourceUrl($mediaId);
     }
 
-
-
-
     //--------------------------同步-------------------------------
 
     /**
      * 下载图片素材到本地.
      */
-    public function downloadMaterialImage($account_id,$media_id,$url,$name,$update_time,$c)
+    public function downloadMaterialImage($account_id, $media_id, $url, $name, $update_time, $c)
     {
 //        $dateDir = date('Ym').'/';
-        $dateDir='';
+        $dateDir = '';
         $dir = config('wechat-material.image.storage_path').$dateDir;
 
         is_dir($dir) || mkdir($dir, 0755, true);
 
-        $Filename=md5($media_id);
+        $Filename = md5($media_id);
 
-        $png=substr(strrchr($name, '.'), 1);
+        $png = substr(strrchr($name, '.'), 1);
 
-        $source=$dir.$Filename.'.'.$png;
+        $source = $dir.$Filename.'.'.$png;
 
-        if(Material::where(['media_id'=>$media_id])->get()){
-            $time=date('Y-m-d H:s:i',$update_time);
+        if (Material::where(['media_id' => $media_id])->get()) {
+            $time = date('Y-m-d H:s:i', $update_time);
             $content = file_get_contents($url);
             file_put_contents($source, $content);
-            if(is_file($source)){
-                $source_url=$_SERVER['APP_URL'].'/storage/wechat/materials/images/'.$Filename.'.'.$png;
-                if(!$res=Material::where(['media_id'=>$media_id,'account_id'=>$account_id])->first()){
-                    $data=[
-                        'account_id'=>$account_id,
-                        'media_id'=>$media_id,
-                        'type'=>'image',
-                        'source_url'=>$source_url,
-                        'wechat_url'=>$url,
-                        'created_at'=>$time,
-                        'updated_at'=>$time
+            if (is_file($source)) {
+                $source_url = $_SERVER['APP_URL'].'/storage/wechat/materials/images/'.$Filename.'.'.$png;
+                if (!$res = Material::where(['media_id' => $media_id, 'account_id' => $account_id])->first()) {
+                    $data = [
+                        'account_id' => $account_id,
+                        'media_id' => $media_id,
+                        'type' => 'image',
+                        'source_url' => $source_url,
+                        'wechat_url' => $url,
+                        'created_at' => $time,
+                        'updated_at' => $time,
                     ];
                     Material::create($data);
-                }else{
-
-                    Material::where('id',$res->id)->update(['wechat_url'=>$url,'updated_at'=>$time]);
+                } else {
+                    Material::where('id', $res->id)->update(['wechat_url' => $url, 'updated_at' => $time]);
                 }
             }
         }
 
         return $c;
-
     }
 
-
     /**
-     * 获取远程素材列表.image,news,video
+     * 获取远程素材列表.image,news,video.
      */
-    public function getRemoteMaterialLists($type,$offset=0,$count=20,$app_id=null)
+    public function getRemoteMaterialLists($type, $offset = 0, $count = 20, $app_id = null)
     {
-        $return=[];
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $return = [];
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $url = self::$appUrl . "api/medias/lists?appid=" . $app_id;
+        $url = self::$appUrl.'api/medias/lists?appid='.$app_id;
 
-        $code=self::$code;
+        $code = self::$code;
 
-        $data['type']=$type;
+        $data['type'] = $type;
 
-        $data['offset']=$offset;
+        $data['offset'] = $offset;
 
-        $data['count']=$count;
+        $data['count'] = $count;
 
-        $res=wechat_platform()->wxCurl($url,$data);
+        $res = wechat_platform()->wxCurl($url, $data);
 
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
+
             return $return;
         }
-        if(isset($res->item)&&count($res->item)>0){
+        if (isset($res->item) && count($res->item) > 0) {
             return $res;
         }
+
         return $return;
     }
 
-
     /**
-     * 取得远程素材的数量image,news,video
+     * 取得远程素材的数量image,news,video.
      */
-    public function getRemoteMaterialCount($type='all',$app_id=null)
+    public function getRemoteMaterialCount($type = 'all', $app_id = null)
     {
-        $app_id=empty($app_id)?wechat_app_id():$app_id;
+        $app_id = empty($app_id) ? wechat_app_id() : $app_id;
 
-        $url = self::$appUrl . "api/medias/stats?appid=" . $app_id;
+        $url = self::$appUrl.'api/medias/stats?appid='.$app_id;
 
-        $code=self::$code;
+        $code = self::$code;
 
-        $res=wechat_platform()->wxCurl($url);
+        $res = wechat_platform()->wxCurl($url);
 
-        if(isset($res->errcode)&&$res->errcode!==0){
-            $return['errcode']=$res->errcode;
-            $return['errmsg']=isset($code[$res->errcode])?$code[$res->errcode]:$res->errmsg;
+        if (isset($res->errcode) && 0 !== $res->errcode) {
+            $return['errcode'] = $res->errcode;
+            $return['errmsg'] = isset($code[$res->errcode]) ? $code[$res->errcode] : $res->errmsg;
+
             return $return;
         }
 
-        $data= collect($res)->toArray();
+        $data = collect($res)->toArray();
 
-        if($type==='all'){
+        if ('all' === $type) {
             return $data;
-        }else{
-            $newtype=$type.'_count';
-            if(isset($data[$newtype])){
-                return $data[$newtype];
-            }
         }
+        $newtype = $type.'_count';
+        if (isset($data[$newtype])) {
+            return $data[$newtype];
+        }
+
         return '';
     }
 
     //--------------------------同步-------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * 获取本地存储素材id.
@@ -658,8 +609,4 @@ class MaterialService
     {
         return $this->materialRepository->getLocalMediaId($accountId, $mediaId);
     }
-
-
-
-
 }

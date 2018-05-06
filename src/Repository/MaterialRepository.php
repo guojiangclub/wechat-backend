@@ -1,15 +1,23 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
 use iBrand\Wechat\Backend\Models\Material;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-
 class MaterialRepository extends BaseRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -18,19 +26,21 @@ class MaterialRepository extends BaseRepository
         return Material::class;
     }
 
-
     /**
-     * 获取素材列表
+     * 获取素材列表.
+     *
      * @param $where
      * @param int $limit
      * @param $time
      * @param string $order_by
      * @param string $sort
+     *
      * @return mixed
      */
-    public function getMaterialPaginated($where, $limit = 50,$time=[], $order_by = 'id', $sort = 'desc')
+    public function getMaterialPaginated($where, $limit = 50, $time = [], $order_by = 'id', $sort = 'desc')
     {
-        $where['parent_id']=0;
+        $where['parent_id'] = 0;
+
         return $this->scopeQuery(function ($query) use ($where,$time) {
             if (is_array($where)) {
                 foreach ($where as $key => $value) {
@@ -58,26 +68,21 @@ class MaterialRepository extends BaseRepository
         })->paginate($limit);
     }
 
-
-
-
     //获取删除图文
-    public function DelArticleMaterial($media){
-        if($media->is_multi===0){
+    public function DelArticleMaterial($media)
+    {
+        if (0 === $media->is_multi) {
             $this->delete($media->id);
-        }else{
-            $resArr=$this->findWhere(['parent_id'=>$media->id])->pluck('id')->toArray();
-            foreach ($resArr as $item){
+        } else {
+            $resArr = $this->findWhere(['parent_id' => $media->id])->pluck('id')->toArray();
+            foreach ($resArr as $item) {
                 $this->delete($item);
             }
             $this->delete($media->id);
         }
+
         return true;
     }
-
-
-
-
 
     /**
      * mediaId获取访问资源Url.
@@ -95,6 +100,7 @@ class MaterialRepository extends BaseRepository
 
     /**
      * 通过 id 获取素材.
+     *
      * @param int $id 素材ID
      */
     public function getMediaById($id)
@@ -106,7 +112,6 @@ class MaterialRepository extends BaseRepository
      * 通过MediaId获取素材.
      *
      * @param string $mediaId 素材标识
-     *
      */
     public function getMaterialByMediaId($mediaId)
     {
@@ -217,7 +222,7 @@ class MaterialRepository extends BaseRepository
      *
      * @return string mediaId
      */
-    public function storeVoice($accountId,$data)
+    public function storeVoice($accountId, $data)
     {
         $model = new $this->model();
 
@@ -239,11 +244,12 @@ class MaterialRepository extends BaseRepository
      *
      * @param int    $accountId   公众号ID
      * @param string $resourceUrl 图片访问地址
-     * @param string $media_id 素材ＩＤ
-     * @param string $wechatUrl 微信ＵＲＬ地址
+     * @param string $media_id    素材ＩＤ
+     * @param string $wechatUrl   微信ＵＲＬ地址
+     *
      * @return Response
      */
-    public function storeImage($accountId, $resourceUrl,$media_id,$wechatUrl)
+    public function storeImage($accountId, $resourceUrl, $media_id, $wechatUrl)
     {
         $model = new $this->model();
 
@@ -264,11 +270,9 @@ class MaterialRepository extends BaseRepository
 
     /**
      * 存储视频素材.
-     *
      */
-    public function storeVideo($accountId,$data,$media_id='')
+    public function storeVideo($accountId, $data, $media_id = '')
     {
-
         $model = new $this->model();
 
         $model->type = 'video';
@@ -281,7 +285,9 @@ class MaterialRepository extends BaseRepository
 
         $model->account_id = $accountId;
 
-        if(empty($media_id)) $model->media_id = $media_id;
+        if (empty($media_id)) {
+            $model->media_id = $media_id;
+        }
 
         $model->save();
 
@@ -386,15 +392,13 @@ class MaterialRepository extends BaseRepository
         return $record ? $record->media_id : null;
     }
 
-
-
-//-----------------------------------存储图文------------------------------
+    //-----------------------------------存储图文------------------------------
 
     /**
      * 存储图文.
      */
-    public function storeArticle($accountId,$articles,$media_id)
-       {
+    public function storeArticle($accountId, $articles, $media_id)
+    {
         //判断多个与单个
         if (count($articles) >= 2) {
             return $this->storeMultiArticle(
@@ -402,30 +406,29 @@ class MaterialRepository extends BaseRepository
                 $articles,
                 $media_id
             );
-        } else {
-            return $this->storeSimpleArticle(
+        }
+
+        return $this->storeSimpleArticle(
                 $accountId,
                 array_shift($articles),
                 $media_id
             );
-        }
     }
 
     /**
      * 存储多图文素材.
-     *
      */
     private function storeMultiArticle(
         $accountId,
         $articles,
         $media_id
-       )
-    {
+       ) {
         $firstData = array_shift($articles);
-        $firstArticle = $this->savePost($media_id,$firstData,0,$accountId,1);
+        $firstArticle = $this->savePost($media_id, $firstData, 0, $accountId, 1);
         foreach ($articles as $article) {
-            $this->savePost($media_id,$article,$firstArticle->id,$accountId);
+            $this->savePost($media_id, $article, $firstArticle->id, $accountId);
         }
+
         return $firstArticle->id;
     }
 
@@ -436,53 +439,17 @@ class MaterialRepository extends BaseRepository
         $accountId,
         $article,
         $media_id
-)
-    {
-        $Article= $this->savePost($media_id,$article,0, $accountId);
+) {
+        $Article = $this->savePost($media_id, $article, 0, $accountId);
+
         return $Article->id;
     }
 
     /**
      * 保存 [针对于字段名称不统一
      */
-    private function savePost($media_id,$data,$parent_id,$account_id,$is_multi=0)
+    private function savePost($media_id, $data, $parent_id, $account_id, $is_multi = 0)
     {
-
-        $article=[];
-        $article['type'] = 'article';
-        $article['account_id'] = $account_id;
-        $article['parent_id']=$parent_id;
-        $article['title']=$data['title'];
-        $article['description']=$data['description'];
-        $article['author']=$data['author'];
-        $article['content']=$data['content'];
-        $article['cover_media_id']=$data['cover_media_id'];
-        $article['cover_url']=$data['img'];
-        $article['content_url']=$data['content_url'];
-        $article['show_cover_pic']=$data['show_cover'];
-        $article['is_multi']=$is_multi;
-        $article['media_id']=$media_id;
-        $res=$this->create($article);
-        return $res;
-
-//        if (isset($input['show_cover_pic'])) {
-//            $showCover = $input['show_cover_pic'];
-//        } else {
-//            $showCover = $input['show_cover'];
-//        }
-//
-//        if (isset($input['url'])) {
-//            $sourceUrl = $input['url'];
-//        } else {
-//            $sourceUrl = $input['source_url'];
-//        }
-
-    }
-
-
-    public function updatePost($media_id,$data,$parent_id,$account_id,$id,$is_multi=0)
-    {
-
         $article = [];
         $article['type'] = 'article';
         $article['account_id'] = $account_id;
@@ -497,9 +464,41 @@ class MaterialRepository extends BaseRepository
         $article['show_cover_pic'] = $data['show_cover'];
         $article['is_multi'] = $is_multi;
         $article['media_id'] = $media_id;
-        $res = $this->update($article,$id);
+        $res = $this->create($article);
+
         return $res;
+
+//        if (isset($input['show_cover_pic'])) {
+//            $showCover = $input['show_cover_pic'];
+//        } else {
+//            $showCover = $input['show_cover'];
+//        }
+//
+//        if (isset($input['url'])) {
+//            $sourceUrl = $input['url'];
+//        } else {
+//            $sourceUrl = $input['source_url'];
+//        }
     }
 
+    public function updatePost($media_id, $data, $parent_id, $account_id, $id, $is_multi = 0)
+    {
+        $article = [];
+        $article['type'] = 'article';
+        $article['account_id'] = $account_id;
+        $article['parent_id'] = $parent_id;
+        $article['title'] = $data['title'];
+        $article['description'] = $data['description'];
+        $article['author'] = $data['author'];
+        $article['content'] = $data['content'];
+        $article['cover_media_id'] = $data['cover_media_id'];
+        $article['cover_url'] = $data['img'];
+        $article['content_url'] = $data['content_url'];
+        $article['show_cover_pic'] = $data['show_cover'];
+        $article['is_multi'] = $is_multi;
+        $article['media_id'] = $media_id;
+        $res = $this->update($article, $id);
 
+        return $res;
+    }
 }

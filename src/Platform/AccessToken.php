@@ -1,9 +1,15 @@
 <?php
 
-namespace iBrand\Wechat\Backend\Platform;
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Arcanedev\LogViewer\Entities\Log;
-use GuzzleHttp\Client;
+namespace iBrand\Wechat\Backend\Platform;
 
 /**
  * 全局通用 AccessToken.
@@ -79,15 +85,16 @@ class AccessToken
 
         if ($forceRefresh || empty($cached)) {
             $token = $this->getTokenFromServer();
-            $expires_in=isset($token['expires_in'])?$token['expires_in']:2592000;
-            if(isset($token['access_token'])){
+            $expires_in = isset($token['expires_in']) ? $token['expires_in'] : 2592000;
+            if (isset($token['access_token'])) {
                 $this->cache->set($cacheKey, $token['access_token'], $expires_in - 800);
+
                 return $token['access_token'];
-            }else{
-                return '';
             }
 
+            return '';
         }
+
         return $cached;
     }
 
@@ -101,26 +108,26 @@ class AccessToken
     protected function getTokenFromServer()
     {
         $http = new Http();
-        $params = array(
+        $params = [
             'client_id' => $this->client_id,
             'client_secret' => $this->client_secret,
             'grant_type' => 'client_credentials',
-        );
+        ];
 
         $token = $http->post($this->getTokenUrl, $params, ['content-type:application/form-data']);
 
         return json_decode($token, true);
-
     }
 
-
     /**
-     * 从微信获取token
+     * 从微信获取token.
+     *
      * @param bool $forceRefresh
+     *
      * @return mixed|null
+     *
      * @throws \Exception
      */
-
     public function getTokenFromWx($forceRefresh = false)
     {
         $cacheKey = $this->cacheKey;
@@ -134,17 +141,18 @@ class AccessToken
 
             return $token['access_token'];
         }
+
         return $cached;
     }
 
     public function getTokenFromWxServer()
     {
         $http = new Http();
-        $params = array(
+        $params = [
             'grant_type' => 'client_credential',
             'appid' => $this->client_id,
-            'secret' => $this->client_secret
-        );
+            'secret' => $this->client_secret,
+        ];
 
         $token = $http->get($this->getTokenUrl, $params, ['content-type:application/form-data']);
 
@@ -152,9 +160,12 @@ class AccessToken
     }
 
     /**
-     * 从微信获取Ticket
+     * 从微信获取Ticket.
+     *
      * @param bool $forceRefresh
+     *
      * @return mixed|null
+     *
      * @throws \Exception
      */
     public function getTicketFromWx($forceRefresh = false)
@@ -170,20 +181,20 @@ class AccessToken
 
             return $ticket['ticket'];
         }
+
         return $cached;
     }
 
     public function getTicketFromWxServer()
     {
         $http = new Http();
-        $params = array(
+        $params = [
             'access_token' => $this->client_secret,
-            'type' => 'jsapi'
-        );
+            'type' => 'jsapi',
+        ];
 
         $ticket = $http->get($this->getTokenUrl, $params, ['content-type:application/form-data']);
 
         return json_decode($ticket, true);
     }
-
 }

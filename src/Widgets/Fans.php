@@ -1,9 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2017/1/25
- * Time: 16:15
+
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace iBrand\Wechat\Backend\Widgets;
@@ -11,11 +14,8 @@ namespace iBrand\Wechat\Backend\Widgets;
 use Arrilot\Widgets\AbstractWidget;
 use iBrand\Wechat\Backend\Repository\FanRepository;
 
-
-
 class Fans extends AbstractWidget
 {
-
     /**
      * The configuration array.
      *
@@ -29,8 +29,6 @@ class Fans extends AbstractWidget
      */
     public function run(FanRepository $fans)
     {
-
-        return view("Wechat::widgets.fans.index");
-
+        return view('Wechat::widgets.fans.index');
     }
 }

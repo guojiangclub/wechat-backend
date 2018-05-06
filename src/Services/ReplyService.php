@@ -1,14 +1,21 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Services;
 
-use iBrand\Wechat\Backend\Services\EventService;
-use iBrand\Wechat\Backend\Repository\ReplyRepository;
 use Cache;
+use iBrand\Wechat\Backend\Repository\ReplyRepository;
 
 /**
  * 回复服务.
- *
  */
 class ReplyService
 {
@@ -21,7 +28,6 @@ class ReplyService
 
     /**
      * replyRepository.
-     *
      */
     private $replyRepository;
 
@@ -34,6 +40,7 @@ class ReplyService
 
     /**
      * 解析一个事件回复.
+     *
      * @return array
      */
     public function resolveReply($reply)
@@ -41,7 +48,6 @@ class ReplyService
         $eventService = $this->eventService;
 
         $reply['content'] = array_map(function ($eventId) use ($eventService) {
-
             return $eventService->eventToMaterial($eventId);
         }, $reply['content']);
 

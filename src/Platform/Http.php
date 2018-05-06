@@ -1,9 +1,17 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Platform;
 
 use iBrand\Wechat\Backend\Platform\Utils\Http as HttpClient;
-
 
 /**
  * @method mixed jsonPost($url, $params = array(), $options = array())
@@ -18,7 +26,7 @@ class Http extends HttpClient
     const PUT = 'PUT';
     const PATCH = 'PATCH';
     const DELETE = 'DELETE';
-    
+
     /**
      * token.
      *
@@ -61,7 +69,6 @@ class Http extends HttpClient
         $this->token = $token;
     }
 
-
     /**
      * Make a HTTP GET request.
      *
@@ -71,7 +78,7 @@ class Http extends HttpClient
      *
      * @return array
      */
-    public function get($url, $params = array(), $options = array())
+    public function get($url, $params = [], $options = [])
     {
         return $this->request($url, self::GET, $params, $options);
     }
@@ -85,10 +92,9 @@ class Http extends HttpClient
      *
      * @return array
      */
-    public function post($url, $params = array(), $options = array())
+    public function post($url, $params = [], $options = [])
     {
         return $this->request($url, self::POST, $params, $options);
-
     }
 
     /**
@@ -100,7 +106,7 @@ class Http extends HttpClient
      *
      * @return array
      */
-    public function put($url, $params = array(), $options = array())
+    public function put($url, $params = [], $options = [])
     {
         return $this->request($url, self::PUT, $params, $options);
     }
@@ -114,7 +120,7 @@ class Http extends HttpClient
      *
      * @return array
      */
-    public function patch($url, $params = array(), $options = array())
+    public function patch($url, $params = [], $options = [])
     {
         return $this->request($url, self::PATCH, $params, $options);
     }
@@ -128,12 +134,11 @@ class Http extends HttpClient
      *
      * @return array
      */
-    public function delete($url, $params = array(), $options = array())
+    public function delete($url, $params = [], $options = [])
     {
         return $this->request($url, self::DELETE, $params, $options);
     }
-    
-    
+
     /**
      * 发起一个HTTP/HTTPS的请求
      *
@@ -145,7 +150,7 @@ class Http extends HttpClient
      *
      * @return array | boolean
      */
-    public function request($url, $method = self::GET, $params = array(), $options = array(), $retry = 1)
+    public function request($url, $method = self::GET, $params = [], $options = [], $retry = 1)
     {
         if ($this->token) {
             // clear repeat token
@@ -161,7 +166,7 @@ class Http extends HttpClient
 
         /*$options[] = 'Authorization:Bearer ' . $this->token->getToken();*/
 
-        $response = parent::request($url, $method, $params, $options);       
+        $response = parent::request($url, $method, $params, $options);
 
         return $response;
     }
@@ -176,12 +181,12 @@ class Http extends HttpClient
      */
     public function __call($method, $args)
     {
-        if (stripos($method, 'json') === 0) {
+        if (0 === stripos($method, 'json')) {
             $method = strtolower(substr($method, 4));
             $this->json = true;
         }
 
-        $result = call_user_func_array(array($this, $method), $args);
+        $result = call_user_func_array([$this, $method], $args);
 
         return $result;
     }

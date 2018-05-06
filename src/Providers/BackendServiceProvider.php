@@ -1,23 +1,31 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Providers;
 
+use Event;
 use iBrand\Wechat\Backend\Http\Middleware\AccountRequestMiddleware;
+use iBrand\Wechat\Backend\Services\AccountService;
+use iBrand\Wechat\Backend\Services\CardService;
+use iBrand\Wechat\Backend\Services\CouponService;
+use iBrand\Wechat\Backend\Services\FanService;
+use iBrand\Wechat\Backend\Services\MaterialService;
+use iBrand\Wechat\Backend\Services\MenuService;
+use iBrand\Wechat\Backend\Services\MessageService;
+use iBrand\Wechat\Backend\Services\NoticeService;
 use iBrand\Wechat\Backend\Services\PlatformService;
+use iBrand\Wechat\Backend\Services\QRCodeService;
+use iBrand\Wechat\Backend\WechatBackend;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use iBrand\Wechat\Backend\Services\MaterialService;
-use iBrand\Wechat\Backend\Services\AccountService;
-use iBrand\Wechat\Backend\Services\MessageService;
-use iBrand\Wechat\Backend\Services\MenuService;
-use iBrand\Wechat\Backend\Composers\WechatComposer;
-use iBrand\Wechat\Backend\Services\NoticeService;
-use iBrand\Wechat\Backend\Services\CardService;
-use iBrand\Wechat\Backend\Services\FanService;
-use iBrand\Wechat\Backend\Services\QRCodeService;
-use iBrand\Wechat\Backend\Services\CouponService;
-use Illuminate\Support\Fluent;
-use Event;
 
 class BackendServiceProvider extends ServiceProvider
 {
@@ -27,7 +35,7 @@ class BackendServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
-        'iBrand\Wechat\Backend\Listeners\WeChatLoginEventListener',
+        /*'iBrand\Wechat\Backend\Listeners\WeChatLoginEventListener',*/
     ];
 
     /**
@@ -41,8 +49,6 @@ class BackendServiceProvider extends ServiceProvider
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -50,27 +56,27 @@ class BackendServiceProvider extends ServiceProvider
             $this->mapWebRoutes();
         }
 
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'wechat-backend');
+        WechatBackend::boot();
 
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'wechat-backend');
 
         //publish a config file
         $this->publishes([
-            __DIR__ . '/../../config/backendwechat.php' => config_path('backend-wechat.php'),
+            __DIR__.'/../../config/backendwechat.php' => config_path('backend-wechat.php'),
         ], 'backend-wechat-config');
 
         //publish a config file
         $this->publishes([
-            __DIR__ . '/../../config/material.php' => config_path('wechat-material.php'),
+            __DIR__.'/../../config/material.php' => config_path('wechat-material.php'),
         ], 'wechat-material-config');
 
         $this->publishes([
-            __DIR__ . '/../../config/wechat-error-code.php' => config_path('wechat-error-code.php'),
+            __DIR__.'/../../config/wechat-error-code.php' => config_path('wechat-error-code.php'),
         ], 'wechat-error-code-config');
 
         if ($this->app->runningInConsole()) {
-
             $this->publishes([
-                __DIR__ . '/../../resources/assets' => public_path('assets/wechat-backend'),
+                __DIR__.'/../../resources/assets' => public_path('assets/wechat-backend'),
             ], 'wechat-backend-assets');
 
             $this->registerMigrations();
@@ -89,16 +95,11 @@ class BackendServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     *
-     */
     public function register()
     {
-
         $this->mergeConfigFrom($this->configPath(), 'backendwechat');
 
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'Wechat');
-
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'Wechat');
 
         //注册服务
         $this->app->singleton('AccountService', function ($app) {
@@ -125,7 +126,6 @@ class BackendServiceProvider extends ServiceProvider
             return new NoticeService();
         });
 
-
         $this->app[\Illuminate\Routing\Router::class]->aliasMiddleware('wechat_account', AccountRequestMiddleware::class);
 
         $this->app->singleton('CardService', function ($app) {
@@ -147,15 +147,12 @@ class BackendServiceProvider extends ServiceProvider
         $this->app->singleton('QRCodeService', function ($app) {
             return new QRCodeService();
         });
-
     }
 
     /**
      * Define the "web" routes for the application.
      *
      * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
      */
     protected function mapWebRoutes()
     {
@@ -163,8 +160,8 @@ class BackendServiceProvider extends ServiceProvider
 //            'middleware' => 'web',
             'namespace' => $this->namespace,
         ], function ($router) {
-            require __DIR__ . '/../Http/routes.php';
-            require __DIR__ . '/../Http/api.php';
+            require __DIR__.'/../Http/routes.php';
+            require __DIR__.'/../Http/api.php';
         });
     }
 
@@ -175,19 +172,16 @@ class BackendServiceProvider extends ServiceProvider
        });
     }*/
 
-
     /**
-     * 数据迁移
+     * 数据迁移.
      */
     protected function registerMigrations()
     {
-        return $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
+        return $this->loadMigrationsFrom(__DIR__.'/../../migrations');
     }
 
     protected function configPath()
     {
-        return __DIR__ . '/../../config/backendwechat.php';
+        return __DIR__.'/../../config/backendwechat.php';
     }
-
-
 }

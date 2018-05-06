@@ -1,22 +1,26 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
-use Illuminate\Container\Container as Application;
 use iBrand\Wechat\Backend\Models\Menu;
 use Prettus\Repository\Eloquent\BaseRepository;
-use iBrand\Wechat\Backend\Repository\EventRepository;
-use iBrand\Wechat\Backend\Repository\MaterialRepository;
-
 
 /**
  * Menu Repository.
  */
-
 class MenuRepository extends BaseRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,25 +30,25 @@ class MenuRepository extends BaseRepository
     }
 
     /**
-     * eventRepository
+     * eventRepository.
      *
      * @var EventRepository
      */
-     protected $eventRepository;
+    protected $eventRepository;
 
     /**
-     * materialRepository
+     * materialRepository.
      *
      * @var MaterialRepository
      */
     protected $materialRepository;
 
-
-    Static Public function unlimitedForLayer ($cate, $name = 'child', $pid = 0) {
-        $arr = array();
-        if(count($cate)>0){
+    public static function unlimitedForLayer($cate, $name = 'child', $pid = 0)
+    {
+        $arr = [];
+        if (count($cate) > 0) {
             foreach ($cate as $v) {
-                if(isset($v['parent_id'])){
+                if (isset($v['parent_id'])) {
                     if ($v['parent_id'] == $pid) {
                         $v[$name] = self::unlimitedForLayer($cate, $name, $v['id']);
                         $arr[] = $v;
@@ -56,39 +60,39 @@ class MenuRepository extends BaseRepository
         return $arr;
     }
 
-   /**
-     * 取得菜单通过AccountId
+    /**
+     * 取得菜单通过AccountId.
      *
-    * @return array
-    */
-   public function getByAccountId($accountId)
-   {
-       $menusArr=[];
-       $menus=$this->model->where('account_id', $accountId)->get()->toArray();
-      if(count($menus)>0){
-          $newMenus=$this->unlimitedForLayer($menus,$name = 'child', $pid = 0);
-          $newMenus=collect($newMenus)->sortByDesc('sort');
-          foreach ($newMenus as $k=>$item){
-              $menusArr[$k]=$item;
-              if(isset($item['child'])&&count($item['child'])>0){
-                  $menusArr[$k]['child']=collect($item['child'])->sortByDesc('sort');
-              }
-          }
-          $menusArr=collect($menusArr);
-      }
-      return  $menusArr;
-   }
+     * @return array
+     */
+    public function getByAccountId($accountId)
+    {
+        $menusArr = [];
+        $menus = $this->model->where('account_id', $accountId)->get()->toArray();
+        if (count($menus) > 0) {
+            $newMenus = $this->unlimitedForLayer($menus, $name = 'child', $pid = 0);
+            $newMenus = collect($newMenus)->sortByDesc('sort');
+            foreach ($newMenus as $k => $item) {
+                $menusArr[$k] = $item;
+                if (isset($item['child']) && count($item['child']) > 0) {
+                    $menusArr[$k]['child'] = collect($item['child'])->sortByDesc('sort');
+                }
+            }
+            $menusArr = collect($menusArr);
+        }
 
-
-   public function getFirstMenuNumber($accountId){
-       return $this->model->where(['account_id'=>$accountId,'parent_id'=>0])->count();
-   }
-
-
-    public function getTwoMenuNumber($accountId,$pid){
-        return $this->model->where(['account_id'=>$accountId,'parent_id'=>$pid])->count();
+        return  $menusArr;
     }
 
+    public function getFirstMenuNumber($accountId)
+    {
+        return $this->model->where(['account_id' => $accountId, 'parent_id' => 0])->count();
+    }
+
+    public function getTwoMenuNumber($accountId, $pid)
+    {
+        return $this->model->where(['account_id' => $accountId, 'parent_id' => $pid])->count();
+    }
 
     /**
      * 一次存储所有菜单.
@@ -118,8 +122,6 @@ class MenuRepository extends BaseRepository
         }
     }
 
-
-
     /**
      * 解析菜单数据.
      *
@@ -138,14 +140,10 @@ class MenuRepository extends BaseRepository
             }
 
             return $menu;
-
         }, $menus);
 
         return $menus;
     }
-
-
-
 
     /**
      * 生成菜单中的事件.
@@ -157,13 +155,13 @@ class MenuRepository extends BaseRepository
      */
     private function makeMenuEvent($accountId, $menu)
     {
-        if ($menu['type'] == 'text') {
+        if ('text' == $menu['type']) {
             $menu['type'] = 'click';
             $menu['key'] = $this->eventRepository->storeTextEvent($accountId, $menu['value']);
-        } elseif ($menu['type'] == 'media') {
+        } elseif ('media' == $menu['type']) {
             $menu['type'] = 'click';
             $menu['key'] = $this->eventRepository->storeMaterialEvent($accountId, $menu['value']);
-        } elseif ($menu['type'] == 'view') {
+        } elseif ('view' == $menu['type']) {
             $menu['key'] = $menu['value'];
         } else {
             $menu['key'] = $menu['value'];
@@ -173,7 +171,7 @@ class MenuRepository extends BaseRepository
 
         return $menu;
     }
-//
+
     /**
      * 获取菜单中的素材具体信息.
      *
@@ -184,7 +182,6 @@ class MenuRepository extends BaseRepository
     public function withMaterials($menus)
     {
         return array_map(function ($menu) {
-
             $mediaId = $this->eventRepository->getEventByKey($menu['key'])->value;
 
             $menu['material'] = $this->materialRepository->getMaterialByMediaId($mediaId);
@@ -203,11 +200,9 @@ class MenuRepository extends BaseRepository
         $menus = $this->all($accountId);
 
         array_map(function ($menu) {
-
-            if ($menu['type'] == 'click') {
+            if ('click' == $menu['type']) {
                 $this->eventRepository->distoryByEventKey($menu['key']);
             }
-
         }, $menus);
 
         $this->model->where('account_id', $accountId)->delete();
@@ -224,10 +219,10 @@ class MenuRepository extends BaseRepository
     }
 
     public function savePost($menu, $input)
-   {
-       $menu->fill($input);
-       $menu->save();
+    {
+        $menu->fill($input);
+        $menu->save();
 
-       return $menu;
+        return $menu;
     }
 }

@@ -1,21 +1,27 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
-
-use Illuminate\Container\Container as Application;
 use iBrand\Wechat\Backend\Models\Reply;
+use Illuminate\Container\Container as Application;
 use Prettus\Repository\Eloquent\BaseRepository;
-use iBrand\Wechat\Backend\Repository\EventRepository;
 
 /**
  * Reply Repository.
  */
 class ReplyRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,17 +32,17 @@ class ReplyRepository extends BaseRepository
 
     /**
      * eventRepository.
-     *
      */
     private $eventRepository;
 
     /**
      * construct.
+     *
      * @param EventRepository $eventRepository eventRepository
      */
     public function __construct(EventRepository $eventRepository)
     {
-        parent::__construct(new Application);
+        parent::__construct(new Application());
         $this->eventRepository = $eventRepository;
     }
 
@@ -92,7 +98,7 @@ class ReplyRepository extends BaseRepository
     /**
      * 保存事件自动回复.
      *
-     * @param int                                  $accountId accountId
+     * @param int $accountId accountId
      */
     public function saveEventReply($request, $accountId)
     {
@@ -110,7 +116,7 @@ class ReplyRepository extends BaseRepository
 
         if (!$model) {
             $eventId = $this->saveReplyToEvent($replyType, $replyContent, $accountId);
-            $input['content'] = array($eventId);
+            $input['content'] = [$eventId];
             $input['account_id'] = $accountId;
             $model = new $this->model();
         } else {
@@ -159,11 +165,11 @@ class ReplyRepository extends BaseRepository
         $eventRepository = $this->eventRepository;
 
         $eventId = array_map(function ($reply) use ($eventRepository, $accountId) {
-            if ($reply['type'] == 'text') {
+            if ('text' == $reply['type']) {
                 return $eventRepository->storeText($reply['content'], $accountId);
-            } else {
-                return $eventRepository->storeMaterial($reply['content'], $accountId);
             }
+
+            return $eventRepository->storeMaterial($reply['content'], $accountId);
         }, $replies);
 
         return $eventId;
@@ -180,7 +186,7 @@ class ReplyRepository extends BaseRepository
      */
     private function saveReplyToEvent($replyType, $content, $accountId)
     {
-        if ($replyType == 'text') {
+        if ('text' == $replyType) {
             $eventId = $this->eventRepository->storeText($content, $accountId);
         } else {
             $eventId = $this->eventRepository->storeMaterial($content, $accountId);
@@ -200,7 +206,7 @@ class ReplyRepository extends BaseRepository
     {
         $event = $this->eventRepository->getEventByKey($eventKey);
 
-        if ($replyType == 'text') {
+        if ('text' == $replyType) {
             $this->eventRepository->updateToText($eventKey, $content);
         } else {
             $this->eventRepository->updateToMaterial($eventKey, $content);
@@ -241,9 +247,7 @@ class ReplyRepository extends BaseRepository
         $eventRepository = $this->eventRepository;
 
         return array_map(function ($eventId) use ($eventRepository) {
-
             return $eventRepository->distoryByEventId($eventId);
-
         }, $eventIds);
     }
 

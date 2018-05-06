@@ -1,19 +1,24 @@
 <?php
+
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Http\Controllers;
 
-use iBrand\Wechat\Backend\Services\AccountService;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use iBrand\Wechat\Backend\Repository\MaterialRepository;
 use Exception;
 use iBrand\Wechat\Backend\Facades\MaterialService;
-
-
-
+use iBrand\Wechat\Backend\Repository\MaterialRepository;
+use Illuminate\Http\Request;
 
 class UploadController extends Controller
 {
-
     /**
      * 识别 key.
      */
@@ -23,17 +28,13 @@ class UploadController extends Controller
 
     /**
      * UploadController constructor.
+     *
      * @param MaterialRepository $materialRepository
      */
     public function __construct(MaterialRepository $materialRepository)
     {
-        $this->materialRepository =$materialRepository;
-
+        $this->materialRepository = $materialRepository;
     }
-
-
-
-    
 
     /**
      * 上传文件.
@@ -42,7 +43,6 @@ class UploadController extends Controller
      */
     public function index(Request $request)
     {
-
         $file = $request->file('file');
 
         if (!$file->getMimeType()) {
@@ -58,14 +58,14 @@ class UploadController extends Controller
         $type = $file->getMimeType();
 
         // 后加代码
-        if(preg_match("/^image/",$type)){
-             $type="image";
-             $mime = 'image/'.$extension;
-        }elseif (preg_match("/^video/",$type)){
-            $type="video";
+        if (preg_match('/^image/', $type)) {
+            $type = 'image';
+            $mime = 'image/'.$extension;
+        } elseif (preg_match('/^video/', $type)) {
+            $type = 'video';
             $mime = 'video/'.$extension;
-        }elseif (preg_match("/^audio/",$type)){
-            $type="audio";
+        } elseif (preg_match('/^audio/', $type)) {
+            $type = 'audio';
             $mime = 'audio/'.$extension;
         }
 
@@ -83,7 +83,6 @@ class UploadController extends Controller
 
         $dir = config('wechat-material.'.$type.'.storage_path');
 
-
         is_dir($dir) || mkdir($dir, 0755, true);
 
         if (!file_exists($dir.$filename)) {
@@ -95,7 +94,7 @@ class UploadController extends Controller
         }
 
         if ('video' == $type) {
-            return $this->saveVoiceMaterial($filename,$originalName);
+            return $this->saveVoiceMaterial($filename, $originalName);
         }
 
         $response = [
@@ -144,8 +143,6 @@ class UploadController extends Controller
         return $ext;
     }
 
-
-
     /**
      * 保存图片到素材.
      *
@@ -157,19 +154,16 @@ class UploadController extends Controller
     {
         $resourceUrl = config('app.url').'/storage'.config('wechat-material.image.prefix').'/'.$imagePath;
 
-        $Path=base_path().'/storage/app/public'.config('wechat-material.image.prefix').'/'.$imagePath;
+        $Path = base_path().'/storage/app/public'.config('wechat-material.image.prefix').'/'.$imagePath;
 
         $account_id = wechat_id();
 
-        $image=json_decode(MaterialService::postRemoteImage($Path));
+        $image = json_decode(MaterialService::postRemoteImage($Path));
 
-        if(!empty($image->url)&&!empty($image->media_id)){
-            return $this->materialRepository->storeImage($account_id, $resourceUrl,$image->media_id,$image->url);
+        if (!empty($image->url) && !empty($image->media_id)) {
+            return $this->materialRepository->storeImage($account_id, $resourceUrl, $image->media_id, $image->url);
         }
-
     }
-
-
 
     /**
      * 保存视频到素材.
@@ -178,27 +172,26 @@ class UploadController extends Controller
      *
      * @return Response
      */
-    protected function saveVoiceMaterial($voicePath,$originalName)
+    protected function saveVoiceMaterial($voicePath, $originalName)
     {
-
         $resourceUrl = config('app.url').'/storage'.config('wechat-material.video.prefix').'/'.$voicePath;
 
-        $Path=base_path().'/storage/app/public'.config('wechat-material.video.prefix').'/'.$voicePath;
-
+        $Path = base_path().'/storage/app/public'.config('wechat-material.video.prefix').'/'.$voicePath;
 
         $account_id = wechat_id();
 
-        $data=['title'=>'','description'=>'','url'=>$resourceUrl];
+        $data = ['title' => '', 'description' => '', 'url' => $resourceUrl];
 
-        $voice=$this->materialRepository->storeVideo($account_id,$data);
+        $voice = $this->materialRepository->storeVideo($account_id, $data);
 
         $response = [
-            'name' =>$originalName,
+            'name' => $originalName,
             'url' => $resourceUrl,
-            'filename'=>$voicePath,
-            'id'=>$voice->id,
+            'filename' => $voicePath,
+            'id' => $voice->id,
             'state' => 'SUCCESS',
         ];
+
         return json_encode($response);
 
 //        $voice=json_decode(MaterialService::postRemoteVideo($Path, $data));
@@ -206,27 +199,5 @@ class UploadController extends Controller
 //        if(!empty($voice->media_id)){
 //            return $this->materialRepository->storeVideo($account_id,$data,$voice->media_id);
 //        }
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

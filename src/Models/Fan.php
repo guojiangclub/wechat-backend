@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,10 +17,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Fan extends Model
 {
     // use SoftDeletes;
-   
+
     protected $table = 'we_fans';
     protected $guarded = ['id'];
-
 
     /**
      * 用于表单验证时的字段名称提示.
@@ -44,7 +52,6 @@ class Fan extends Model
         return $this->province.' '.$this->city;
     }
 
-
 //    public function FansGroup()
 //    {
 //        return $this->hasMany('iBrand\Wechat\Backend\Models\FanGroup', 'group_id','group_id');
@@ -52,9 +59,6 @@ class Fan extends Model
 
     public function User()
     {
-        return $this->hasOne('iBrand\Component\User\Models\User', 'id','user_id');
+        return $this->hasOne('iBrand\Component\User\Models\User', 'id', 'user_id');
     }
-
-
-
 }

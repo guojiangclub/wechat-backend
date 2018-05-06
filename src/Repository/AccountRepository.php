@@ -1,23 +1,29 @@
 <?php
 
+/*
+ * This file is part of ibrand/wechat-backend.
+ *
+ * (c) iBrand <https://www.ibrand.cc>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace iBrand\Wechat\Backend\Repository;
 
-use App\Exceptions;
+use iBrand\Wechat\Backend\Facades\AccountService;
 use iBrand\Wechat\Backend\Models\Account;
 use Illuminate\Container\Container as Application;
-use Session;
 use Prettus\Repository\Eloquent\BaseRepository;
-use iBrand\Wechat\Backend\Facades\AccountService;
+use Session;
 
-use iBrand\Wechat\Backend\Repository\MaterialRepository;
 /**
  * Account Repository.
  */
 class AccountRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,39 +32,41 @@ class AccountRepository extends BaseRepository
         return Account::class;
     }
 
-
     public function __construct()
     {
-        parent::__construct(new Application);
-
+        parent::__construct(new Application());
     }
 
-
     /**
-     *创建微信公众号
+     *创建微信公众号.
+     *
      * @param $input
+     *
      * @return mixed
      */
-    public function createAccount($input){
+    public function createAccount($input)
+    {
         return $this->create([
-            'name' =>$input['name'],
+            'name' => $input['name'],
             'original_id' => $input['original_id'],
-            'wechat_account' =>$input['wechat_account'],
-            'app_id'=>$input['app_id'],
-            'app_secret'=>$input['app_secret'],
+            'wechat_account' => $input['wechat_account'],
+            'app_id' => $input['app_id'],
+            'app_secret' => $input['app_secret'],
             'account_type' => $input['account_type'],
-            'tag'=>AccountService::buildTag(),
-            'token'=>AccountService::buildToken(),
-            'aes_key'=>AccountService::buildAesKey(),
+            'tag' => AccountService::buildTag(),
+            'token' => AccountService::buildToken(),
+            'aes_key' => AccountService::buildAesKey(),
         ]);
     }
 
     /**
-     * 获取公众号列表
+     * 获取公众号列表.
+     *
      * @param $where
-     * @param int $limit
+     * @param int    $limit
      * @param string $order_by
      * @param string $sort
+     *
      * @return mixed
      */
     public function getAccountPaginated($where, $limit = 50, $order_by = 'id', $sort = 'desc')
@@ -74,32 +82,39 @@ class AccountRepository extends BaseRepository
                     }
                 }
             }
+
             return $query->orderBy('updated_at', 'desc');
         })->paginate($limit);
     }
 
     /**
-     *通过ID获取公众号
+     *通过ID获取公众号.
+     *
      * @param $id
+     *
      * @return mixed
+     *
      * @throws Exception
      */
-    public function findOrThrowException($id){
-        $account=$this->findByField('id',$id)->first();
-        if(!is_null($account)) {
+    public function findOrThrowException($id)
+    {
+        $account = $this->findByField('id', $id)->first();
+        if (!is_null($account)) {
             return $account;
         }
-        throw new Exception("The account does not exist");
+        throw new Exception('The account does not exist');
     }
 
     /**
      * 根据tag获取公众号.
+     *
      * @param $tag
+     *
      * @return mixed
      */
     public function getAccountByTag($tag)
     {
-        return $this->findByField('tag',$tag)->first();
+        return $this->findByField('tag', $tag)->first();
     }
 
     /**
@@ -112,14 +127,17 @@ class AccountRepository extends BaseRepository
         Session::put('account_id', $id);
     }
 
-
     /**
-     * 删除公众号
+     * 删除公众号.
+     *
      * @param $id
+     *
      * @return int
      */
-    public function destroy($id){
-       $account= $this->findOrThrowException($id);
+    public function destroy($id)
+    {
+        $account = $this->findOrThrowException($id);
+
         return $this->delete($id);
     }
 
@@ -128,83 +146,68 @@ class AccountRepository extends BaseRepository
 //        return $this->model();
 //    }
 
-
-
-    public function createAccountByAppID($data){
-        $appIDs=[];
-        if(count($data)>0){
-            foreach ($data as $key=>$item){
-                $main=0;
-                if($item->appid==settings('wechat_app_id')){
-                    $main=1;
+    public function createAccountByAppID($data)
+    {
+        $appIDs = [];
+        if (count($data) > 0) {
+            foreach ($data as $key => $item) {
+                $main = 0;
+                if ($item->appid == settings('wechat_app_id')) {
+                    $main = 1;
                 }
-                if($account=$this->findByField(['app_id'=>$item->appid])->first()){
-                    if(empty($account->name)||empty($account->account_type)){
+                if ($account = $this->findByField(['app_id' => $item->appid])->first()) {
+                    if (empty($account->name) || empty($account->account_type)) {
                         $this->update(
-                            ['name'=>isset($item->nick_name)?$item->nick_name:''
-                            ,'original_id'=>isset($item->user_name)?$item->user_name:'',
-                            'account_type'=>isset($item->service_type_info)?$item->service_type_info:2,
-                             'verify_type_info'=>isset($item->verify_type_info)?$item->verify_type_info:0,
-                           'main'=>$main]
-                            ,$account->id);
+                            ['name' => isset($item->nick_name) ? $item->nick_name : '', 'original_id' => isset($item->user_name) ? $item->user_name : '',
+                            'account_type' => isset($item->service_type_info) ? $item->service_type_info : 2,
+                             'verify_type_info' => isset($item->verify_type_info) ? $item->verify_type_info : 0,
+                           'main' => $main, ], $account->id);
                     }
-                }else{
+                } else {
                     $this->create(
-                        ['app_id'=>isset($item->appid)?$item->appid:'',
-                            'main'=>$main,
-                            'name'=>isset($item->nick_name)?$item->nick_name:'',
-                            'original_id'=>isset($item->user_name)?$item->user_name:'',
-                            'verify_type_info'=>isset($item->verify_type_info)?$item->verify_type_info:0,
-                            'account_type'=>isset($item->service_type_info)?$item->service_type_info:2]);
+                        ['app_id' => isset($item->appid) ? $item->appid : '',
+                            'main' => $main,
+                            'name' => isset($item->nick_name) ? $item->nick_name : '',
+                            'original_id' => isset($item->user_name) ? $item->user_name : '',
+                            'verify_type_info' => isset($item->verify_type_info) ? $item->verify_type_info : 0,
+                            'account_type' => isset($item->service_type_info) ? $item->service_type_info : 2, ]);
                 }
 
-                $appIDs[$key]=$item->appid;
+                $appIDs[$key] = $item->appid;
             }
-
         }
 
-        return $this->findWhereIn('app_id',$appIDs);
+        return $this->findWhereIn('app_id', $appIDs);
     }
 
     // 获取主账号
-    public function getAccountMain(){
-        return $this->findByField('main',1)->first();
+    public function getAccountMain()
+    {
+        return $this->findByField('main', 1)->first();
     }
 
+    public function updateAccount($data, $id)
+    {
+        if (count($data > 0)) {
+            $app_id = Account::find($id)->app_id;
 
+            $main = $this->getAccountMain();
 
+            if (!$main and 1 == $data['main']) {
+                settings()->setSetting(['wechat_app_id' => $app_id]);
+            }
+            if ($main and 1 == $data['main'] and $main->id != $id) {
+                settings()->setSetting(['wechat_app_id' => $app_id]);
+                $this->update(['main' => 0], $main->id);
+            }
 
-    public function updateAccount($data,$id){
+            if (0 == $data['main'] and $main and $main->id == $id) {
+                settings()->setSetting(['wechat_app_id' => '']);
+            }
 
-        if(count($data>0)){
-
-                $app_id= Account::find($id)->app_id;
-
-                $main=$this->getAccountMain();
-
-                if(!$main AND $data['main']==1){
-                    settings()->setSetting(['wechat_app_id'=>$app_id]);
-
-                }
-                if($main AND $data['main']==1 AND $main->id!=$id){
-                    settings()->setSetting(['wechat_app_id'=>$app_id]);
-                    $this->update(['main'=>0],$main->id);
-                }
-
-                if($data['main']==0 AND $main AND $main->id==$id){
-                    settings()->setSetting(['wechat_app_id'=>'']);
-                }
-
-           return $this->update($data,$id);
-
+            return $this->update($data, $id);
         }
+
         return false;
     }
-
-
-
-
-
-
-
 }
