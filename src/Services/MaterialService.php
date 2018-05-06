@@ -47,7 +47,7 @@ class MaterialService
     public function __construct()
     {
         self::$appUrl = settings('wechat_api_url');
-        self::$code = config('wechat-error-code');
+        self::$code = config('ibrand.wechat-error-code');
     }
 
     /**
@@ -493,7 +493,7 @@ class MaterialService
     {
 //        $dateDir = date('Ym').'/';
         $dateDir = '';
-        $dir = config('wechat-material.image.storage_path').$dateDir;
+        $dir = config('ibrand.wechat-material.image.storage_path').$dateDir;
 
         is_dir($dir) || mkdir($dir, 0755, true);
 

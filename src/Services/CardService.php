@@ -24,7 +24,7 @@ class CardService
     public function __construct()
     {
         self::$appUrl = settings('wechat_api_url');
-        self::$code = config('wechat-error-code');
+        self::$code = config('ibrand.wechat-error-code');
     }
 
 //    创建会员卡

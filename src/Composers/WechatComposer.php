@@ -50,12 +50,10 @@ class WechatComposer
      */
     public function compose(View $view)
     {
-        //        $menus = $this->request->is('admin/account*') ? config('menu.account') : config('menu.func');
         $global = new Fluent();
         $global->user = Auth::user();
-//        $global->menus = $menus;
         $global->current_account = app('AccountService');
-        $global->accounts = $this->accountRepository->getAccountPaginated([]);
+        /*$global->accounts = $this->accountRepository->getAccountPaginated([]);*/
         $view->with('global', $global);
     }
 }

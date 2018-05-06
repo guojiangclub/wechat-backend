@@ -62,17 +62,12 @@ class BackendServiceProvider extends ServiceProvider
 
         //publish a config file
         $this->publishes([
-            __DIR__.'/../../config/backendwechat.php' => config_path('backend-wechat.php'),
-        ], 'backend-wechat-config');
-
-        //publish a config file
-        $this->publishes([
-            __DIR__.'/../../config/material.php' => config_path('wechat-material.php'),
-        ], 'wechat-material-config');
+            __DIR__.'/../../config/material.php' => config_path('ibrand/wechat-material.php'),
+        ], 'config');
 
         $this->publishes([
-            __DIR__.'/../../config/wechat-error-code.php' => config_path('wechat-error-code.php'),
-        ], 'wechat-error-code-config');
+            __DIR__.'/../../config/wechat-error-code.php' => config_path('ibrand/wechat-error-code.php'),
+        ], 'config');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -97,7 +92,6 @@ class BackendServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->mergeConfigFrom($this->configPath(), 'backendwechat');
 
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'Wechat');
 
@@ -178,10 +172,5 @@ class BackendServiceProvider extends ServiceProvider
     protected function registerMigrations()
     {
         return $this->loadMigrationsFrom(__DIR__.'/../../migrations');
-    }
-
-    protected function configPath()
-    {
-        return __DIR__.'/../../config/backendwechat.php';
     }
 }

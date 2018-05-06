@@ -85,7 +85,7 @@ class UploadApiController extends Controller
 
         $filename = md5_file($file->getRealpath()).'.'.$ext;
 
-        $dir = config('wechat-material.'.$type.'.storage_path');
+        $dir = config('ibrand.wechat-material.'.$type.'.storage_path');
 
         is_dir($dir) || mkdir($dir, 0755, true);
 
@@ -105,9 +105,9 @@ class UploadApiController extends Controller
 
             $account_id = $res->id;
 
-            $resourceUrl = config('app.url').'/storage'.config('wechat-material.image.prefix').'/'.$imagePath;
+            $resourceUrl = config('app.url').'/storage'.config('ibrand.wechat-material.image.prefix').'/'.$imagePath;
 
-            $Path = base_path().'/storage/app/public'.config('wechat-material.image.prefix').'/'.$imagePath;
+            $Path = base_path().'/storage/app/public'.config('ibrand.wechat-material.image.prefix').'/'.$imagePath;
 
             $image = json_decode(MaterialService::postRemoteImage($Path, $res->app_id));
 
@@ -124,7 +124,7 @@ class UploadApiController extends Controller
             'size' => $filesize,
             'type' => ".{$ext}",
             'path' => $filename,
-            'url' => config('wechat-material.'.$type.'.prefix').'/'.$filename,
+            'url' => config('ibrand.wechat-material.'.$type.'.prefix').'/'.$filename,
             'state' => 'SUCCESS',
         ];
 
@@ -141,7 +141,7 @@ class UploadApiController extends Controller
      */
     protected function checkSize($size, $type)
     {
-        if ($size > config('wechat-material.'.$type.'.upload_max_size')) {
+        if ($size > config('ibrand.wechat-material.'.$type.'.upload_max_size')) {
             throw new Exception('To big file.', 422);
         }
     }
@@ -156,7 +156,7 @@ class UploadApiController extends Controller
      */
     protected function checkMime($mime, $type)
     {
-        $allowTypes = config('wechat-material.'.$type.'.allow_types');
+        $allowTypes = config('ibrand.wechat-material.'.$type.'.allow_types');
         if (!$ext = array_search($mime, $allowTypes)) {
             throw new Exception('Error file type', 422);
         }
@@ -173,9 +173,9 @@ class UploadApiController extends Controller
      */
     protected function saveImageMaterial($imagePath, $account_id)
     {
-        $resourceUrl = config('app.url').'/storage'.config('wechat-material.image.prefix').'/'.$imagePath;
+        $resourceUrl = config('app.url').'/storage'.config('ibrand.wechat-material.image.prefix').'/'.$imagePath;
 
-        $Path = base_path().'/storage/app/public'.config('wechat-material.image.prefix').'/'.$imagePath;
+        $Path = base_path().'/storage/app/public'.config('ibrand.wechat-material.image.prefix').'/'.$imagePath;
 
 //        $account_id = wechat_id();
 

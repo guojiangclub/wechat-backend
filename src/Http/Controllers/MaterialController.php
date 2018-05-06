@@ -218,7 +218,7 @@ class MaterialController extends Controller
             $filename = request('filename');
             $data = $request->except(['_token', 'id', 'filename', 'file']);
             if (!empty($id) && !empty($filename)) {
-                $Path = config('wechat-material.video.storage_path').$filename;
+                $Path = config('ibrand.wechat-material.video.storage_path').$filename;
                 $voice = MaterialService::postRemoteVideo($Path, $data);
                 $voice = json_decode($voice);
                 if (isset($voice->media_id) && !empty($voice->media_id)) {
@@ -283,7 +283,7 @@ class MaterialController extends Controller
 
         $dateDir = date('Ym').'/';
 
-        $dir = config('wechat-material.image.storage_path').$dateDir;
+        $dir = config('ibrand.wechat-material.image.storage_path').$dateDir;
 
         is_dir($dir) || mkdir($dir, 0755, true);
 

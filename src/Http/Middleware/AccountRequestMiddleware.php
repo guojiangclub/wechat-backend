@@ -13,6 +13,7 @@ namespace  iBrand\Wechat\Backend\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\MessageBag;
 use Response;
 use Session;
 
@@ -37,6 +38,14 @@ class AccountRequestMiddleware
     {
         if ($request->is('admin/wechat/*')) {
             if (empty(wechat_platform()->getToken())) {
+
+                $error = new MessageBag([
+                    'title'   => 'title...',
+                    'message' => 'message....',
+                ]);
+
+                return back()->with(compact('error'));
+
                 return redirect()->route('admin.wechat.init');
             }
 

@@ -81,7 +81,7 @@ class UploadController extends Controller
 
         $filename = md5_file($file->getRealpath()).'.'.$ext;
 
-        $dir = config('wechat-material.'.$type.'.storage_path');
+        $dir = config('ibrand.wechat-material.'.$type.'.storage_path');
 
         is_dir($dir) || mkdir($dir, 0755, true);
 
@@ -103,7 +103,7 @@ class UploadController extends Controller
             'size' => $filesize,
             'type' => ".{$ext}",
             'path' => $filename,
-            'url' => config('wechat-material.'.$type.'.prefix').'/'.$filename,
+            'url' => config('ibrand.wechat-material.'.$type.'.prefix').'/'.$filename,
             'state' => 'SUCCESS',
         ];
 
@@ -120,7 +120,7 @@ class UploadController extends Controller
      */
     protected function checkSize($size, $type)
     {
-        if ($size > config('wechat-material.'.$type.'.upload_max_size')) {
+        if ($size > config('ibrand.wechat-material.'.$type.'.upload_max_size')) {
             throw new Exception('To big file.', 422);
         }
     }
@@ -135,7 +135,7 @@ class UploadController extends Controller
      */
     protected function checkMime($mime, $type)
     {
-        $allowTypes = config('wechat-material.'.$type.'.allow_types');
+        $allowTypes = config('ibrand.wechat-material.'.$type.'.allow_types');
         if (!$ext = array_search($mime, $allowTypes)) {
             throw new Exception('Error file type', 422);
         }
@@ -152,9 +152,9 @@ class UploadController extends Controller
      */
     protected function saveImageMaterial($imagePath)
     {
-        $resourceUrl = config('app.url').'/storage'.config('wechat-material.image.prefix').'/'.$imagePath;
+        $resourceUrl = config('app.url').'/storage'.config('ibrand.wechat-material.image.prefix').'/'.$imagePath;
 
-        $Path = base_path().'/storage/app/public'.config('wechat-material.image.prefix').'/'.$imagePath;
+        $Path = base_path().'/storage/app/public'.config('ibrand.wechat-material.image.prefix').'/'.$imagePath;
 
         $account_id = wechat_id();
 
@@ -174,9 +174,9 @@ class UploadController extends Controller
      */
     protected function saveVoiceMaterial($voicePath, $originalName)
     {
-        $resourceUrl = config('app.url').'/storage'.config('wechat-material.video.prefix').'/'.$voicePath;
+        $resourceUrl = config('app.url').'/storage'.config('ibrand.wechat-material.video.prefix').'/'.$voicePath;
 
-        $Path = base_path().'/storage/app/public'.config('wechat-material.video.prefix').'/'.$voicePath;
+        $Path = base_path().'/storage/app/public'.config('ibrand.wechat-material.video.prefix').'/'.$voicePath;
 
         $account_id = wechat_id();
 

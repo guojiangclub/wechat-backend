@@ -58,7 +58,7 @@ class WechatBackendTablesSeeder extends Seeder
             'order' => $lastOrder++,
             'title' => '微信设置',
             'icon' => 'fa-expeditedssl',
-            'uri' => 'wechat/account/init',
+            'uri' => 'wechat/init',
             'created_at' => date('Y-m-d H:i:s', time()),
             'updated_at' => date('Y-m-d H:i:s', time()),
         ]);

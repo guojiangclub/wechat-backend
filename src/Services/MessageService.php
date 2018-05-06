@@ -29,7 +29,7 @@ class MessageService
     public function __construct()
     {
         self::$appUrl = settings('wechat_api_url');
-        self::$code = config('wechat-error-code');
+        self::$code = config('ibrand.wechat-error-code');
     }
 
     public function CallBack($accountId, $key, $app_id = null, $open_id = null)
