@@ -40,13 +40,11 @@ class AccountRequestMiddleware
             if (empty(wechat_platform()->getToken())) {
 
                 $error = new MessageBag([
-                    'title'   => 'title...',
-                    'message' => 'message....',
+                    'title'   => '请配置第三方平台',
+                    'message' => '使用微信管理功能，需要先配置好第三方平台',
                 ]);
 
                 return back()->with(compact('error'));
-
-                return redirect()->route('admin.wechat.init');
             }
 
             if (!Session::has('account_app_id') || !Session::has('account_id')) {
