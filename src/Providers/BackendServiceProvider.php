@@ -13,6 +13,7 @@ namespace iBrand\Wechat\Backend\Providers;
 
 use Event;
 use iBrand\Wechat\Backend\Http\Middleware\AccountRequestMiddleware;
+use iBrand\Wechat\Backend\Http\Middleware\Bootstrap;
 use iBrand\Wechat\Backend\Services\AccountService;
 use iBrand\Wechat\Backend\Services\CardService;
 use iBrand\Wechat\Backend\Services\CouponService;
@@ -48,6 +49,15 @@ class BackendServiceProvider extends ServiceProvider
     protected $namespace = 'iBrand\Wechat\Backend\Http\Controllers';
 
     /**
+     * The application's route middleware.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'admin.wechat.bootstrap' => Bootstrap::class,
+    ];
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      */
     public function boot()
@@ -58,20 +68,20 @@ class BackendServiceProvider extends ServiceProvider
 
         WechatBackend::boot();
 
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'wechat-backend');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'wechat-backend');
 
         //publish a config file
         $this->publishes([
-            __DIR__.'/../../config/material.php' => config_path('ibrand/wechat-material.php'),
+            __DIR__ . '/../../config/material.php' => config_path('ibrand/wechat-material.php'),
         ], 'config');
 
         $this->publishes([
-            __DIR__.'/../../config/wechat-error-code.php' => config_path('ibrand/wechat-error-code.php'),
+            __DIR__ . '/../../config/wechat-error-code.php' => config_path('ibrand/wechat-error-code.php'),
         ], 'config');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../../resources/assets' => public_path('assets/wechat-backend'),
+                __DIR__ . '/../../resources/assets' => public_path('assets/wechat-backend'),
             ], 'wechat-backend-assets');
 
             $this->registerMigrations();
@@ -93,7 +103,7 @@ class BackendServiceProvider extends ServiceProvider
     public function register()
     {
 
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'Wechat');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'Wechat');
 
         //注册服务
         $this->app->singleton('AccountService', function ($app) {
@@ -141,6 +151,8 @@ class BackendServiceProvider extends ServiceProvider
         $this->app->singleton('QRCodeService', function ($app) {
             return new QRCodeService();
         });
+
+        $this->registerRouteMiddleware();
     }
 
     /**
@@ -154,8 +166,8 @@ class BackendServiceProvider extends ServiceProvider
 //            'middleware' => 'web',
             'namespace' => $this->namespace,
         ], function ($router) {
-            require __DIR__.'/../Http/routes.php';
-            require __DIR__.'/../Http/api.php';
+            require __DIR__ . '/../Http/routes.php';
+            require __DIR__ . '/../Http/api.php';
         });
     }
 
@@ -171,6 +183,16 @@ class BackendServiceProvider extends ServiceProvider
      */
     protected function registerMigrations()
     {
-        return $this->loadMigrationsFrom(__DIR__.'/../../migrations');
+        return $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
+    }
+
+    private function registerRouteMiddleware()
+    {
+        // register route middleware.
+        foreach ($this->routeMiddleware as $key => $middleware) {
+            app('router')->aliasMiddleware($key, $middleware);
+        }
+
+        app('router')->pushMiddlewareToGroup('admin','admin.wechat.bootstrap');
     }
 }

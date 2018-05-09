@@ -46,6 +46,7 @@ class FansController extends Controller
 
         $count = $this->fanRepository->findWhere(['account_id' => $account_id])->count();
 
+
         return Admin::content(function (Content $content) use ($pull_time, $count) {
             $content->body(view('Wechat::fans.index', compact('pull_time', 'count')));
         });

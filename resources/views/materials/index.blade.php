@@ -92,7 +92,7 @@
 //            同步图片素材
             {{--href="{{route('admin.wechat.material.pull',['type'=>1])}}"--}}
             $('#pullImage').on('click',function () {
-                $('#pullImage').ladda().ladda('start');
+                /*$('#pullImage').ladda().ladda('start');*/
                 var _token=$('meta[name="_token"]').attr('content');
                 var href="{{route('admin.wechat.material.pull')}}";
                 $.ajax({
@@ -101,7 +101,7 @@
                     data:{'_token':_token},
                     success:function(res){
                         if(res==1){
-                            $('#pullImage').ladda().ladda('stop');
+                            /*$('#pullImage').ladda().ladda('stop');*/
                             swal({
                                 title: "同步成功",
                                 text: "",
