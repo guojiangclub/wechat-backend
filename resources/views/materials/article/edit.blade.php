@@ -843,7 +843,7 @@
 
 
                 status:function(){
-                    var _token=$('meta[name="_token"]').attr('content');
+                    var _token=window._token;
                     this._token=_token;
 
                 }

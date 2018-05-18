@@ -11,7 +11,7 @@
 
 namespace iBrand\Wechat\Backend\Http\Controllers;
 
-use iBrand\Component\User\Models\UserBind;
+//use iBrand\Component\User\Models\UserBind;
 use iBrand\Wechat\Backend\Facades\CardService;
 use iBrand\Wechat\Backend\Facades\FanService;
 use iBrand\Wechat\Backend\Facades\MessageService;
@@ -98,9 +98,9 @@ class CallBackEventController extends Controller
                         $item['account_id'] = $accountId;
                         $item['tagid_list'] = str_replace('[', ',', $item['tagid_list']);
                         $item['tagid_list'] = str_replace(']', ',', $item['tagid_list']);
-                        if ($user = UserBind::where(['type' => 'wechat', 'open_id' => $item['openid']])->first()) {
-                            $item['user_id'] = $user->user_id;
-                        }
+//                        if ($user = UserBind::where(['type' => 'wechat', 'open_id' => $item['openid']])->first()) {
+//                            $item['user_id'] = $user->user_id;
+//                        }
                         $this->fanRepository->getIdByOpenid($accountId, $item['openid'], $item);
                     }
                 }

@@ -32,6 +32,12 @@ $router->group(['middleware' => 'web'], function () use ($router) {
         $router->get('/{app_id}/management', 'AccountController@getChangeAccount')->name('admin.wechat.management');
 
         Route::any('/api', 'ServerController@server');
+
+//        $router->get('/base/{html}', function (){
+//
+//        });
+
+
         // 公众号管理
         $router->get('/account/create', 'AccountController@create')->name('admin.wechat.account.create');
         $router->post('/account/store', 'AccountController@store')->name('admin.wechat.account.store');
@@ -113,7 +119,7 @@ $router->group(['middleware' => 'web'], function () use ($router) {
 
                 $router->post('/update', 'MenuController@update')->name('admin.wechat.menu.update');
 
-                $router->delete('/{id}/delete', 'MenuController@destroy')->name('admin.wechat.menu.delete');
+                $router->post('/{id}/delete', 'MenuController@destroy')->name('admin.wechat.menu.delete');
 
                 $router->post('/release', 'MenuController@releaseMenu')->name('admin.wechat.menu.release');
 

@@ -1,3 +1,5 @@
+
+<script>
 new Vue({
     delimiters: ['{#', '#}'],
     el:'#app',
@@ -50,6 +52,7 @@ new Vue({
         },
         getData:function () {
             console.log(this.select_group);
+            console.log(stime);
             var that = this;
             that.data=[];
             $('.loading').show();
@@ -113,7 +116,6 @@ new Vue({
             that.real.selected='';
             that.keyword='';
             that.selected='';
-
         },
 
         // -----------------------------文本模态框-----------------------------
@@ -246,7 +248,7 @@ new Vue({
 
 
         start:function(){
-            var _token=$('meta[name="_token"]').attr('content');
+            var _token=window._token;
             this._token=_token;
             this.names= names;
 
@@ -260,3 +262,5 @@ new Vue({
     }
 
 })
+
+</script>

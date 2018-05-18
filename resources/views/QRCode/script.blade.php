@@ -63,7 +63,11 @@
 					    break;
 			    }
 
-			    $.ajax({
+			    if(!data.key){
+                    data.key='';
+                }
+
+                $.ajax({
 				    type: "post",
 				    url: url,
 				    data: data,
@@ -74,8 +78,8 @@
 							    text: "",
 							    type: "success"
 						    }, function () {
-							    //location = decodeURIComponent(CodesList).replace('#', data.type) + "?type=" + data.type;
-							    $.pjax({url: '{{route('admin.wechat.QRCode.index')}}', container: '#pjax-container'})
+							    location = decodeURIComponent(CodesList).replace('#', data.type) + "?type=" + data.type;
+							    {{--$.pjax({url: '{{route('admin.wechat.QRCode.index')}}', container: '#pjax-container'})--}}
 						    });
 					    }
 				    }
@@ -115,7 +119,7 @@
 		    },
 
 		    start: function () {
-			    var _token = $('meta[name="_token"]').attr('content');
+                var _token=window._token;
 			    this._token = _token;
 			    this.editId = editId;
 			    if (editId !== "") {

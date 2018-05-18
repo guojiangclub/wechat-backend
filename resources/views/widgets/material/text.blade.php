@@ -18,10 +18,10 @@
                 </p>
             </div>
             <div class="modal-body" style="margin-top: 20px;">
-                <div class="no-material">
+                {{--<div class="no-material">--}}
                     {{--<img src="img/empty_content.png" alt="">--}}
-                    <p>您的文本素材库为空，<a href="#">请先添加素材</a></p>
-                </div>
+                    {{--<p>您的文本素材库为空，<a href="#">请先添加素材</a></p>--}}
+                {{--</div>--}}
                 <div class="have-material clearfix">
                         <div class="col-sm-4">
                             <div class="input-group date form_datetime form_datetime_stime">

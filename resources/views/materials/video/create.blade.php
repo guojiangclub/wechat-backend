@@ -1,7 +1,4 @@
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/common.css') !!}
-    {!! Html::style(env("APP_URL").'/assets/wechat-backend/css/upload.css') !!}
+
     <h2>
         @if(session()->has('account_name'))
             <h2>{{wechat_name()}}</h2>
@@ -54,13 +51,7 @@
             </div>
         </div>
     </div>
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/formvalidation/dist/js/formValidation.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/formvalidation/dist/js/framework/bootstrap.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/formvalidation/dist/js/language/zh_CN.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
+
     <script>
         $(document).ready(function () {
             // 初始化Web Uploader
@@ -102,6 +93,7 @@
 
             //上传成功
             uploader.on( 'uploadSuccess', function( file,data) {
+
                 $('#showvideo').show();
                 $('#showvideo').html(data.name+"<i class='fa fa-check'></i>");
                 $('#video_id').val(data.id);

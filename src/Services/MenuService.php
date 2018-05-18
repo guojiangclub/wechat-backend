@@ -259,7 +259,7 @@ class MenuService
         if (isset($res->errmsg) && 'ok' === $res->errmsg) {
             return true;
         }
-
+        \Log::info(json_encode($res));
         return false;
     }
 
@@ -284,6 +284,10 @@ class MenuService
                             $subMenuArr[$i]['sub_button'][$j]['url'] = $subMenu['key'];
                         } elseif ('media_id' === $subMenu['type']) {
                             $subMenuArr[$i]['sub_button'][$j]['media_id'] = $subMenu['key'];
+                        }elseif('miniprogram' === $subMenu['type']){
+                            $subMenuArr[$i]['sub_button'][$j]['appid'] = $subMenu['appid'];
+                            $subMenuArr[$i]['sub_button'][$j]['pagepath'] = $subMenu['pagepath'];
+                            $subMenuArr[$i]['sub_button'][$j]['url'] = 'http://mp.weixin.qq.com';
                         } else {
                             $subMenuArr[$i]['sub_button'][$j]['key'] = $subMenu['key'];
                         }
@@ -299,6 +303,10 @@ class MenuService
                     $saveMenus['buttons'][$i]['url'] = $item['key'];
                 } elseif ('media_id' === $item['type']) {
                     $saveMenus['buttons'][$i]['media_id'] = $item['key'];
+                } elseif('miniprogram' === $item['type']){
+                    $saveMenus['buttons'][$i]['appid'] = $item['appid'];
+                    $saveMenus['buttons'][$i]['pagepath'] = $item['pagepath'];
+                    $saveMenus['buttons'][$i]['url'] = 'http://mp.weixin.qq.com';
                 } else {
                     $saveMenus['buttons'][$i]['key'] = $item['key'];
                 }

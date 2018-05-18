@@ -17,6 +17,7 @@ use iBrand\Wechat\Backend\Facades\QRCodeService;
 use iBrand\Wechat\Backend\Repository\QRCodeRepository;
 use iBrand\Wechat\Backend\Repository\ScanRepository;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 /**
  * 二维码管理.
@@ -52,6 +53,8 @@ class QRCodeController extends Controller
 
         $temporary_count = $this->QRCodeRepository->findWhere(['account_id' => $account_id, 'type' => self::QRCode_TYPE_TEMPORARY])->count();
 
+
+
         return Admin::content(function (Content $content) use ($codes, $type, $forever_count, $temporary_count) {
             $content->body(view('Wechat::QRCode.index', compact('codes', 'type', 'forever_count', 'temporary_count')));
         });
@@ -65,8 +68,8 @@ class QRCodeController extends Controller
         $page = !empty(request('page')) ? request('page') : 1;
         $pageSize = !empty(request('pageSize')) ? request('pageSize') : 1;
 
-        if (!empty(request('name'))) {
-            $where['name'] = ['like', '%'.request('name').'%'];
+        if (!empty(request('key'))) {
+            $where['name'] = ['like', '%'.request('key').'%'];
         }
         if (empty(request('type')) || self::QRCode_TYPE_FOREVER == request('type')) {
             $where['type'] = self::QRCode_TYPE_FOREVER;
@@ -129,7 +132,10 @@ class QRCodeController extends Controller
 
     public function create()
     {
-        return view('Wechat::QRCode.create');
+        
+        return Admin::content(function (Content $content) {
+            $content->body(view('Wechat::QRCode.create'));
+        });
     }
 
     public function store(Request $request)
@@ -145,16 +151,15 @@ class QRCodeController extends Controller
             $data['scene_id'] = $scene_id;
             $data['expire_seconds'] = intval($expire_seconds);
             $res = QRCodeService::storeTemporary($data);
-
             if (isset($res->url) && !empty($res->url)) {
                 $input['url'] = $res->url;
                 $input['ticket'] = $res->ticket;
                 $input['qr_code_url'] = $res->qr_code_url;
                 $input['scene_id'] = $data['scene_id'];
-                $input['created_at'] = date('Y-m-d H:i:s', time());
-                $input['expire_time'] = date('Y-m-d H:i:s', time() + intval($expire_seconds));
+                $input['created_at'] = date('Y-m-d H:i:s', Carbon::now()->timestamp);
+                $input['expire_time'] = date('Y-m-d H:i:s', Carbon::now()->timestamp + intval($expire_seconds));
+                if($input['key']==null) $input['key']='';
                 $this->QRCodeRepository->create($input);
-
                 return $this->api(true, 200, '创建临时二维码成功', []);
             }
         }
@@ -169,6 +174,7 @@ class QRCodeController extends Controller
                 $input['ticket'] = $res->ticket;
                 $input['qr_code_url'] = $res->qr_code_url;
                 $input['scene_str'] = $scene_str;
+                if($input['key']==null) $input['key']='';
                 $this->QRCodeRepository->create($input);
 
                 return $this->api(true, 200, '创建永久二维码成功', []);
@@ -180,9 +186,15 @@ class QRCodeController extends Controller
 
     public function edit($id)
     {
+
         $data = $this->QRCodeRepository->find($id);
 
-        return view('Wechat::QRCode.create', compact('id', 'data'));
+        return Admin::content(function (Content $content) use ($id, $data) {
+
+            $content->body(view('Wechat::QRCode.edit', compact('id', 'data')));
+
+        });
+
     }
 
     public function update($id)

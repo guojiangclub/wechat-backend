@@ -20,7 +20,7 @@
 		"overtrue/wechat": "~4.0",
 		"prettus/l5-repository": "^2.1",
 		"arrilot/laravel-widgets": "^3.7",
-		"laracasts/flash": "^2.0"
+		"doctrine/dbal": "^2.7"
 	},
 	"autoload": {
 		"files": [

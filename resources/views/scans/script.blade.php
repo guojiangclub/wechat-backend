@@ -1,3 +1,5 @@
+
+<script>
 new Vue({
     delimiters: ['{#', '#}'],
     el:'.tabs-container',
@@ -153,6 +155,6 @@ new Vue({
     }
 });
 
-
+</script>
 
 

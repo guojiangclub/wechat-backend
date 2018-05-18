@@ -93,7 +93,7 @@
             {{--href="{{route('admin.wechat.material.pull',['type'=>1])}}"--}}
             $('#pullImage').on('click',function () {
                 /*$('#pullImage').ladda().ladda('start');*/
-                var _token=$('meta[name="_token"]').attr('content');
+                var _token=window._token;
                 var href="{{route('admin.wechat.material.pull')}}";
                 $.ajax({
                     type:"get",

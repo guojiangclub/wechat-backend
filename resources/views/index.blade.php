@@ -11,15 +11,15 @@
                                   id="base-form">
                                 {{csrf_field()}}
 
-                                <div class="form-group"><label class="col-sm-3 control-label">*默认登录appid</label>
-                                    <div class="col-sm-9"><input type="text" name="wechat_app_id" placeholder="" class="form-control"
-                                                                 value="{{settings('wechat_app_id')}}"></div>
-                                </div>
+                                {{--<div class="form-group"><label class="col-sm-3 control-label">*默认登录appid</label>--}}
+                                    {{--<div class="col-sm-9"><input type="text" name="wechat_app_id" placeholder="" class="form-control"--}}
+                                                                 {{--value="{{settings('wechat_app_id')}}"></div>--}}
+                                {{--</div>--}}
 
-                                <div class="form-group"><label class="col-sm-3 control-label">*默认登录appsecret</label>
-                                    <div class="col-sm-9"><input type="text" name="wechat_app_secret" placeholder="" class="form-control"
-                                                                 value="{{settings('wechat_app_secret')}}"></div>
-                                </div>
+                                {{--<div class="form-group"><label class="col-sm-3 control-label">*默认登录appsecret</label>--}}
+                                    {{--<div class="col-sm-9"><input type="text" name="wechat_app_secret" placeholder="" class="form-control"--}}
+                                                                 {{--value="{{settings('wechat_app_secret')}}"></div>--}}
+                                {{--</div>--}}
 
                                 <div class="form-group"><label class="col-sm-3 control-label">*WECHAT_API_URL</label>
                                     <div class="col-sm-9"><input type="text" name="wechat_api_url" placeholder="" class="form-control"
@@ -37,25 +37,25 @@
                                 </div>
 
 
-                                <div class="form-group"><label class="col-sm-3 control-label">MINI_PROGRAM_APP_ID</label>
-                                    <div class="col-sm-9"><input type="text" name="mini_program_app_id" placeholder="" class="form-control"
-                                                                 value="{{settings('mini_program_app_id')}}"></div>
-                                </div>
+                                {{--<div class="form-group"><label class="col-sm-3 control-label">MINI_PROGRAM_APP_ID</label>--}}
+                                    {{--<div class="col-sm-9"><input type="text" name="mini_program_app_id" placeholder="" class="form-control"--}}
+                                                                 {{--value="{{settings('mini_program_app_id')}}"></div>--}}
+                                {{--</div>--}}
 
-                                <div class="form-group"><label class="col-sm-3 control-label">MINI_PROGRAM_SECRET</label>
-                                    <div class="col-sm-9"><input type="text" name="mini_program_secret" placeholder="" class="form-control"
-                                                                 value="{{settings('mini_program_secret')}}"></div>
-                                </div>
+                                {{--<div class="form-group"><label class="col-sm-3 control-label">MINI_PROGRAM_SECRET</label>--}}
+                                    {{--<div class="col-sm-9"><input type="text" name="mini_program_secret" placeholder="" class="form-control"--}}
+                                                                 {{--value="{{settings('mini_program_secret')}}"></div>--}}
+                                {{--</div>--}}
 
-                                <div class="form-group"><label class="col-sm-3 control-label">微信登录验证码template_id</label>
-                                    <div class="col-sm-9"><input type="text" name="wechat_login_code" placeholder="" class="form-control"
-                                                                 value="{{settings('wechat_login_code')}}"></div>
-                                </div>
+                                {{--<div class="form-group"><label class="col-sm-3 control-label">微信登录验证码template_id</label>--}}
+                                    {{--<div class="col-sm-9"><input type="text" name="wechat_login_code" placeholder="" class="form-control"--}}
+                                                                 {{--value="{{settings('wechat_login_code')}}"></div>--}}
+                                {{--</div>--}}
 
-                                <div class="form-group"><label class="col-sm-3 control-label">微信登录验证码长度</label>
-                                    <div class="col-sm-9"><input type="text" name="wechat_login_code_length" placeholder="5" class="form-control"
-                                                                 value="{{settings('wechat_login_code_length')}}"></div>
-                                </div>
+                                {{--<div class="form-group"><label class="col-sm-3 control-label">微信登录验证码长度</label>--}}
+                                    {{--<div class="col-sm-9"><input type="text" name="wechat_login_code_length" placeholder="5" class="form-control"--}}
+                                                                 {{--value="{{settings('wechat_login_code_length')}}"></div>--}}
+                                {{--</div>--}}
 
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">

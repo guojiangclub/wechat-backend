@@ -121,7 +121,8 @@ new Vue({
                 instance.confirmButtonLoading = true;
                 instance.confirmButtonText = '执行中...';
                 $.post(url, {
-                    id: id
+                    id: id,
+                    _token:_token
                 }, function (ret) {
                     console.log(ret);
                     if(ret.status){
@@ -154,7 +155,7 @@ new Vue({
         Scans:function (ticket) {
             var that=this;
             var ScansUrl = decodeURIComponent(ScansApi).replace('#', ticket);
-            window.location.href=ScansUrl;
+            window.open(ScansUrl);
         },
         start:function(){
             this.getData();

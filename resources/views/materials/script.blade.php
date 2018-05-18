@@ -213,9 +213,8 @@
             },
 
             start:function(){
-                var _token=$('meta[name="_token"]').attr('content');
+                var _token=window._token;
                 this._token=_token;
-                console.log(this._token);
                 this.type=type;
                 this.getData();
             }

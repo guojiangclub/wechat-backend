@@ -13,7 +13,7 @@ namespace iBrand\Wechat\Backend\Http\Controllers;
 
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
-use iBrand\Component\User\Models\UserBind;
+//use iBrand\Component\User\Models\UserBind;
 use iBrand\Wechat\Backend\Facades\FanService;
 use iBrand\Wechat\Backend\Models\Fan;
 use iBrand\Wechat\Backend\Models\FanGroup;
@@ -21,6 +21,7 @@ use iBrand\Wechat\Backend\Repository\FanGroupRepository;
 use iBrand\Wechat\Backend\Repository\FanRepository;
 use Illuminate\Http\Request;
 use Log;
+use Carbon\Carbon;
 
 /**
  * 粉丝管理.
@@ -84,11 +85,16 @@ class FansController extends Controller
             $time['subscribed_at'] = ['>=', request('stime')];
         }
 
-        $fans = $this->fanRepository->with('User')->getFansPaginated($where, $pageSize, $time)->toArray();
+
+//        $fans = $this->fanRepository->with('User')->getFansPaginated($where, $pageSize, $time)->toArray();
+
+       $fans = $this->fanRepository->getFansPaginated($where, $pageSize, $time)->toArray();
 
         $count = Fan::where('account_id', $account_id)->count();
 
         $groups = FanService::FansGroupList();
+
+
 
         $account_id = wechat_id();
         if (count($groups) > 0) {
@@ -146,9 +152,9 @@ class FansController extends Controller
                     $item['tagid_list'] = str_replace('[', ',', $item['tagid_list']);
                     $item['tagid_list'] = str_replace(']', ',', $item['tagid_list']);
 
-                    if ($user = UserBind::where(['type' => 'wechat', 'open_id' => $item['openid']])->first()) {
-                        $item['user_id'] = $user->user_id;
-                    }
+//                    if ($user = UserBind::where(['type' => 'wechat', 'open_id' => $item['openid']])->first()) {
+//                        $item['user_id'] = $user->user_id;
+//                    }
 
                     try {
                         $res = $this->fanRepository->getFansByOpenid($account_id, $item['openid'], $item);
@@ -163,7 +169,7 @@ class FansController extends Controller
             $this->PullFans($next_openid);
         }
 
-        settings()->setSetting(['wechat_pull_fans_time' => time()]);
+        settings()->setSetting(['wechat_pull_fans_time' => Carbon::now()->timestamp]);
 
         return $this->api(true, 200, '', []);
     }

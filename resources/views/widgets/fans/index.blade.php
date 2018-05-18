@@ -49,6 +49,12 @@
                             <div class="input-group">
                                 <select style="margin-right: 50px;"  class="select-item form-control set-group"  v-model="select_group"  v-if="groups.length">
                                     <option
+
+                                            value=""
+                                    >
+                                        全部
+                                    </option>
+                                    <option
                                             v-for="item in groups"
                                             :value="item.group_id"
                                     >

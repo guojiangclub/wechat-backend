@@ -193,7 +193,11 @@ class EventsController extends Controller
     {
         $m_type = !empty(request('m_type')) ? request('m_type') : 0;
 
-        return view('Wechat::events.includes.create.index', compact('id', 'm_type'));
+        return Admin::content(function (Content $content) use ($id, $m_type) {
+            $content->body(view('Wechat::events.includes.create.index', compact('id', 'm_type')));
+        });
+
+
     }
 
     public function apiEdit($id)

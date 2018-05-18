@@ -1,4 +1,5 @@
-<div class="ibox float-e-margins">
+
+<div class="ibox float-e-margins" id="app-menu">
     <div class="ibox-content" style="display: block;">
         <div class="row">
             @if (session()->has('flash_notification.message'))
@@ -83,7 +84,7 @@
 
                                     @if(count($menus)>0)
                                         @foreach($menus as $item)
-                                            <tr>
+                                            <tr id="second-menu-{{$item['id']}}">
                                                         <td>
                                                            &nbsp;&nbsp;<a  class="btn btn-xs btn-primary add-two-menu"
                                                                            href="{{route('admin.wechat.menu.create',['pid'=>$item['id']])}}">
@@ -97,8 +98,8 @@
                                                                 <i data-toggle="tooltip" data-placement="top"
                                                                    class="fa fa-pencil-square-o"
                                                                    title="编辑"></i></a>
-                                                            <a data-method="delete" class="btn btn-xs btn-danger"
-                                                               href="{{route('admin.wechat.menu.delete',$item['id'])}}">
+                                                            <a  class="btn btn-xs btn-danger" @click="Delete('{{route('admin.wechat.menu.delete',['id'=>$item['id']])}}','{{$item['id']}}');"
+                                                               href="javascript:;">
                                                                 <i data-toggle="tooltip" data-placement="top"
                                                                    class="fa fa-trash"
                                                                    title="删除"></i></a>
@@ -110,7 +111,7 @@
 
                                             @if(isset($item['child'])&&count($item['child'])>0)
                                                 @foreach($item['child'] as $citem)
-                                                    <tr   class='second-menu'>
+                                                    <tr   class='second-menu' id="second-menu-{{$citem['id']}}">
                                                             <td>
                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$citem['name']}}
                                                             </td>
@@ -120,8 +121,8 @@
                                                                     <i data-toggle="tooltip" data-placement="top"
                                                                        class="fa fa-pencil-square-o"
                                                                        title="编辑"></i></a>
-                                                                <a data-method="delete" class="btn btn-xs btn-danger"
-                                                                   href="{{route('admin.wechat.menu.delete',$citem['id'])}}">
+                                                                <a  class="btn btn-xs btn-danger" @click="Delete('{{route('admin.wechat.menu.delete',['id'=>$citem['id']])}}','{{$citem['id']}}');"
+                                                                   href="javascript:;">
                                                                     <i data-toggle="tooltip" data-placement="top"
                                                                        class="fa fa-trash"
                                                                        title="删除"></i></a>
@@ -150,9 +151,11 @@
         </div>
     </div>
 </div>
+
 @include('wechat-backend::menu.script')
 <script>
 $(function () {
+    {{--LoadCSS('{{env("APP_URL").'/assets/wechat-backend/css/menu.css'}}');--}}
     $('#release').ajaxForm({
         success: function (result) {
             if (!result.status) {
@@ -171,4 +174,6 @@ $(function () {
 
     });
 })
+
+
 </script>

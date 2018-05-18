@@ -99,6 +99,9 @@
         </div>
     </div>
 
+
+
+
     <script>
         var CodesList="{{route('admin.wechat.QRCode.index')}}"
         var storeApi="{{route('admin.wechat.QRCode.store')}}"
@@ -107,6 +110,7 @@
         var editId="{{isset($id)?$id:''}}";
 
         var editGetDataUrl="{{route('admin.wechat.QRCode.api.edit',['id'=>'#'])}}";
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+        // $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+
     </script>
     @include('Wechat::QRCode.script')

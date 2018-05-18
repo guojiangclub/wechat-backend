@@ -1,6 +1,3 @@
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/css/reply.css') !!}
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/css/addmenu.css') !!}
 <style>
     #text-checkbox{
         display: none;
@@ -91,12 +88,18 @@
                                                                     跳转URL
                                                                 </label>
                                                             </a>
-                                                            {{--<a class="check-item">--}}
-                                                                {{--<input type="radio" name="type" id="scancode_push" data-href="scancode_push" value="scancode_push">--}}
-                                                                {{--<label for="scancode_push">--}}
-                                                                    {{--扫码推事件--}}
-                                                                {{--</label>--}}
-                                                            {{--</a>--}}
+
+                                                            <a class="check-item">
+                                                                <input type="radio" name="type" id="miniprogram" data-href="miniprogram" value="miniprogram"
+                                                                       @if($menu->type==='miniprogram')
+                                                                       checked
+                                                                        @endif
+                                                                >
+                                                                <label for="miniprogram">
+                                                                    小程序
+                                                                </label>
+                                                            </a>
+
                                                             {{--<a class="check-item">--}}
                                                                 {{--<input type="radio" name="type" id="scancode_waitmsg" data-href="scancode_waitmsg" value="scancode_waitmsg">--}}
                                                                 {{--<label for="scancode_waitmsg">--}}
@@ -133,7 +136,14 @@
                                                             {{--</a>--}}
                                                         </div>
 
-                                                        <div class="tab-content form-group" >
+                                                        <div class="tab-content form-group no-mini"
+                                                            @if($menu->type==='view'||$menu->type==='click')
+                                                                style="display: block"
+                                                            @else
+                                                             style="display: none"
+                                                            @endif
+
+                                                        >
                                                             {!! Form::label('meta_keywords', '*请填写关联的关键字或URL:', ['class' => 'control-label pull-left col-sm-2']) !!}
                                                             <div class="col-sm-10">
                                                                 <input type="text" name="key" class="form-control col-sm-11 hinge text-content" placeholder="非汉字/如果是URL必须是完整的地址如http://www.baidu.com"
@@ -144,14 +154,36 @@
                                                             </div>
                                                         </div>
 
-                                                        {{--<div class="tab-content">--}}
-                                                        {{--<div class="tab-pane fade in active select form-group" id="click" >--}}
-                                                        {{--{!! Form::label('meta_keywords', '关联关键词:', ['class' => 'control-label pull-left col-sm-2']) !!}--}}
-                                                        {{--<div class="col-sm-11">--}}
-                                                        {{--<input type="text" name="" class="form-control col-sm-11 hinge text-content">--}}
-                                                        {{--</div>--}}
-                                                        {{--</div>--}}
-                                                        {{--</div>--}}
+
+                                                        <div class="tab-content form-group mini"
+                                                             @if($menu->type=='miniprogram')
+                                                             style="display: block"
+                                                             @else
+                                                             style="display: none"
+                                                                @endif
+
+                                                        >
+                                                            {!! Form::label('meta_keywords', '小程序appid', ['class' => 'control-label pull-left col-sm-2']) !!}
+                                                            <div class="col-sm-10">
+                                                                <input type="text" name="appid" class="form-control col-sm-11 hinge text-content" placeholder="appid"
+                                                                       @if($menu->type=='miniprogram')
+                                                                       value="{{$menu->appid}}"
+                                                                        @endif
+                                                                >
+                                                            </div>
+
+                                                            {!! Form::label('meta_keywords', '小程序页面路径', ['class' => 'control-label pull-left col-sm-2']) !!}
+                                                            <div class="col-sm-10" style="margin-top: 10px">
+                                                                <input type="text" name="pagepath" class="form-control col-sm-11 hinge text-content" placeholder="小程序的页面路径"
+                                                                       @if($menu->type=='miniprogram')
+                                                                       value="{{$menu->pagepath}}"
+                                                                        @endif
+                                                                >
+                                                            </div>
+
+                                                        </div>
+
+
                                                     </div>
 
                                                 </div>
@@ -173,7 +205,7 @@
                                     <div class="col-md-offset-2 col-md-8 controls">
                                         <input type="hidden" name="pid" value="{{request('pid')}}">
                                         <input type="hidden" name="mid" value="{{$menu->id}}">
-                                        <button type="button" class="btn btn-primary" id="menu" data-type="click">保存</button>
+                                        <button type="button" class="btn btn-primary" id="menu" data-type="{{$menu->type}}">保存</button>
                                     </div>
                                 </div>
                             </div>
@@ -185,17 +217,16 @@
             </div>
         </div>
     </div>
-{!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js') !!}
-{!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.zh-CN.js') !!}
-{!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/vue.js') !!}
-{!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/element/index.js') !!}
+
 <script>
     var materialApi="{{route('admin.wechat.material.api')}}";
 </script>
+
 <script>
-    @if($menu->type==='view'||$menu->type==='click')
+    @if($menu->type==='view'||$menu->type==='click'||$menu->type==='miniprogram')
        $('#m_type_2').show();
     @endif
+
     var action="{{isset($material['data_type'])?2:1}}";
     var data_title="{{isset($material['data_title'])?$material['data_title']:''}}";
     var data_time="{{isset($material['data_time'])?$material['data_time']:''}}";
@@ -208,42 +239,64 @@
 
 @include('Wechat::widgets.material.js.materials_js')
 
-{!! Html::script(env("APP_URL").'/assets/wechat-backend/js/common.js') !!}
-{{--{!! Html::script(env("APP_URL").'/assets/wechat-backend/js/addmenu.js') !!}--}}
-{!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/jquery.form.min.js') !!}
 <script>
     $(function () {
-        $('.form_datetime').datetimepicker({
-            minView: 0,
-            format: "yyyy-mm-dd hh:ii",
-            autoclose: 1,
-            language: 'zh-CN',
-            weekStart: 1,
-            todayBtn: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: true,
-            minuteStep: 1,
-            maxView: 4
-        });
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+            increaseArea: '20%' // optional
 
-//            开始
-        $('.form_datetime_stime').on('changeDate',function (ev) {
-            stime=timeDate(ev.date);
         })
+
+        LoadCSS('{{env("APP_URL").'/assets/wechat-backend/libs/icheck/custom.css'}}');
+        LoadCSS('{{env("APP_URL").'/assets/wechat-backend/css/reply.css'}}');
+        LoadCSS('{{env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.min.css'}}');
+
+        $.getScript('{{env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js'}}',function () {
+            $.fn.datetimepicker.dates['zh-CN'] = {
+                days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+                daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+                daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+                months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                today: "今天",
+                suffix: [],
+                meridiem: ["上午", "下午"]
+            };
+            $('.form_datetime').datetimepicker({
+                minView: 0,
+                format: "yyyy-mm-dd hh:ii",
+                autoclose: 1,
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: true,
+                minuteStep: 1,
+                maxView: 4
+            });
+            //            开始
+            $('.form_datetime_stime').on('changeDate',function (ev) {
+                stime=timeDate(ev.date);
+            })
 //            截止
-        $('.form_datetime_etime').on('changeDate',function (ev) {
-            etime=timeDate(ev.date);
-        })
-        function timeDate (d) {
-            var date = (d.getFullYear()) + "-" +
+            $('.form_datetime_etime').on('changeDate',function (ev) {
+                etime=timeDate(ev.date);
+            })
+            function timeDate (d) {
+                var date = (d.getFullYear()) + "-" +
                     (d.getMonth() + 1) + "-" +
                     (d.getDate()) + " " +
                     (d.getHours()) + ":" +
                     (d.getMinutes());
-            return date;
-        }
+                return date;
+            }
+        })
+
+
+
 
         $('.delSearch').click(function () {
             $('.form_datetime input').val('');
@@ -268,6 +321,15 @@
 
     $('input[name=type]').on('ifChecked', function(event){
         var type=$(this).data('href');
+
+        if(type=='miniprogram'){
+            $('.mini').show()
+            $('.no-mini').hide();$('input[name=key]').val('');
+        }else{
+            $('.no-mini').show();$('input[name=appid]').val('');$('input[name=pagepath]').val('');
+            $('.mini').hide()
+        }
+
         var menu=$('#menu');
         menu.data('type',type);
     });
@@ -283,10 +345,14 @@
         var mid=$('input[name=mid]').val();
         var type=$(this).data('type');
 
+        var appid=$('input[name=appid]').val();
+        var pagepath=$('input[name=pagepath]').val();
+
+
         if(name==''){
             toastr.error('请输入菜单名');
             return false;
-        }else if(action==1&&key==''){
+        }else if(action==1&&key==''&&type!='miniprogram'){
             toastr.error('请输入关联的KEY或URL');
             return false;
         }else if(action==2&&media_id==''){
@@ -296,6 +362,7 @@
             toastr.error('1-100正整数');
             return false;
         }
+
         var data={
             name:name,
             key:key,
@@ -303,7 +370,24 @@
             sort:sort,
             pid:pid,
             id:mid,
+            _token:_token
         }
+
+
+        if(type=='miniprogram'){
+            if(action==1&&appid==''){
+                toastr.error('请输入小程序appid');
+                return false;
+            }else if(action==1&&pagepath==''){
+                toastr.error('小程序页面路径');
+                return false;
+            }
+
+            data.appid=appid;
+            data.pagepath=pagepath;
+
+        }
+
 
         if(action==2){
             data.type='media_id';

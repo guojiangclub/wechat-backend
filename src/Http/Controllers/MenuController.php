@@ -17,6 +17,7 @@ use iBrand\Wechat\Backend\Facades\MenuService;
 use iBrand\Wechat\Backend\Repository\MaterialRepository;
 use iBrand\Wechat\Backend\Repository\MenuRepository;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 /**
  * 菜单管理.
@@ -39,6 +40,7 @@ class MenuController extends Controller
     public function index()
     {
         $push_time = settings('wechat_push_menu_time');
+
         $menus = $this->menuRepository->getByAccountId(wechat_id());
 
         return Admin::content(function (Content $content) use ($menus, $push_time) {
@@ -66,14 +68,14 @@ class MenuController extends Controller
             });
         }
 
-        flash('一级菜单最多3个，二级菜单最多5个', 'danger');
+        admin_toastr('一级菜单最多3个，二级菜单最多5个','error');
 
         return redirect()->back();
     }
 
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $input = $request->except('_token');
         $account_id = wechat_id();
         $pid = !empty(request('pid')) ? request('pid') : 0;
 
@@ -92,18 +94,25 @@ class MenuController extends Controller
         }
 
         $data = [
-            'name' => $data['name'],
+            'name' => $input['name'],
             'parent_id' => $pid,
-            'type' => $data['type'],
-            'key' => $data['key'],
-            'sort' => $data['sort'],
+            'type' => $input['type'],
+            'key' => $input['key'],
+            'sort' => $input['sort'],
             'account_id' => $account_id,
         ];
 
+
         if ('media_id' === $data['type']) {
-            $media_id = $data['key'];
+            $media_id = $input['key'];
             $res = $this->materialRepository->find($media_id);
             $data['key'] = $res->media_id;
+        }
+
+        if($data['type']=='miniprogram'){
+            $data['key']='';
+            $data['pagepath']=$input['pagepath'];
+            $data['appid']=$input['appid'];
         }
 
         $res = $this->menuRepository->create($data);
@@ -141,21 +150,27 @@ class MenuController extends Controller
 
     public function update(Request $request)
     {
-        $data = $request->except('_token');
+        $input = $request->except('_token');
         $account_id = wechat_id();
 
         $data = [
-            'id' => $data['id'],
-            'name' => $data['name'],
-            'type' => $data['type'],
-            'key' => $data['key'],
-            'sort' => $data['sort'],
+            'id' => $input['id'],
+            'name' => $input['name'],
+            'type' => $input['type'],
+            'key' => $input['key'],
+            'sort' => $input['sort'],
         ];
 
         if ('media_id' === $data['type']) {
-            $media_id = $data['key'];
+            $media_id = $input['key'];
             $res = $this->materialRepository->find($media_id);
             $data['key'] = $res->media_id;
+        }
+
+        if($data['type']=='miniprogram'){
+            $data['key']='';
+            $data['pagepath']=$input['pagepath'];
+            $data['appid']=$input['appid'];
         }
 
         if ($this->menuRepository->find($data['id'])->update($data)) {
@@ -170,13 +185,12 @@ class MenuController extends Controller
         $account_id = wechat_id();
         $menus = $this->menuRepository->findWhere(['account_id' => $account_id, 'parent_id' => $id]);
         if (count($menus) > 0) {
-            flash('含有二级级菜单删除失败', 'danger');
+            return $this->api(false, 400, '含有二级级菜单删除失败', []);
         } else {
             $this->menuRepository->delete($id);
-            flash('删除成功', 'success');
+            return $this->api(true, 200, '删除成功', []);
         }
 
-        return redirect()->back();
     }
 
     //发布菜单
@@ -188,7 +202,7 @@ class MenuController extends Controller
         $menus = $this->menuRepository->getByAccountId($account_id);
         if (count($menus) > 0) {
             if (MenuService::saveToRemote($menus)) {
-                settings()->setSetting(['wechat_push_menu_time' => time()]);
+                settings()->setSetting(['wechat_push_menu_time' => Carbon::now()->timestamp]);
 
                 return $this->api(true, 200, '', []);
             }

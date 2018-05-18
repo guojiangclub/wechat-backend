@@ -128,7 +128,8 @@
                     instance.confirmButtonLoading = true;
                     instance.confirmButtonText = '执行中...';
                     $.post(url, {
-                        id: id
+                        id: id,
+                        _token:_token
                     }, function (ret) {
                         console.log(ret);
                         if(ret.status){

@@ -72,12 +72,11 @@
                                 </div>
                             </div>
                             <div class="btn-group">
-                                {!! Form::open(['route' => 'admin.wechat.fans.PullFans', 'class' => 'form-horizontal',
-                                    'role' => 'form', 'method' => 'post','id'=>'release']) !!}
+
                                 <button class="btn btn-success"   id="release">
                                     <span id="releasebtn" data-style="expand-right"  class="ladda-button">同步粉丝</span>
                                 </button>
-                                {!! Form::close() !!}
+
                             </div>
                         </div>
                     </div>
@@ -385,6 +384,9 @@
         </div><!-- /.modal -->
     </div>
 
+
+
+
     <script>
         var moveUsers="{{route('admin.wechat.fans.move.users')}}";
         var getInfo="{{route('admin.wechat.fans.info','#')}}";
@@ -396,29 +398,30 @@
         var etime="";
         var moveTag="{{route('admin.wechat.fans.move.tag')}}";
 
-        $.getScript('/assets/wechat-backend/libs/element/vue.js', function () {
-            @include('wechat-backend::fans.includes.script')
-        });
 
-        $('#release').ajaxForm({
-	        beforeSubmit:function () {
-		        $('#releasebtn').ladda().ladda('start');
-	        },
-	        success: function (result) {
-		        if (!result.status) {
-			        swal("同步失败!", result.message, "error")
-		        } else {
-			        swal({
-				        title: "同步成功！",
-				        text: "",
-				        type: "success"
-			        }, function () {
-				        $('#releasebtn').ladda().ladda('stop');
-				        $.pjax.reload('#pjax-container');
-			        });
-		        }
+        var addfans="{{route('admin.wechat.fans.PullFans')}}";
 
-	        }
 
-        });
+        $(function () {
+            $('#release').click(function () {
+                $('#releasebtn').ladda().ladda('start');
+                $.post(addfans,{_token:_token},function (result) {
+                    if (!result.status) {
+                        swal("同步失败!", result.message, "error")
+                    } else {
+                        swal({
+                            title: "同步成功！",
+                            text: "",
+                            type: "success"
+                        }, function () {
+                            $('#releasebtn').ladda().ladda('stop');
+                            location = '{!!route('admin.wechat.fans.index')!!}'
+                        });
+                    }
+                })
+
+            })
+        })
     </script>
+
+    @include('wechat-backend::fans.includes.script')

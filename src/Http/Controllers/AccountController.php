@@ -45,7 +45,7 @@ class AccountController extends Controller
         $accounts = wechat_platform()->getWechatAccounts();
 
         if (isset($accounts->errmsg)) {
-            flash($accounts->errmsg, 'danger');
+            admin_toastr($accounts->errmsg,'error');
             $accounts = [];
         } else {
             $accounts = $this->accountRepository->createAccountByAppID($accounts);
@@ -227,8 +227,7 @@ class AccountController extends Controller
         $main = $this->accountRepository->findWhere(['main' => 1])->first();
         if (null == $main) {
             Session::pull('account_app_id');
-            flash('编辑并完善公众号信息（设置主微信公众号）', 'danger');
-
+            admin_toastr('编辑并完善公众号信息（设置主微信公众号）','error');
             return redirect()->back();
         }
 
@@ -242,7 +241,7 @@ class AccountController extends Controller
             return redirect()->route('admin.wechat.index');
         }
 
-        flash('编辑并完善公众号信息（设置主微信公众号）', 'danger');
+        admin_toastr('编辑并完善公众号信息（设置主微信公众号）','error');
         Session::pull('account_app_id');
         Session::pull('account_id');
         Session::pull('account_name');

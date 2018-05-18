@@ -12,7 +12,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-10">
-                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{{route('admin.wechat.events.create',['m_type'=>1])}}">创建文本消息</a>
+                        <a class=" btn-primary btn btn-sm" target="_blank" style="margin-left:30px;"  href="{{route('admin.wechat.events.create',['m_type'=>1])}}">创建文本消息</a>
                     </div>
                     <div class="input-group col-md-2">
                         <input type="text" class="form-control search-input" placeholder="关键字" name="key" value="" v-model="Keyword"  >
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    @section('after-scripts-end')
+
         <script>
             var EventsApi='{{route('admin.wechat.events.api')}}';
             var deleteApi="{{route('admin.wechat.events.delete',['id'=>'#'])}}";
@@ -39,7 +39,7 @@
 
         </script>
         @include('Wechat::events.includes.script.script')
-    @endsection
+
 @endif
 
 
@@ -59,7 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-10">
-                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{{route('admin.wechat.events.create',['m_type'=>2])}}">创建图片消息</a>
+                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  target="_blank" href="{{route('admin.wechat.events.create',['m_type'=>2])}}">创建图片消息</a>
                     </div>
                     <div class="input-group col-md-2">
                         <input type="text" class="form-control search-input" placeholder="关键字" name="key" value="" v-model="Keyword"  >
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-    @section('after-scripts-end')
+
         <script>
             var EventsApi='{{route('admin.wechat.events.api')}}';
             var deleteApi="{{route('admin.wechat.events.delete',['id'=>'#'])}}";
@@ -84,7 +84,7 @@
             var updateApi="{{route('admin.wechat.events.update',['id'=>'#'])}}";
         </script>
         @include('Wechat::events.includes.script.script')
-    @endsection
+
 @endif
 
 
@@ -102,7 +102,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-10">
-                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{{route('admin.wechat.events.create',['m_type'=>3])}}">创建图文消息</a>
+                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;" target="_blank"  href="{{route('admin.wechat.events.create',['m_type'=>3])}}">创建图文消息</a>
                     </div>
                     <div class="input-group col-md-2">
                         <input type="text" class="form-control search-input" placeholder="关键字" name="key" value=""   >
@@ -119,7 +119,7 @@
             </div>
         </div>
     </div>
-@section('after-scripts-end')
+
     <script>
         var EventsApi='{{route('admin.wechat.events.api')}}';
         var deleteApi="{{route('admin.wechat.events.delete',['id'=>'#'])}}";
@@ -127,7 +127,7 @@
         var updateApi="{{route('admin.wechat.events.update',['id'=>'#'])}}";
     </script>
     @include('Wechat::events.includes.script.script')
-@endsection
+
 
 @endif
 
@@ -146,7 +146,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-10">
-                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{{route('admin.wechat.events.create',['m_type'=>4])}}">创建视频消息</a>
+                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;" target="_blank"  href="{{route('admin.wechat.events.create',['m_type'=>4])}}">创建视频消息</a>
                     </div>
                     <div class="input-group col-md-2">
                         <input type="text" class="form-control search-input" placeholder="关键字" name="key" value=""   >
@@ -163,7 +163,7 @@
             </div>
         </div>
     </div>
-    @section('after-scripts-end')
+
         <script>
             var EventsApi='{{route('admin.wechat.events.api')}}';
             var deleteApi="{{route('admin.wechat.events.delete',['id'=>'#'])}}";
@@ -171,7 +171,7 @@
             var updateApi="{{route('admin.wechat.events.update',['id'=>'#'])}}";
         </script>
         @include('Wechat::events.includes.script.script')
-    @endsection
+
 @endif
 
 
@@ -189,7 +189,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-10">
-                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{{route('admin.wechat.events.create',['m_type'=>6])}}">创建卡券消息</a>
+                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;" target="_blank"  href="{{route('admin.wechat.events.create',['m_type'=>6])}}">创建卡券消息</a>
                     </div>
                     <div class="input-group col-md-2">
                         <input type="text" class="form-control search-input" placeholder="关键字" name="key" value=""   >
@@ -206,7 +206,7 @@
             </div>
         </div>
     </div>
-@section('after-scripts-end')
+
     <script>
         var EventsApi='{{route('admin.wechat.events.api')}}';
         var deleteApi="{{route('admin.wechat.events.delete',['id'=>'#'])}}";
@@ -214,5 +214,5 @@
         var updateApi="{{route('admin.wechat.events.update',['id'=>'#'])}}";
     </script>
     @include('Wechat::events.includes.script.script')
-@endsection
+
 @endif

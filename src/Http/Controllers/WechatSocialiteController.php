@@ -14,8 +14,8 @@ namespace iBrand\Wechat\Backend\Http\Controllers;
 use Auth;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
-use iBrand\Component\User\Models\User;
-use iBrand\Component\User\Models\UserBind;
+//use iBrand\Component\User\Models\User;
+//use iBrand\Component\User\Models\UserBind;
 use Overtrue\Socialite\SocialiteManager;
 
 class WechatSocialiteController extends Controller

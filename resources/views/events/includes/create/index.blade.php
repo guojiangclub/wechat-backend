@@ -148,10 +148,8 @@
         </div>
     </div>
 
+
     <script>
-        $(document).on('ready pjax:end', function(event) {
-	        $(event.target).initializeVue();
-        })
 
         var materialApi="{{route('admin.wechat.material.api')}}";
         var storeApi="{{route('admin.wechat.events.store')}}";
@@ -172,6 +170,51 @@
 
     <script>
         $(function () {
+            LoadCSS('{{env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.min.css'}}');
+
+            $.getScript('{{env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.js'}}',function () {
+                $.fn.datetimepicker.dates['zh-CN'] = {
+                    days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+                    daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+                    daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+                    months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                    monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                    today: "今天",
+                    suffix: [],
+                    meridiem: ["上午", "下午"]
+                };
+                $('.form_datetime').datetimepicker({
+                    minView: 0,
+                    format: "yyyy-mm-dd hh:ii",
+                    autoclose: 1,
+                    language: 'zh-CN',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    forceParse: 0,
+                    showMeridian: true,
+                    minuteStep: 1,
+                    maxView: 4
+                });
+                //            开始
+                $('.form_datetime_stime').on('changeDate',function (ev) {
+                    stime=timeDate(ev.date);
+                })
+//            截止
+                $('.form_datetime_etime').on('changeDate',function (ev) {
+                    etime=timeDate(ev.date);
+                })
+                function timeDate (d) {
+                    var date = (d.getFullYear()) + "-" +
+                        (d.getMonth() + 1) + "-" +
+                        (d.getDate()) + " " +
+                        (d.getHours()) + ":" +
+                        (d.getMinutes());
+                    return date;
+                }
+            })
+
             $('.delSearch').click(function () {
                 $('.form_datetime_stime input').val('');
                 $('.form_datetime_etime input').val('');
