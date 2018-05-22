@@ -49,6 +49,19 @@ class FansController extends Controller
 
 
         return Admin::content(function (Content $content) use ($pull_time, $count) {
+
+            $content->description('粉丝列表');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '粉丝管理', 'url' => 'wechat/fans','no-pjax'=>1],
+                ['text' => '粉丝列表', 'url' => 'wechat/fans','no-pjax'=>1]
+
+            );
             $content->body(view('Wechat::fans.index', compact('pull_time', 'count')));
         });
     }

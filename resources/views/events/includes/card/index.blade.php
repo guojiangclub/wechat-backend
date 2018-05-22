@@ -27,7 +27,7 @@
                     <td v-show="keybtn[item.id]">{#item.updated_at#}</td>
                     <td v-show="keybtn[item.id]" >
                                 <span class="btn btn-xs btn-primary">
-                                    <i data-toggle="tooltip" data-placement="top" class="fa fa-pencil-square-o" title="" @click="Edit(item.id)"  data-original-title="编辑"></i></span>
+                                    <i data-toggle="tooltip" data-placement="top" class="fa fa-pencil-square-o" title="" @click="Edit(item.id,6)"  data-original-title="编辑"></i></span>
                         <span class="btn btn-xs btn-danger delete-event" @click="Delete(item.id)"
                         >
                         <i data-toggle="tooltip" data-placement="top"

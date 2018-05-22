@@ -42,9 +42,20 @@ class ScansController extends Controller
         $FOLLOW_SCANS_Count = $this->scanRepository->getScansPaginated(['app_id' => $app_id, 'type' => self::FOLLOW_SCANS], 0)->count();
 
         return Admin::content(function (Content $content) use ($type, $AllCount, $DEFAULT_SCANS_Count, $FOLLOW_SCANS_Count) {
-            if (session()->has('account_name')) {
-                $content->row('<h2>'.wechat_name().'</h2>');
+
+            $content->description('扫码统计');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
             }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '二维码管理', 'url' => 'wechat/QRCode','no-pjax'=>1],
+                ['text' => '二维码列表', 'url' => 'wechat/QRCode','no-pjax'=>1],
+                ['text' => '扫码统计']
+
+            );
 
             $content->body(view('Wechat::scans.index', compact('type', 'AllCount', 'DEFAULT_SCANS_Count', 'FOLLOW_SCANS_Count')));
         });

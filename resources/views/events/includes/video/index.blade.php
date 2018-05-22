@@ -37,7 +37,7 @@
 
                         <td v-if="keybtn[item.id]">
                             <span class="btn btn-xs btn-primary" >
-                                <i data-toggle="tooltip" data-placement="top" class="fa fa-pencil-square-o" title=""  @click="Edit(item.id)"    data-original-title="编辑"></i>
+                                <i data-toggle="tooltip" data-placement="top" class="fa fa-pencil-square-o" title=""  @click="Edit(item.id,4)"    data-original-title="编辑"></i>
                             </span>
                             <span target="_blank" class="btn btn-xs btn-danger"  @click="Delete(item.id)"
                             href="javascript:;">

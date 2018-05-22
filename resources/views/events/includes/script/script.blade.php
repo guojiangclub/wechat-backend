@@ -154,9 +154,9 @@
 
             },
 
-            Edit:function (id) {
+            Edit:function (id,m_type) {
                 var url = decodeURIComponent(editApi).replace('#', id);
-                window.location.href=url;
+                window.location.href=url+'?m_type='+m_type;
             },
 
             decodeURI:function(str){

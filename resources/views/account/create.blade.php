@@ -81,9 +81,9 @@
 {{--@stop
 
 @section('after-scripts-end')--}}
-    {!! Html::script('libs/formvalidation/dist/js/formValidation.min.js') !!}
-    {!! Html::script('libs/formvalidation/dist/js/framework/bootstrap.min.js') !!}
-    {!! Html::script('libs/formvalidation/dist/js/language/zh_CN.js') !!}
+    {{--{!! Html::script('libs/formvalidation/dist/js/formValidation.min.js') !!}--}}
+    {{--{!! Html::script('libs/formvalidation/dist/js/framework/bootstrap.min.js') !!}--}}
+    {{--{!! Html::script('libs/formvalidation/dist/js/language/zh_CN.js') !!}--}}
     <script>
         $(document).ready(function () {
             $('#create-account-form').formValidation({

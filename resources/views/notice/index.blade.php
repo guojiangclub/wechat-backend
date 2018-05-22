@@ -52,13 +52,13 @@
                                             {{$item->deputy_industry}}
                                         </td>
                                         <td>
-                                            <a class="btn btn-xs btn-primary"
+                                            <a class="btn btn-xs btn-primary" no-pjax
                                                href="{{route('admin.wechat.notice.show',$item->template_id)}}">
                                                 <i data-toggle="tooltip" data-placement="top"
                                                    class="fa fa-eye"
                                                    title="详情"></i></a>
 
-                                            <a class="btn btn-xs btn-primary"
+                                            <a no-pjax class="btn btn-xs btn-primary"
                                                href="{{route('admin.wechat.notice.sendOut.edit',$item->template_id)}}">
                                                 <i data-toggle="tooltip" data-placement="top"
                                                    class="fa fa-share-alt"

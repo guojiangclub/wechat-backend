@@ -17,27 +17,27 @@
         {{--'article','image', 'voice', 'video','text'--}}
         <ul class="nav nav-tabs">
             @if(empty(request('type')))
-                <li class="active"><a href="{{route('admin.wechat.material.index',['type'=>1])}}">图片素材
+                <li class="active"><a no-pjax href="{{route('admin.wechat.material.index',['type'=>1])}}">图片素材
                         <span class="badge">{{$countImage}}</span>
                     </a>
                 </li>
             @else
-                <li class="{{ Active::query('type',1) }}"><a href="{{route('admin.wechat.material.index',['type'=>1])}}">图片素材
+                <li class="{{ Active::query('type',1) }}"><a no-pjax href="{{route('admin.wechat.material.index',['type'=>1])}}">图片素材
                         <span class="badge">{{$countImage}}</span>
                     </a>
                 </li>
             @endif
             <li class="{{ Active::query('type',2) }}">
-                <a href="{{route('admin.wechat.material.index',['type'=>2])}}">视频素材
+                <a no-pjax href="{{route('admin.wechat.material.index',['type'=>2])}}">视频素材
                     <span class="badge">{{$countVideo}}</span>
                   </a>
             </li>
-                  <li class="{{ Active::query('type',4) }}"><a href="{{route('admin.wechat.material.index',['type'=>4])}}">图文素材
+                  <li class="{{ Active::query('type',4) }}"><a no-pjax href="{{route('admin.wechat.material.index',['type'=>4])}}">图文素材
                       <span class="badge">{{$countArticle}}</span>
                 </a>
             </li>
 
-            <li class="{{ Active::query('type',5) }}"><a href="{{route('admin.wechat.material.index',['type'=>5])}}">文本素材
+            <li class="{{ Active::query('type',5) }}"><a no-pjax href="{{route('admin.wechat.material.index',['type'=>5])}}">文本素材
                     <span class="badge">{{$countText}}</span>
                 </a></li>
         </ul>

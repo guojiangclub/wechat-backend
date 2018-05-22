@@ -9,15 +9,15 @@
 <div class="tabs-container">
     <ul class="nav nav-tabs">
         <li @if(empty($type)) class="active" @endif>
-            <a href="{{route('admin.wechat.QRCode.count.scans',['ticket'=>request('ticket')])}}">全部 &nbsp;&nbsp;<span class="badge">{{$AllCount}}</span>
+            <a no-pjax href="{{route('admin.wechat.QRCode.count.scans',['ticket'=>request('ticket')])}}">全部 &nbsp;&nbsp;<span class="badge">{{$AllCount}}</span>
             </a>
         </li>
         <li class="{{ Active::query('type',2) }}">
-            <a href="{{route('admin.wechat.QRCode.count.scans',['ticket'=>request('ticket'),'type'=>2])}}">扫描&nbsp;&nbsp;<span class="badge">{{$DEFAULT_SCANS_Count}}</span>
+            <a no-pjax href="{{route('admin.wechat.QRCode.count.scans',['ticket'=>request('ticket'),'type'=>2])}}">扫描&nbsp;&nbsp;<span class="badge">{{$DEFAULT_SCANS_Count}}</span>
             </a>
         </li>
         <li class="{{ Active::query('type',1) }}">
-            <a href="{{route('admin.wechat.QRCode.count.scans',['ticket'=>request('ticket'),'type'=>1])}}">关注&nbsp;&nbsp;<span class="badge">{{$FOLLOW_SCANS_Count}}</span>
+            <a no-pjax href="{{route('admin.wechat.QRCode.count.scans',['ticket'=>request('ticket'),'type'=>1])}}">关注&nbsp;&nbsp;<span class="badge">{{$FOLLOW_SCANS_Count}}</span>
             </a>
         </li>
     </ul>

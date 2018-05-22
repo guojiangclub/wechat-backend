@@ -44,7 +44,7 @@
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
                     </div>
-                    <div class="seek" style="margin-right: 50px;">
+                    <div class="seek" style="margin-right: 100px;">
                         <div  class="row" >
                             <div class="input-group">
                                 <select style="margin-right: 50px;"  class="select-item form-control set-group"  v-model="select_group"  v-if="groups.length">
@@ -63,21 +63,23 @@
                                 </select>
                             </div>
                         </div>
-                        <br>
 
-                        <div class="row"  style="margin-left:15px;">
-                            <div class="input-group">
-                                <input type="text" class="form-control" :value="keyword"   placeholder="请输入昵称" v-model="keyword">
-                                <span class="input-group-btn" @click="Search()">
+                    </div>
+                    <br>
+
+                    <div class="col-sm-6"  style="margin-top: 20px;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" :value="keyword"   placeholder="请输入昵称" v-model="keyword">
+                            <span class="input-group-btn" @click="Search()">
                                 <button class="btn btn-default" type="button" style="margin-right: 20px; height: 34px;">
                                     <i class="fa fa-search"></i>
                                 </button>
                                 <button class="btn btn-default delSearch"   type="button" @click="delSearch()">
                                 <i class="fa fa-trash"></i>
                                 </button>
-                            </div>
                         </div>
                     </div>
+
                     <br>
                     <div class="material-table clearfix">
                         <div class="loading" style="margin-left:400px;margin-top:120px;height:280px;">

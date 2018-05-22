@@ -44,7 +44,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-11">
-                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{!!route('admin.wechat.material.create_video')!!}">添加视频</a>
+                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;" no-pjax href="{!!route('admin.wechat.material.create_video')!!}">添加视频</a>
                     </div>
                 </div>
                 <div class="row">
@@ -81,7 +81,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-11">
-                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{!!route('admin.wechat.material.create_article')!!}">添加图文</a>
+                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;" no-pjax  href="{!!route('admin.wechat.material.create_article')!!}">添加图文</a>
                     </div>
                 </div>
                 <div class="row">
@@ -99,7 +99,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-11">
-                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{!!route('admin.wechat.material.create_text')!!}">添加文本</a>
+                        <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  no-pjax href="{!!route('admin.wechat.material.create_text')!!}">添加文本</a>
                     </div>
                 </div>
                 <div class="row">

@@ -28,29 +28,29 @@
     <div class="tabs-container">
         <ul class="nav nav-tabs">
             @if(empty(request('m_type')))
-                <li class="active"><a href="{{route('admin.wechat.events.index',['m_type'=>1])}}">回复文本消息
+                <li class="active"><a no-pjax href="{{route('admin.wechat.events.index',['m_type'=>1])}}">回复文本消息
                     </a></li>
             @else
-                <li class="{{ Active::query('m_type',1) }}"><a href="{{route('admin.wechat.events.index',['m_type'=>1])}}">回复文本消息
+                <li class="{{ Active::query('m_type',1) }}"><a no-pjax href="{{route('admin.wechat.events.index',['m_type'=>1])}}">回复文本消息
                     </a>
                 </li>
             @endif
             <li class="{{ Active::query('m_type',2) }}">
-                <a href="{{route('admin.wechat.events.index',['m_type'=>2])}}">回复图片消息
+                <a no-pjax href="{{route('admin.wechat.events.index',['m_type'=>2])}}">回复图片消息
                 </a>
             </li>
 
             <li class="{{ Active::query('m_type',3) }}">
-                <a href="{{route('admin.wechat.events.index',['m_type'=>3])}}">回复图文消息
+                <a no-pjax href="{{route('admin.wechat.events.index',['m_type'=>3])}}">回复图文消息
                 </a>
             </li>
 
             <li class="{{ Active::query('m_type',4) }}">
-                <a href="{{route('admin.wechat.events.index',['m_type'=>4])}}">回复视频消息
+                <a no-pjax href="{{route('admin.wechat.events.index',['m_type'=>4])}}">回复视频消息
                     </a></li>
 
                 <li class="{{ Active::query('m_type',6) }}">
-                    <a href="{{route('admin.wechat.events.index',['m_type'=>6])}}">回复卡券信息
+                    <a no-pjax href="{{route('admin.wechat.events.index',['m_type'=>6])}}">回复卡券信息
                     </a></li>
         </ul>
 

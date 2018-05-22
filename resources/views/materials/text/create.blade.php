@@ -9,11 +9,6 @@
         }
     </style>
 
-    <h2>
-        @if(session()->has('account_name'))
-            <h2>{{wechat_name()}}</h2>
-        @endif
-    </h2>
 
     <div class="ibox float-e-margins">
         <div class="ibox-content" style="display: block;">

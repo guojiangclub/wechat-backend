@@ -69,7 +69,7 @@
                                     <thead>
                                     <tr>
                                         <th class="add">
-                                            <a class="btn btn-xs btn-primary"
+                                            <a class="btn btn-xs btn-primary" no-pjax
                                                href="{{route('admin.wechat.menu.create')}}">
                                                 <i data-toggle="tooltip" data-placement="top"
                                                    class="fa fa-plus"
@@ -86,19 +86,19 @@
                                         @foreach($menus as $item)
                                             <tr id="second-menu-{{$item['id']}}">
                                                         <td>
-                                                           &nbsp;&nbsp;<a  class="btn btn-xs btn-primary add-two-menu"
+                                                           &nbsp;&nbsp;<a no-pjax  class="btn btn-xs btn-primary add-two-menu"
                                                                            href="{{route('admin.wechat.menu.create',['pid'=>$item['id']])}}">
                                                                 <i data-toggle="tooltip" data-placement="top"
                                                                    class="fa fa-plus"
                                                                    title="添加二级菜单"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;{{$item['name']}}
                                                         </td>
                                                         <td class="action-tools">
-                                                            <a class="btn btn-xs btn-primary"
+                                                            <a  no-pjax class="btn btn-xs btn-primary"
                                                                href="{{route('admin.wechat.menu.edit',['id'=>$item['id']])}}">
                                                                 <i data-toggle="tooltip" data-placement="top"
                                                                    class="fa fa-pencil-square-o"
                                                                    title="编辑"></i></a>
-                                                            <a  class="btn btn-xs btn-danger" @click="Delete('{{route('admin.wechat.menu.delete',['id'=>$item['id']])}}','{{$item['id']}}');"
+                                                            <a no-pjax class="btn btn-xs btn-danger" @click="Delete('{{route('admin.wechat.menu.delete',['id'=>$item['id']])}}','{{$item['id']}}');"
                                                                href="javascript:;">
                                                                 <i data-toggle="tooltip" data-placement="top"
                                                                    class="fa fa-trash"
@@ -116,12 +116,12 @@
                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$citem['name']}}
                                                             </td>
                                                             <td class="action-tools">
-                                                                <a class="btn btn-xs btn-primary"
+                                                                <a no-pjax class="btn btn-xs btn-primary"
                                                                    href="{{route('admin.wechat.menu.edit',['id'=>$citem['id']])}}">
                                                                     <i data-toggle="tooltip" data-placement="top"
                                                                        class="fa fa-pencil-square-o"
                                                                        title="编辑"></i></a>
-                                                                <a  class="btn btn-xs btn-danger" @click="Delete('{{route('admin.wechat.menu.delete',['id'=>$citem['id']])}}','{{$citem['id']}}');"
+                                                                <a no-pjax class="btn btn-xs btn-danger" @click="Delete('{{route('admin.wechat.menu.delete',['id'=>$citem['id']])}}','{{$citem['id']}}');"
                                                                    href="javascript:;">
                                                                     <i data-toggle="tooltip" data-placement="top"
                                                                        class="fa fa-trash"

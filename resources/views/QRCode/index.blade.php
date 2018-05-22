@@ -1,6 +1,3 @@
-    @if(session()->has('account_name'))
-        <h2>{{wechat_name()}}</h2>
-    @endif
 
     @if(Session::has('message'))
         <div class="alert alert-success alert-dismissable">
@@ -13,14 +10,14 @@
     <div class="tabs-container">
         <ul class="nav nav-tabs">
             @if(empty(request('type')))
-                <li class="active"><a href="{{route('admin.wechat.QRCode.index',['type'=>2])}}">永久二维码&nbsp;<span class="badge">{{$forever_count}}</span>                    </a></li>
+                <li class="active"><a no-pjax href="{{route('admin.wechat.QRCode.index',['type'=>2])}}">永久二维码&nbsp;<span class="badge">{{$forever_count}}</span>                    </a></li>
             @else
-                <li class="{{ Active::query('type',2) }}"><a href="{{route('admin.wechat.QRCode.index',['type'=>2])}}">永久二维码 &nbsp; <span class="badge">{{$forever_count}}</span>
+                <li class="{{ Active::query('type',2) }}"><a no-pjax href="{{route('admin.wechat.QRCode.index',['type'=>2])}}">永久二维码 &nbsp; <span class="badge">{{$forever_count}}</span>
                     </a>
                 </li>
             @endif
             <li class="{{ Active::query('type',1) }}">
-                <a href="{{route('admin.wechat.QRCode.index',['type'=>1])}}">临时二维码 &nbsp;<span class="badge">{{$temporary_count}}</span>
+                <a no-pjax href="{{route('admin.wechat.QRCode.index',['type'=>1])}}">临时二维码 &nbsp;<span class="badge">{{$temporary_count}}</span>
                 </a>
             </li>
         </ul>
@@ -30,7 +27,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-10">
-                            <a class=" btn-primary btn btn-sm" style="margin-left:30px;"  href="{{route('admin.wechat.QRCode.create')}}">创建二维码</a>
+                            <a class=" btn-primary btn btn-sm" style="margin-left:30px;" no-pjax href="{{route('admin.wechat.QRCode.create')}}">创建二维码</a>
                         </div>
                         <div class="input-group col-md-2">
                             <input type="text" class="form-control search-input" placeholder="场景名称" name="key" value="" v-model="Keyword">
@@ -64,11 +61,6 @@
         var deleteApi="{{route('admin.wechat.QRCode.delete',['id'=>'#'])}}"
         var editApi="{{route('admin.wechat.QRCode.edit',['id'=>'#'])}}";
         var type="{{$type}}";
-        $(function () {
-            $(document).pjax('a:not(a[target="_blank"],a[no-pjax])', {
-                container: '#pjax-container'
-            });
-        })
     </script>
 
     @include('Wechat::QRCode.includes.script')

@@ -97,9 +97,9 @@ $router->group(['middleware' => 'web'], function () use ($router) {
                 $router->get('/all-del-image', 'MaterialController@delAllImage');
 
 //            编辑图文素材
-                $router->get('/edit/article/{id}', 'MaterialController@EditArticle')->name('admin.wechat.material.edit.article');
+                $router->get('/edit/{id}/article', 'MaterialController@EditArticle')->name('admin.wechat.material.edit.article');
 
-                $router->get('/edit/article/api/{id}', 'MaterialController@EditArticleApi')->name('admin.wechat.material.edit.article.api');
+                $router->get('/edit/article/{id}/api', 'MaterialController@EditArticleApi')->name('admin.wechat.material.edit.article.api');
 
                 $router->post('/update/article', 'MaterialController@UpdateArticle')->name('admin.wechat.material.update.article');
 
@@ -139,11 +139,11 @@ $router->group(['middleware' => 'web'], function () use ($router) {
 
                 $router->post('/{id}/delete', 'EventsController@destroy')->name('admin.wechat.events.delete');
 
-                $router->get('/edit/{id}', 'EventsController@edit')->name('admin.wechat.events.edit');
+                $router->get('/{id}/edit', 'EventsController@edit')->name('admin.wechat.events.edit');
 
-                $router->get('/api/edit/{id}', 'EventsController@apiEdit')->name('admin.wechat.events.api.edit');
+                $router->get('/api/{id}/edit', 'EventsController@apiEdit')->name('admin.wechat.events.api.edit');
 
-                $router->post('/update/{id}', 'EventsController@update')->name('admin.wechat.events.update');
+                $router->post('/{id}/update', 'EventsController@update')->name('admin.wechat.events.update');
             });
 
             /**************************** 微信二维码管理 **********************************/
@@ -200,7 +200,7 @@ $router->group(['middleware' => 'web'], function () use ($router) {
             $router->group(['prefix' => 'notice'], function ($router) {
                 $router->get('/', 'NoticeController@index')->name('admin.wechat.notice.index');
 
-                $router->get('/{id}', 'NoticeController@show')->name('admin.wechat.notice.show');
+                $router->get('/{id}/info', 'NoticeController@show')->name('admin.wechat.notice.show');
 
                 $router->get('/{id}/sendOut', 'NoticeController@sendOutEdit')->name('admin.wechat.notice.sendOut.edit');
                 // 发送模板消息

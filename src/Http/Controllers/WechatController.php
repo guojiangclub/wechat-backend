@@ -51,6 +51,12 @@ class WechatController extends Controller
     public function wechatInit()
     {
         return Admin::content(function (Content $content) {
+            $content->description('微信设置');
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '公众号管理', 'url' => 'wechat/account','no-pjax'=>1],
+                ['text' => '微信设置']
+            );
             $content->body(view('Wechat::index'));
         });
     }
@@ -58,20 +64,27 @@ class WechatController extends Controller
     // 授权
     public function saveSettings(Request $request)
     {
+
         $data = $request->except('_token');
 
         settings()->setSetting($data);
 
+
         if (empty(wechat_platform()->getToken())) {
             return $this->api(false, 400, '授权失败，请仔细核对授权信息', []);
         }
-        if ($res = $this->accountRepository->findWhere(['app_id' => $data['wechat_app_id']])->first()) {
-            $this->accountRepository->update(['main' => 1], $res->id);
-        } else {
-            if ($res = $this->accountRepository->findWhere(['main' => 1])->first()) {
-                $this->accountRepository->update(['main' => 0], $res->id);
+
+
+        if(isset($data['wechat_app_id'])){
+            if ($res = $this->accountRepository->findWhere(['app_id' => $data['wechat_app_id']])->first()) {
+                $this->accountRepository->update(['main' => 1], $res->id);
+            } else {
+                if ($res = $this->accountRepository->findWhere(['main' => 1])->first()) {
+                    $this->accountRepository->update(['main' => 0], $res->id);
+                }
             }
         }
+
 
         return $this->api(true, 200, '', []);
     }

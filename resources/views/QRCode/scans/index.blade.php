@@ -1,6 +1,4 @@
-@if(session()->has('account_name'))
-    <h2>{{wechat_name()}}</h2>
-@endif
+
 
 @if(Session::has('message'))
     <div class="alert alert-success alert-dismissable">
@@ -16,14 +14,14 @@
                 @if(empty($type))
                 class="active"
                 @endif
-        > <a href="{{route('admin.wechat.QRCode.scans',['ticket'=>request('ticket')])}}">全部 &nbsp;&nbsp;<span class="badge">{{$AllCount}}</span>
+        > <a no-pjax href="{{route('admin.wechat.QRCode.scans',['ticket'=>request('ticket')])}}">全部 &nbsp;&nbsp;<span class="badge">{{$AllCount}}</span>
                 </a>
         </li>
-            <li class="{{ Active::query('type',2) }}"><a href="{{route('admin.wechat.QRCode.scans',['ticket'=>request('ticket'),'type'=>2])}}">扫描&nbsp;&nbsp;<span class="badge">{{$DEFAULT_SCANS_Count}}</span>
+            <li class="{{ Active::query('type',2) }}"><a no-pjax href="{{route('admin.wechat.QRCode.scans',['ticket'=>request('ticket'),'type'=>2])}}">扫描&nbsp;&nbsp;<span class="badge">{{$DEFAULT_SCANS_Count}}</span>
                 </a>
             </li>
         <li class="{{ Active::query('type',1) }}">
-            <a href="{{route('admin.wechat.QRCode.scans',['ticket'=>request('ticket'),'type'=>1])}}">关注&nbsp;&nbsp;<span class="badge">{{$FOLLOW_SCANS_Count}}</span>
+            <a no-pjax href="{{route('admin.wechat.QRCode.scans',['ticket'=>request('ticket'),'type'=>1])}}">关注&nbsp;&nbsp;<span class="badge">{{$FOLLOW_SCANS_Count}}</span>
             </a>
         </li>
     </ul>

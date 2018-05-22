@@ -36,6 +36,7 @@ class AccountController extends Controller
      */
     public function index()
     {
+
         if (empty(wechat_platform()->getToken())) {
             Session::pull('account_app_id');
             Session::pull('account_id');
@@ -53,6 +54,12 @@ class AccountController extends Controller
 
         return Admin::content(function (Content $content) use ($accounts) {
             $content->description('公众号列表');
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '公众号管理', 'url' => 'wechat/account','no-pjax'=>1],
+                ['text' => '公众号列表']
+            );
+
             $view = view('wechat-backend::account.index', compact('accounts'))->render();
             $content->row($view);
         });
@@ -66,6 +73,7 @@ class AccountController extends Controller
     public function create()
     {
         return Admin::content(function (Content $content) {
+
             $content->body(view('wechat-backend::account.create'));
         });
     }
@@ -128,6 +136,13 @@ class AccountController extends Controller
         $account = $this->accountRepository->findOrThrowException($id);
 
         return Admin::content(function (Content $content) use ($account) {
+            $content->description('编辑公众号');
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '公众号管理', 'url' => 'wechat/account','no-pjax'=>1],
+                ['text' => '公众号列表','url' => 'wechat/account','no-pjax'=>1],
+                ['text' => '编辑公众号']
+            );
             $content->body(view('wechat-backend::account.edit', compact('account')));
         });
     }

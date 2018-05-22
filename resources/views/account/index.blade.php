@@ -11,11 +11,11 @@
                     <div class="col-md-12">
                         <div class="btn-group">
                             @if(settings('wechat_api_client_id')&&settings('wechat_api_client_secret')&&settings('wechat_api_url'))
-                            <a class="btn btn-primary" href="{{route('admin.wechat.platform.auth')}}">添加公众号</a>
+                            <a class="btn btn-primary" target= _blank href="{{route('admin.wechat.platform.auth')}}">添加公众号</a>
                             @endif
                         </div>
                         <div class="btn-group">
-                            <a class="btn btn-primary "
+                            <a no-pjax class="btn btn-primary "
                                href="{{route('admin.wechat.init')}}">授权设置</a>
                         </div>
                     </div>
@@ -64,15 +64,15 @@
 
                                     <td>{{$item->created_at->format('Y-m-d H:i:s')}}</td>
                                     <td>
-                                        <a href="{{route('admin.wechat.management',['app_id'=>$item->app_id,'id'=>$item->id,'name'=>$item->name])}}"
+                                        <a no-pjax href="{{route('admin.wechat.management',['app_id'=>$item->app_id,'id'=>$item->id,'name'=>$item->name])}}"
                                            class="btn btn-success btn-xs">功能管理</a>
-                                        <a href="{{route('admin.wechat.account.edit',['id'=>$item->id])}}"
+                                        <a no-pjax href="{{route('admin.wechat.account.edit',['id'=>$item->id])}}"
                                            class="btn btn-success btn-xs">编辑</a>
                                         {{--<a href="#api_{{$item->id}}" class=" btn btn-info btn-xs"--}}
                                         {{--data-toggle="modal">接口</a>--}}
 
                                         {{--href="{{route('admin.wechat.account.destroy',['id'=>$item->id])}}--}}
-                                        <a
+                                        <a no-pjax
                                         class="btn btn-danger btn-xs del" data-url="{{route('admin.wechat.account.destroy',['id'=>$item->id])}}">删除
                                         </a>
                                     </td>

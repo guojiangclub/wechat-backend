@@ -35,6 +35,18 @@ class NoticeController extends Controller
         $notices = NoticeService::getLists();
 
         return Admin::content(function (Content $content) use ($notices) {
+            $content->description('我的模板');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '模板消息', 'url' => 'wechat/notice','no-pjax'=>1],
+                ['text' => '我的模板', 'url' => 'wechat/notice','no-pjax'=>1]
+            );
+
             $content->body(view('Wechat::notice.index', compact('notices')));
         });
     }
@@ -49,6 +61,20 @@ class NoticeController extends Controller
         $notice = NoticeService::show($id);
 
         return Admin::content(function (Content $content) use ($notice) {
+            $content->description('模板详情');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '模板消息', 'url' => 'wechat/notice','no-pjax'=>1],
+                ['text' => '我的模板', 'url' => 'wechat/notice','no-pjax'=>1],
+                ['text' => '模板详情']
+            );
+
+
             $content->body(view('Wechat::notice.show', compact('notice')));
         });
     }
@@ -64,6 +90,18 @@ class NoticeController extends Controller
         $name = $this->formatDataGetName($notice['content']);
 
         return Admin::content(function (Content $content) use ($id, $name, $notice) {
+            $content->description('发送模板');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '模板消息', 'url' => 'wechat/notice','no-pjax'=>1],
+                ['text' => '我的模板', 'url' => 'wechat/notice','no-pjax'=>1],
+                ['text' => '发送模板']
+            );
             $content->body(view('Wechat::notice.sendout', compact('notice', 'name', 'id')));
         });
     }

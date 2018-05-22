@@ -22,6 +22,7 @@ class Bootstrap
         Admin::css('/assets/wechat-backend/libs/element/index.css');
         Admin::css('/assets/wechat-backend/libs/ladda/ladda-themeless.min.css');
         Admin::css('/assets/wechat-backend/css/upload.css');
+        Admin::css('/assets/wechat-backend/css/reply.css');
 
         Backend::js('/assets/wechat-backend/js/loading.js');
         Backend::js('/assets/wechat-backend/libs/element/vue.js');

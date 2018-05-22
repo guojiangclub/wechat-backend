@@ -3,9 +3,6 @@
             display: none;
         }
     </style>
-    @if(session()->has('account_name'))
-        <h2>{{wechat_name()}}</h2>
-    @endif
 
     @if(Session::has('message'))
         <div class="alert alert-success alert-dismissable">
@@ -15,34 +12,33 @@
         </div>
     @endif
 
-
     <div class="tabs-container">
         @if(!isset($id))
         <ul class="nav nav-tabs" style="border:0">
             @if(empty(request('m_type')))
-                <li class="active"><a href="{{route('admin.wechat.events.create',['m_type'=>1])}}">创建文本消息
+                <li class="active"><a no-pjax href="{{route('admin.wechat.events.create',['m_type'=>1])}}">创建文本消息
                     </a></li>
             @else
-                <li class="{{ Active::query('m_type',1) }}"><a href="{{route('admin.wechat.events.create',['m_type'=>1])}}">创建文本消息
+                <li class="{{ Active::query('m_type',1) }}"><a no-pjax href="{{route('admin.wechat.events.create',['m_type'=>1])}}">创建文本消息
                     </a>
                 </li>
             @endif
             <li class="{{ Active::query('m_type',2) }}">
-                <a href="{{route('admin.wechat.events.create',['m_type'=>2])}}">创建图片消息
+                <a no-pjax href="{{route('admin.wechat.events.create',['m_type'=>2])}}">创建图片消息
                 </a>
             </li>
 
             <li class="{{ Active::query('m_type',3) }}">
-                <a href="{{route('admin.wechat.events.create',['m_type'=>3])}}">创建图文消息
+                <a no-pjax href="{{route('admin.wechat.events.create',['m_type'=>3])}}">创建图文消息
                 </a>
             </li>
 
             <li class="{{ Active::query('m_type',4) }}">
-                <a href="{{route('admin.wechat.events.create',['m_type'=>4])}}">创建视频消息
+                <a no-pjax href="{{route('admin.wechat.events.create',['m_type'=>4])}}">创建视频消息
                 </a></li>
 
             <li class="{{ Active::query('m_type',6) }}">
-                    <a href="{{route('admin.wechat.events.create',['m_type'=>4])}}">创建卡券消息
+                    <a no-pjax href="{{route('admin.wechat.events.create',['m_type'=>6])}}">创建卡券消息
              </a></li>
 
         </ul>

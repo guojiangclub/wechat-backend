@@ -43,8 +43,20 @@ class MenuController extends Controller
 
         $menus = $this->menuRepository->getByAccountId(wechat_id());
 
+
         return Admin::content(function (Content $content) use ($menus, $push_time) {
             $content->description('自定义菜单');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
+                ['text' => '自定义菜单', 'url' => 'wechat/base/menu','no-pjax'=>1]
+
+            );
             $view = view('Wechat::menu.index', compact('menus', 'push_time'))->render();
             $content->row($view);
         });
@@ -63,6 +75,19 @@ class MenuController extends Controller
         if (($menusNumber < 3 && 0 === $pid) || ($menusNumber < 5 && 0 !== $pid)) {
             return Admin::content(function (Content $content) {
                 $content->description('添加菜单');
+
+                if(wechat_name()){
+                    $content->header(wechat_name());
+                }
+
+                $content->breadcrumb(
+                    ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                    ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
+                    ['text' => '自定义菜单', 'url' => 'wechat/base/menu','no-pjax'=>1],
+                    ['text' => '添加菜单',]
+
+                );
+
                 $view = view('Wechat::menu.create')->render();
                 $content->row($view);
             });
@@ -144,6 +169,19 @@ class MenuController extends Controller
         }
 
         return Admin::content(function (Content $content) use ($menu, $material) {
+
+            $content->description('编辑菜单');
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
+                ['text' => '自定义菜单', 'url' => 'wechat/base/menu','no-pjax'=>1],
+                ['text' => '编辑菜单',]
+
+            );
             $content->body(view('Wechat::menu.edit', compact('menu', 'material')));
         });
     }

@@ -72,6 +72,17 @@ class MaterialController extends Controller
         })->count();
 
         return Admin::content(function (Content $content) use ($type, $countImage, $countVideo, $countText, $countArticle) {
+            $content->description('素材管理');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '素材管理', 'url' => 'wechat/material','no-pjax'=>1]
+
+            );
             $content->body(view('Wechat::materials.index', compact('type', 'countImage', 'countVideo', 'countText', 'countArticle')));
         });
     }
@@ -130,6 +141,19 @@ class MaterialController extends Controller
     public function createVideo()
     {
         return Admin::content(function (Content $content) {
+            $content->description('添加视频');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '素材管理', 'url' => 'wechat/material','no-pjax'=>1],
+                ['text' => '视频素材', 'url' => 'wechat/material?type=2','no-pjax'=>1],
+                ['text' => '添加视频']
+
+            );
             $content->body(view('Wechat::materials.video.create'));
         });
     }
@@ -166,6 +190,19 @@ class MaterialController extends Controller
     public function createText()
     {
         return Admin::content(function (Content $content) {
+            $content->description('添加文本');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '素材管理', 'url' => 'wechat/material','no-pjax'=>1],
+                ['text' => '文本素材', 'url' => 'wechat/material?type=5','no-pjax'=>1],
+                ['text' => '添加文本']
+
+            );
             $content->body(view('Wechat::materials.text.create'));
         });
     }
@@ -180,6 +217,19 @@ class MaterialController extends Controller
         $text = $this->materialRepository->find($id);
 
         return Admin::content(function (Content $content) use ($text, $id) {
+            $content->description('编辑文本');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '素材管理', 'url' => 'wechat/material','no-pjax'=>1],
+                ['text' => '文本素材', 'url' => 'wechat/material?type=5','no-pjax'=>1],
+                ['text' => '编辑文本']
+
+            );
             $content->body(view('Wechat::materials.text.edit', compact('text', 'id')));
         });
     }
@@ -281,9 +331,9 @@ class MaterialController extends Controller
 
         $name = [];
 
-        $dateDir = date('Ym').'/';
+        $dateDir = date('Y').'/'.date('m').'/'.date('d').'/';
 
-        $dir = config('ibrand.wechat-material.image.storage_path').$dateDir;
+        $dir = storage_path('app/public/uploads/image/').$dateDir;
 
         is_dir($dir) || mkdir($dir, 0755, true);
 
@@ -292,8 +342,8 @@ class MaterialController extends Controller
                 $newitem = substr($item, 7, 13);
                 if ('mmbiz.qpic.cn' !== $newitem) {
                     $source = $dir.substr($item, strrpos($item, '/') + 1);
-                    $content = file_get_contents($item);
-                    file_put_contents($source, $content);
+//                    $content = file_get_contents($item);
+//                    file_put_contents($source, $content);
                     if (is_file($source)) {
                         $res = MaterialService::postRemoteArticleImage($source);
                         if (!empty($res)) {

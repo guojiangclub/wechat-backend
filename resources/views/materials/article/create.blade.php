@@ -155,6 +155,7 @@
                                                 <div class="contros col-sm-9">
                                                     <span class="check-tips">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                     <script id="p_content" name="p_content" type="text/plain"></script>
+
                                                 </div>
                                             </li>
 
@@ -236,12 +237,9 @@
         var cur=0;
         var UEObj;
     </script>
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/toastr/toastr.min.js') !!}
-    @include('UEditor::head')
+
+    @include('vendor.ueditor.assets')
+
     <!-- 先引入 Vue -->
     {{--@include('wechat-backend::materials.article.image_script')--}}
     <script>
@@ -294,6 +292,7 @@
 
     <script>
         $(function(){
+
             var ue = UE.getEditor('p_content', {
                 initialFrameHeight: 550,
                 allowDivTransToP:false

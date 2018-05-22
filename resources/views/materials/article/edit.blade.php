@@ -1,10 +1,3 @@
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/element/index.css') !!}
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/css/reply.css') !!}
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/css/common.css') !!}
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/css/upload.css') !!}
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/css/module.css') !!}
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.css') !!}
-{!! Html::style(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda-themeless.min.css') !!}
 
     <div id="app-tu">
         <div class="ibox float-e-margins">
@@ -248,12 +241,8 @@
         var cur=0;
         var UEObj;
     </script>
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/webuploader-0.1.5/webuploader.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/spin.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/ladda/ladda.jquery.min.js') !!}
-    {!! Html::script(env("APP_URL").'/assets/wechat-backend/libs/toastr/toastr.min.js') !!}
-    @include('UEditor::head')
+    @include('vendor.ueditor.assets')
+
             <!-- 先引入 Vue -->
     {{--@include('wechat-backend::materials.article.image_script')--}}
     <script>

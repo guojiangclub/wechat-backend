@@ -16,9 +16,7 @@
         z-index: 200000;
     }
 </style>
-@if(session()->has('account_name'))
-    <h2>{{wechat_name()}}</h2>
-@endif
+
 
 @if(Session::has('message'))
     <div class="alert alert-success alert-dismissable">
