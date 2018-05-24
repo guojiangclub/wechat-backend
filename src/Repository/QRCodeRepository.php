@@ -52,4 +52,8 @@ class QRCodeRepository extends BaseRepository
 
         return $data->all();
     }
+
+
+
+
 }

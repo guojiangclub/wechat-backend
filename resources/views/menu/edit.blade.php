@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     {!! Form::label('title', '*菜单名:' , ['class' => 'control-label pull-left col-sm-2']) !!}
                                     <div class="col-sm-10">
-                                        <input type="text" name="name" id="" class="form-control" value="{{$menu->name}}">
+                                        <input type="text" name="name" id="" class="form-control" value="{{$menuinfo->name}}">
                                     </div>
                                 </div>
 
@@ -46,7 +46,7 @@
                                     </div>
                                     <input type="hidden" name="material" v-model="selected" id="">
                                     <input type="hidden" name="action" v-model="action" id=""
-                                    @if($menu->type==='media_id')  value="2"   @endif
+                                    @if($menuinfo->type==='media_id')  value="2"   @endif
                                     >
                                 </div>
 
@@ -61,7 +61,7 @@
                                                     {{ Widget::run('Materials','') }}
 
                                                     <div id="custom" class="check-box"
-                                                         @if($menu->type!=="media_id")
+                                                         @if($menuinfo->type!=="media_id")
                                                          style="display:block"
                                                          @else
                                                          style="display:none"
@@ -70,7 +70,7 @@
                                                         <div class="controls">
                                                             <a class="check-item">
                                                                 <input type="radio" name="type" id="click"  value="click"  data-href="click"
-                                                                     @if($menu->type==='click')
+                                                                     @if($menuinfo->type==='click')
                                                                        checked
                                                                      @endif
                                                                 >
@@ -80,7 +80,7 @@
                                                             </a>
                                                             <a class="check-item">
                                                                 <input type="radio" name="type" id="view"  data-href="view" value="view"
-                                                                       @if($menu->type==='view')
+                                                                       @if($menuinfo->type==='view')
                                                                          checked
                                                                         @endif
                                                                 >
@@ -91,7 +91,7 @@
 
                                                             <a class="check-item">
                                                                 <input type="radio" name="type" id="miniprogram" data-href="miniprogram" value="miniprogram"
-                                                                       @if($menu->type==='miniprogram')
+                                                                       @if($menuinfo->type==='miniprogram')
                                                                        checked
                                                                         @endif
                                                                 >
@@ -137,7 +137,7 @@
                                                         </div>
 
                                                         <div class="tab-content form-group no-mini"
-                                                            @if($menu->type==='view'||$menu->type==='click')
+                                                            @if($menuinfo->type==='view'||$menuinfo->type==='click')
                                                                 style="display: block"
                                                             @else
                                                              style="display: none"
@@ -147,8 +147,8 @@
                                                             {!! Form::label('meta_keywords', '*请填写关联的关键字或URL:', ['class' => 'control-label pull-left col-sm-2']) !!}
                                                             <div class="col-sm-10">
                                                                 <input type="text" name="key" class="form-control col-sm-11 hinge text-content" placeholder="非汉字/如果是URL必须是完整的地址如http://www.baidu.com"
-                                                                       @if($menu->type==='view'||$menu->type==='click')
-                                                                       value="{{$menu->key}}"
+                                                                       @if($menuinfo->type==='view'||$menuinfo->type==='click')
+                                                                       value="{{$menuinfo->key}}"
                                                                        @endif
                                                                 >
                                                             </div>
@@ -156,7 +156,7 @@
 
 
                                                         <div class="tab-content form-group mini"
-                                                             @if($menu->type=='miniprogram')
+                                                             @if($menuinfo->type=='miniprogram')
                                                              style="display: block"
                                                              @else
                                                              style="display: none"
@@ -166,8 +166,8 @@
                                                             {!! Form::label('meta_keywords', '小程序appid', ['class' => 'control-label pull-left col-sm-2']) !!}
                                                             <div class="col-sm-10">
                                                                 <input type="text" name="appid" class="form-control col-sm-11 hinge text-content" placeholder="appid"
-                                                                       @if($menu->type=='miniprogram')
-                                                                       value="{{$menu->appid}}"
+                                                                       @if($menuinfo->type=='miniprogram')
+                                                                       value="{{$menuinfo->appid}}"
                                                                         @endif
                                                                 >
                                                             </div>
@@ -175,8 +175,8 @@
                                                             {!! Form::label('meta_keywords', '小程序页面路径', ['class' => 'control-label pull-left col-sm-2']) !!}
                                                             <div class="col-sm-10" style="margin-top: 10px">
                                                                 <input type="text" name="pagepath" class="form-control col-sm-11 hinge text-content" placeholder="小程序的页面路径"
-                                                                       @if($menu->type=='miniprogram')
-                                                                       value="{{$menu->pagepath}}"
+                                                                       @if($menuinfo->type=='miniprogram')
+                                                                       value="{{$menuinfo->pagepath}}"
                                                                         @endif
                                                                 >
                                                             </div>
@@ -195,7 +195,7 @@
                                 <div class="form-group">
                                     {!! Form::label('meta_keywords', '*排序:（数值越大越靠前）', ['class' => 'control-label pull-left col-sm-2']) !!}
                                     <div class="col-sm-10">
-                                        <input type="number"  name="sort" class="number form-control" placeholder="1-100正整数" value="{{$menu->sort}}">
+                                        <input type="number"  name="sort" class="number form-control" placeholder="1-100正整数" value="{{$menuinfo->sort}}">
                                     </div>
                                 </div>
 
@@ -204,8 +204,8 @@
                                 <div class="form-group">
                                     <div class="col-md-offset-2 col-md-8 controls">
                                         <input type="hidden" name="pid" value="{{request('pid')}}">
-                                        <input type="hidden" name="mid" value="{{$menu->id}}">
-                                        <button type="button" class="btn btn-primary" id="menu" data-type="{{$menu->type}}">保存</button>
+                                        <input type="hidden" name="mid" value="{{$menuinfo->id}}">
+                                        <button type="button" class="btn btn-primary" id="menu" data-type="{{$menuinfo->type}}">保存</button>
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +223,7 @@
 </script>
 
 <script>
-    @if($menu->type==='view'||$menu->type==='click'||$menu->type==='miniprogram')
+    @if($menuinfo->type==='view'||$menuinfo->type==='click'||$menuinfo->type==='miniprogram')
        $('#m_type_2').show();
     @endif
 
@@ -421,3 +421,4 @@
 
 })
 </script>
+@include('wechat-backend::active')

@@ -60,3 +60,4 @@
                 </div>
             </div>
         </div>
+@include('wechat-backend::active')

@@ -120,3 +120,4 @@
 </script>
 
 @include('Wechat::scans.script')
+@include('wechat-backend::active')

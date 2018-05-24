@@ -137,4 +137,6 @@
     </div><!-- /.modal -->
 </div>
 
+@include('wechat-backend::active')
+
 

@@ -83,7 +83,8 @@ class MaterialController extends Controller
                 ['text' => '素材管理', 'url' => 'wechat/material','no-pjax'=>1]
 
             );
-            $content->body(view('Wechat::materials.index', compact('type', 'countImage', 'countVideo', 'countText', 'countArticle')));
+            $menu='素材管理';
+            $content->body(view('Wechat::materials.index', compact('menu','type', 'countImage', 'countVideo', 'countText', 'countArticle')));
         });
     }
 
@@ -154,7 +155,8 @@ class MaterialController extends Controller
                 ['text' => '添加视频']
 
             );
-            $content->body(view('Wechat::materials.video.create'));
+            $menu='素材管理';
+            $content->body(view('Wechat::materials.video.create',compact('menu')));
         });
     }
 
@@ -178,7 +180,19 @@ class MaterialController extends Controller
     public function createArticle()
     {
         return Admin::content(function (Content $content) {
-            $content->body(view('Wechat::materials.article.create'));
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '素材管理', 'url' => 'wechat/material','no-pjax'=>1],
+                ['text' => '视频素材', 'url' => 'wechat/material?type=2','no-pjax'=>1],
+                ['text' => '添加图文']
+
+            );
+            $menu='素材管理';
+            $content->body(view('Wechat::materials.article.create',compact('menu')));
         });
     }
 
@@ -203,7 +217,8 @@ class MaterialController extends Controller
                 ['text' => '添加文本']
 
             );
-            $content->body(view('Wechat::materials.text.create'));
+            $menu='素材管理';
+            $content->body(view('Wechat::materials.text.create',compact('menu')));
         });
     }
 
@@ -230,7 +245,8 @@ class MaterialController extends Controller
                 ['text' => '编辑文本']
 
             );
-            $content->body(view('Wechat::materials.text.edit', compact('text', 'id')));
+            $menu='素材管理';
+            $content->body(view('Wechat::materials.text.edit', compact('text', 'id','menu')));
         });
     }
 
@@ -567,7 +583,21 @@ class MaterialController extends Controller
     public function EditArticle($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-            $content->body(view('Wechat::materials.article.edit', compact('id')));
+            $content->description('编辑图文');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '素材管理', 'url' => 'wechat/material','no-pjax'=>1],
+                ['text' => '文本素材', 'url' => 'wechat/material?type=5','no-pjax'=>1],
+                ['text' => '编辑图文']
+
+            );
+            $menu='素材管理';
+            $content->body(view('Wechat::materials.article.edit', compact('id','menu')));
         });
     }
 

@@ -95,3 +95,6 @@
 
         });
     </script>
+
+
+    @include('wechat-backend::active')

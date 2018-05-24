@@ -43,7 +43,9 @@ class FansController extends Controller
     public function index()
     {
         $account_id = wechat_id();
+
         $pull_time = settings('wechat_pull_fans_time');
+
 
         $count = $this->fanRepository->findWhere(['account_id' => $account_id])->count();
 
@@ -62,7 +64,8 @@ class FansController extends Controller
                 ['text' => '粉丝列表', 'url' => 'wechat/fans','no-pjax'=>1]
 
             );
-            $content->body(view('Wechat::fans.index', compact('pull_time', 'count')));
+            $menu='粉丝管理';
+            $content->body(view('Wechat::fans.index', compact('pull_time', 'count','menu')));
         });
     }
 

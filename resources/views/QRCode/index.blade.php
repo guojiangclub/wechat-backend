@@ -64,6 +64,7 @@
     </script>
 
     @include('Wechat::QRCode.includes.script')
+    @include('wechat-backend::active')
 
 
 

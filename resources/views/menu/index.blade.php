@@ -177,3 +177,4 @@ $(function () {
 
 
 </script>
+@include('wechat-backend::active')

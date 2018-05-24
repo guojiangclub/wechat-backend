@@ -24,7 +24,9 @@ class Bootstrap
         Admin::css('/assets/wechat-backend/css/upload.css');
         Admin::css('/assets/wechat-backend/css/reply.css');
 
+
         Backend::js('/assets/wechat-backend/js/loading.js');
+        Backend::js('/assets/wechat-backend/libs/Chart.min.js');
         Backend::js('/assets/wechat-backend/libs/element/vue.js');
         Backend::js('/assets/wechat-backend/libs/element/index.js');
         Backend::js('/assets/wechat-backend/libs/ladda/spin.min.js');

@@ -24,6 +24,7 @@ use iBrand\Wechat\Backend\Services\MessageService;
 use iBrand\Wechat\Backend\Services\NoticeService;
 use iBrand\Wechat\Backend\Services\PlatformService;
 use iBrand\Wechat\Backend\Services\QRCodeService;
+use iBrand\Wechat\Backend\Services\DataService;
 use iBrand\Wechat\Backend\WechatBackend;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -151,6 +152,11 @@ class BackendServiceProvider extends ServiceProvider
         $this->app->singleton('QRCodeService', function ($app) {
             return new QRCodeService();
         });
+
+        $this->app->singleton('DataService', function ($app) {
+            return new DataService();
+        });
+
 
         $this->registerRouteMiddleware();
     }

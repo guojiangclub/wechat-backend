@@ -119,3 +119,4 @@
 </script>
 
 @include('Wechat::QRCode.scans.script')
+@include('wechat-backend::active')

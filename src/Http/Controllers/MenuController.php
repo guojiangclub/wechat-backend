@@ -57,7 +57,8 @@ class MenuController extends Controller
                 ['text' => '自定义菜单', 'url' => 'wechat/base/menu','no-pjax'=>1]
 
             );
-            $view = view('Wechat::menu.index', compact('menus', 'push_time'))->render();
+            $menu='基础功能';
+            $view = view('Wechat::menu.index', compact('menus', 'push_time','menu'))->render();
             $content->row($view);
         });
     }
@@ -87,8 +88,8 @@ class MenuController extends Controller
                     ['text' => '添加菜单',]
 
                 );
-
-                $view = view('Wechat::menu.create')->render();
+                $menu='基础功能';
+                $view = view('Wechat::menu.create',compact('menu'))->render();
                 $content->row($view);
             });
         }
@@ -182,7 +183,9 @@ class MenuController extends Controller
                 ['text' => '编辑菜单',]
 
             );
-            $content->body(view('Wechat::menu.edit', compact('menu', 'material')));
+            $menuinfo=$menu;
+            $menu='基础功能';
+            $content->body(view('Wechat::menu.edit', compact('menuinfo', 'material','menu')));
         });
     }
 

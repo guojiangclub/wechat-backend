@@ -115,3 +115,5 @@
     </script>
 {{--@endsection--}}
 
+    @include('wechat-backend::active')
+

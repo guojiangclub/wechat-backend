@@ -59,8 +59,8 @@ class AccountController extends Controller
                 ['text' => '公众号管理', 'url' => 'wechat/account','no-pjax'=>1],
                 ['text' => '公众号列表']
             );
-
-            $view = view('wechat-backend::account.index', compact('accounts'))->render();
+            $menu='公众号管理';
+            $view = view('wechat-backend::account.index', compact('accounts','menu'))->render();
             $content->row($view);
         });
     }
@@ -143,7 +143,9 @@ class AccountController extends Controller
                 ['text' => '公众号列表','url' => 'wechat/account','no-pjax'=>1],
                 ['text' => '编辑公众号']
             );
-            $content->body(view('wechat-backend::account.edit', compact('account')));
+
+            $menu='公众号管理';
+            $content->body(view('wechat-backend::account.edit', compact('account','menu')));
         });
     }
 

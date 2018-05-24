@@ -379,3 +379,4 @@
 
     @include('Wechat::widgets.image_uploader_script')
     @include('Wechat::widgets.material.js.materials_js')
+@include('wechat-backend::active')

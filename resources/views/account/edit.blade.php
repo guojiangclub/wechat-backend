@@ -108,3 +108,4 @@
 {{--@stop--}}
 
 
+@include('wechat-backend::active')

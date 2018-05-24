@@ -13,6 +13,7 @@ namespace iBrand\Wechat\Backend\Repository;
 
 use iBrand\Wechat\Backend\Models\Scan;
 use Prettus\Repository\Eloquent\BaseRepository;
+use Carbon\Carbon;
 
 /**
  * MemberCard Repository.
@@ -62,4 +63,24 @@ class ScanRepository extends BaseRepository
 
         return $data->all();
     }
+
+
+
+    /**
+     * N天扫码数
+     */
+    public function getScanCountDayByAppID($app_id, $day)
+    {
+        $today = Carbon::today()->timestamp;
+        $tomorrow = Carbon::tomorrow()->timestamp;
+        $day_jian=$day+1;
+
+        return $this->model->where('app_id', $app_id)
+            ->where('created_at', '>=', date('Y-m-d', strtotime("$day day", $today)))
+            ->where('created_at', '<', date('Y-m-d', strtotime("$day_jian day", $today)))
+            ->count();
+    }
+    
+
+
 }

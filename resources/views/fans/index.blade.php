@@ -425,3 +425,4 @@
     </script>
 
     @include('wechat-backend::fans.includes.script')
+    @include('wechat-backend::active')

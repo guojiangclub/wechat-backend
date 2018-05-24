@@ -56,8 +56,8 @@ class ScansController extends Controller
                 ['text' => '扫码统计']
 
             );
-
-            $content->body(view('Wechat::scans.index', compact('type', 'AllCount', 'DEFAULT_SCANS_Count', 'FOLLOW_SCANS_Count')));
+            $menu='二维码管理';
+            $content->body(view('Wechat::scans.index', compact('menu','type', 'AllCount', 'DEFAULT_SCANS_Count', 'FOLLOW_SCANS_Count')));
         });
     }
 
