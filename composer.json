@@ -1,6 +1,8 @@
 {
 	"name": "ibrand/wechat-backend",
 	"description": "wechat backend for Laravel Application.",
+	"type": "library",
+	"homepage": "https://github.com/ibrandcc/wechat-backend",
 	"keywords": [
 		"ibrand",
 		"wechat ",
