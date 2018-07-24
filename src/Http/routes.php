@@ -172,6 +172,8 @@ $router->group(['middleware' => 'web'], function () use ($router) {
                 $router->get('/count/scans', 'ScansController@index')->name('admin.wechat.QRCode.count.scans');
 
                 $router->get('/count/api/scans', 'ScansController@apiScans')->name('admin.wechat.QRCode.count.api.scans');
+
+                $router->get('getExportData', 'ScansController@getExportData')->name('admin.scans.getExportData');
             });
 
             /**************************** 微信粉丝的路由 **********************************/

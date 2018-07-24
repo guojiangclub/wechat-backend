@@ -125,7 +125,7 @@ class CallBackEventController extends Controller
             // 取消关注事件处理
             case 'unsubscribe':
 
-                $this->fanRepository->deleteWhere(['account_id' => $accountId, 'openid' => $input['openid']]);
+                //$this->fanRepository->deleteWhere(['account_id' => $accountId, 'openid' => $input['openid']]);
 
                 break;
             // 点击CLICK事件处理

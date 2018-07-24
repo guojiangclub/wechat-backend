@@ -6,6 +6,8 @@
     </div>
 @endif
 
+
+
 <div class="tabs-container">
     <ul class="nav nav-tabs">
         <li @if(empty($type)) class="active" @endif>
@@ -46,11 +48,39 @@
                             </span>
                             <input type="text" style="width:150px;" class="form-control" name="etime" placeholder="截止" readonly>
                             <span class="add-on"><i class="icon-th"></i></span>
-                            <div class="btn btn-default" @click="Search()"><i class="fa fa-search"></i></div>
-                        <div class="btn btn-default delSearch" @click="delSearch()"><i class="fa fa-trash"></i></div>
+                            <div class="btn btn-default col-sm-2" @click="Search()"><i class="fa fa-search"></i></div>
+                            <div class="btn btn-default delSearch col-sm-2" @click="delSearch()"><i class="fa fa-trash"></i></div>
+
+
+                            <div class="col-sm-2">
+                                <a class="btn btn-primary ladda-button dropdown-toggle batch" data-toggle="dropdown"
+                                   href="javascript:;" data-style="zoom-in">导出<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        {{--<a  class="route_name"  data-toggle="modal"--}}
+                                            {{--data-target="#download_modal" data-backdrop="static" data-keyboard="false"--}}
+                                            {{--data-link="{{route('admin.scans.getExportData',['type'=>'xls'])}}" id="all-xls"--}}
+                                            {{--data-url="{{route('admin.export.index',['toggle'=>'all-xls'])}}"--}}
+                                            {{--data-type="xls"--}}
+                                            {{--data-route=""--}}
+                                            {{--href="javascript:;">导出所有</a></li>--}}
+
+                                    <li><a  class="route_name" data-toggle="modal-filter"
+                                           data-target="#download_modal" data-backdrop="static" data-keyboard="false"
+                                           id="filter-xls"
+                                           data-url="{{route('admin.export.index',['toggle'=>'filter-xls'])}}"
+                                           data-type_="xls"
+                                           :data-link="route_name"
+                                           href="javascript:;" @click="thauy">导出结果</a></li>
+
+                                </ul>
+                            </div>
                 </div>
             </div>
         </div>
+
+
+
 
 
         <div class="row">
@@ -60,14 +90,16 @@
 </div>
 </div>
 </div>
+<div id="download_modal" class="modal inmodal fade"></div>
 
 <script>
     var getInfo = "{{route('admin.wechat.fans.info','#')}}";
     var ScansApi = "{{route('admin.wechat.QRCode.count.api.scans')}}";
+    var loadUrl="{{route('admin.export.index',['toggle'=>'filter-xls'])}}";
     var type = "{{$type}}";
     var stime = "";
     var etime = "";
-
+    var thats = this;
     $(function () {
         LoadCSS('{{env("APP_URL").'/assets/wechat-backend/libs/datepicker/bootstrap-datetimepicker.min.css'}}');
 
@@ -116,6 +148,25 @@
 
 
     });
+
+    function geturl(loadUrl, data) {
+
+        var $this = $('.route_name'),
+            href = $this.attr('href')
+
+        var type = $('.route_name').data('type_');
+
+        window.link_get_data_url=data;
+
+        if (loadUrl) {
+            var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, '')));
+            $target.modal('show');
+            $target.html('').load(loadUrl, function () {
+                $('.modal-body div').removeClass('row');
+
+            });
+        }
+    }
 
 </script>
 

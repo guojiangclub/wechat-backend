@@ -12,45 +12,54 @@ new Vue({
         scans:[],
         type:'',
         keyword:'',
-        pageSize:20,
+        limit:20,
         total:0,
         currentPage:1,
         ticket:'',
+        route_name:'',
+        loadUrl:''
     },
     methods:{
         handleCurrentChange:function(val) {
+            this.route_name='';
             this.currentPage = val;
             var that = this;
             $.ajax({
                 type:"get",
                 url:ScansApi,
-                data:{'pageSize':that.pageSize,'page':val,'type':that.type,'stime':that.stime,'etime':that.etime,'keyword':that.keyword},
+                data:{'limit':that.limit,'page':val,'type':that.type,'stime':that.stime,'etime':that.etime,'keyword':that.keyword},
                 success:function(res){
                     if(res.status){
-                        that.total=parseInt(res.data.total);
-                        that.pageSize=parseInt(res.data.per_page);
-                        that.currentPage=parseInt(res.data.current_page);
-                        that.scans=res.data.data;
+                        that.total=parseInt(res.data.scans.total);
+                        that.limit=parseInt(res.data.scans.per_page);
+                        that.currentPage=parseInt(res.data.scans.current_page);
+                        that.scans=res.data.scans.data;
+                        that.route_name=res.data.route_name;
+
                     }
                 }
             });
 
         },
+        thauy: function () {
+            geturl(this.loadUrl ,this.route_name);
+        },
         getData:function () {
+            this.route_name='';
             var that = this;
             that.data=[];
-            console.log(that.type);
             $.ajax({
                 type:"get",
                 url:ScansApi,
-                data:{'pageSize':that.pageSize,'type':that.type,'stime':that.stime,'etime':that.etime,'keyword':that.keyword},
+                data:{'limit':that.limit,'type':that.type,'stime':that.stime,'etime':that.etime,'keyword':that.keyword},
                 success:function(res){
                     $('.tr-show').show();
                     if(res.status){
-                        that.total=parseInt(res.data.total);
-                        that.pageSize=parseInt(res.data.per_page);
-                        that.currentPage=parseInt(res.data.current_page);
-                        that.scans=res.data.data;
+                        that.total=parseInt(res.data.scans.total);
+                        that.limit=parseInt(res.data.scans.per_page);
+                        that.currentPage=parseInt(res.data.scans.current_page);
+                        that.scans=res.data.scans.data;
+                        that.route_name=res.data.route_name;
                     }
                 }
             });
@@ -74,6 +83,7 @@ new Vue({
             this.stime='';
             this.etime='';
             this.keyword='';
+            this.route_name='';
             $('.form_datetime_stime input').val('');
             $('.form_datetime_etime input').val('');
             $('.keyword').val('');
@@ -146,6 +156,7 @@ new Vue({
             this.type=type;
             this.stime=stime;
             this.etime=etime;
+            this.loadUrl=loadUrl;
             this.getData();
         }
     },

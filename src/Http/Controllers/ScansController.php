@@ -29,6 +29,7 @@ class ScansController extends Controller
         ScanRepository $scanRepository
     ) {
         $this->scanRepository = $scanRepository;
+        $this->cache = cache();
     }
 
     public function index()
@@ -63,6 +64,28 @@ class ScansController extends Controller
 
     public function apiScans()
     {
+
+        $scans=$this->getScansDate();
+
+        $route_name= request()->route()->getName();
+
+        $request_input=request()->all();
+
+        $request_input['download']=1;
+
+        $request_input['type_']='xls';
+
+        $route_name=route($route_name,$request_input);
+
+        if (!empty(request('download'))) {
+          return $this->getExportData();
+        }
+
+        return $this->api(true, 200, '', ['scans'=>$scans,'route_name'=>$route_name]);
+    }
+
+
+    private function getScansDate(){
         $where = [];
         $time = [];
         $type = !empty(request('type')) ? request('type') : '';
@@ -78,7 +101,7 @@ class ScansController extends Controller
         }
 
         $page = !empty(request('page')) ? request('page') : 1;
-        $pageSize = !empty(request('pageSize')) ? request('pageSize') : 1;
+        $pageSize = !empty(request('limit')) ? request('limit') : 1;
 
         if (!empty(request('etime')) && !empty(request('stime'))) {
             $where['updated_at'] = ['<=', request('etime')];
@@ -95,6 +118,57 @@ class ScansController extends Controller
 
         $scans = $this->scanRepository->getScansPaginated($where, $pageSize, $time);
 
-        return $this->api(true, 200, '', $scans);
+        $this->cache->forever('scans-time',$time);
+
+        $this->cache->forever('scans-limit',$pageSize);
+
+        $this->cache->forever('scans-where',$where);
+
+        return $scans;
+    }
+
+
+
+
+    /**
+     * 获取导出数据.
+     *
+     * @return mixed
+     */
+    public function getExportData()
+    {
+
+        $scans = $this->scanRepository->getScansPaginated($this->cache->get('scans-where'), $this->cache->get('scans-limit'), $this->cache->get('scans-time'));
+
+        $lastPage = $scans->lastPage();
+
+        $page = !empty(request('page')) ? request('page') : 1;
+
+        $limit = request('limit') ? request('limit') : 50;
+
+        $scanExcelData = $this->scanRepository->formatToExcelData($scans);
+
+        if (1 == $page) {
+            session(['export_scans_cache' => generate_export_cache_name('export_scans_cache_')]);
+        }
+        $cacheName = session('export_scans_cache');
+
+        if ($this->cache->has($cacheName)) {
+            $cacheData = $this->cache->get($cacheName);
+            $this->cache->put($cacheName, array_merge($cacheData, $scanExcelData), 300);
+        } else {
+            $this->cache->put($cacheName, $scanExcelData, 300);
+        }
+
+        if ($page == $lastPage) {
+            $title = ['粉丝昵称','动作','扫码时间','场景名称','二维码类型'];
+
+            return $this->api(true,200,'',['status' => 'done', 'url' => '', 'type' => 'xls', 'title' => $title, 'cache' => $cacheName, 'prefix' => 'scans_data_']);
+        }
+        $url_bit = route('admin.scans.getExportData', array_merge(['page' => $page + 1, 'limit' => $limit], request()->except('page', 'limit')));
+
+        return $this->api(true,200,'', ['status' => 'goon', 'url' => $url_bit, 'page' => $page, 'totalPage' => $lastPage]);
+
+
     }
 }

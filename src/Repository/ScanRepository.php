@@ -80,6 +80,31 @@ class ScanRepository extends BaseRepository
             ->where('created_at', '<', date('Y-m-d', strtotime("$day_jian day", $today)))
             ->count();
     }
+
+    /**
+     * 格式化导出数据.
+     *
+     * @param $data
+     *
+     * @return array
+     */
+
+    public function formatToExcelData($data){
+        $list = [];
+        if (count($data) > 0) {
+            $i = 0;
+            foreach ($data as $item) {
+                $list[$i][] = isset($item->fans->nickname)?urldecode($item->fans->nickname):'';
+                $list[$i][] = $item->type==1?"关注":"扫描";
+                $list[$i][] = $item->created_at;
+                $list[$i][] = $item->name;
+                $list[$i][] = (isset($item->QrCode->type) AND $item->QrCode->type==2)?'永久二维码':'临时二维码';
+                ++$i;
+            }
+        }
+
+        return $list;
+    }
     
 
 
