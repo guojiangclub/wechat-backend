@@ -22,10 +22,10 @@ use iBrand\Wechat\Backend\Repository\FanRepository;
 use iBrand\Wechat\Backend\Repository\QRCodeRepository;
 use iBrand\Wechat\Backend\Repository\ScanRepository;
 use Illuminate\Http\Request;
-
-//use iBrand\Component\Point\Repository\PointRepository;
-//use iBrand\Component\User\Repository\UserRepository;
-//use iBrand\Component\Balance\Repository\BalanceRepository;
+use ElementVip\Component\Point\Repository\PointRepository;
+use ElementVip\Component\User\Repository\UserRepository;
+use ElementVip\Component\Balance\Repository\BalanceRepository;
+use ElementVip\Shop\Core\Repositories\UserShopRepository;
 
 /**
  * 回调事件处理.
@@ -45,34 +45,34 @@ class CallBackEventController extends Controller
 
     protected $fanRepository;
 
-    //protected $userShopRepository;
+    protected $userShopRepository;
 
-    //protected $pointRepository;
+    protected $pointRepository;
 
-    //protected $userRepository;
+    protected $userRepository;
 
-    //protected $balanceRepository;
+    protected $balanceRepository;
 
     public function __construct(
         AccountRepository $accountRepository,
         CardCodeRepository $cardCodeRepository,
         ScanRepository $scanRepository,
         QRCodeRepository $QRCodeRepository,
-        FanRepository $fanRepository/*,
+        FanRepository $fanRepository,
         PointRepository $pointRepository,
         UserRepository $userRepository,
         BalanceRepository $balanceRepository,
-        UserShopRepository $userShopRepository*/
+        UserShopRepository $userShopRepository
     ) {
         $this->accountRepository = $accountRepository;
         $this->cardCodeRepository = $cardCodeRepository;
         $this->scanRepository = $scanRepository;
         $this->QRCodeRepository = $QRCodeRepository;
         $this->fanRepository = $fanRepository;
-        /*$this->pointRepository = $pointRepository;
+        $this->pointRepository = $pointRepository;
         $this->userRepository = $userRepository;
         $this->balanceRepository = $balanceRepository;
-        $this->userShopRepository = $userShopRepository;*/
+        $this->userShopRepository = $userShopRepository;
     }
 
     // 事件处理
@@ -120,6 +120,12 @@ class CallBackEventController extends Controller
                     return;
                 }
 
+                //会员门店扫描
+                $key = $input['key'];
+                if (substr($key, 8, 10) == 'O2O_shop##') {
+                    $this->userShopScan($input['key'], $openid, $input['app_id']);
+                }
+
                 return MessageService::CallBack($accountId, '关注自动回复', $input['app_id'], $openid);
                 break;
             // 取消关注事件处理
@@ -153,9 +159,11 @@ class CallBackEventController extends Controller
 
                 //会员门店扫描
                 $key = $input['key'];
-                if ('O2O_shop##' == substr($key, 0, 10)) {
-                    return $this->userShopScan($input['key'], $input['openid']);
+                if (substr($key, 0, 10) == 'O2O_shop##') {
+                    $this->userShopScan($input['key'], $input['openid'], $input['app_id']);
+                    break;
                 }
+
 
                 if (false !== strpos($key, 'wechat_scan_login')) {
                     event('ibrandcc.wechat.login', [$input, $event_type, null]);
@@ -198,15 +206,15 @@ class CallBackEventController extends Controller
         $input['openid'] = $input['open_id'];
         unset($input['app_id']);
         unset($input['open_id']);
-        Log::info($input);
+        \Log::info($input);
         if ($user = UserBind::where(['type' => 'wechat', 'open_id' => $input['openid']])->first()) {
             $input['user_id'] = $user->user_id;
         };
         return $this->cardCodeRepository->create($input);
     }
 
-    /*//领取会员门店扫描
-    protected function userShopScan($key, $openid)
+    //领取会员门店扫描
+    protected function userShopScan($key, $openid, $appID)
     {
         $str = $key . '##' . $openid;
         $arr = explode('##', $str);
@@ -214,11 +222,13 @@ class CallBackEventController extends Controller
         $clerk = explode('_', $arr[2]);
         $open_id = last($arr);
         $input = ['shop_id' => $shop_id, 'clerk_id' => $clerk[0], 'open_id' => $open_id];
-        if ($UserBind = UserBind::where('open_id', $open_id)->first()) {
+
+        if ($UserBind = UserBind::where('open_id', $open_id)->whereNotNull('user_id')->first()) {
             $input['user_id'] = $UserBind->user_id;
         }
 
         $user_shop = $this->userShopRepository->findWhere(['shop_id' => $shop_id, 'open_id' => $open_id])->first();
+        /*$user_shop = $this->userShopRepository->findWhere(['shop_id' => $shop_id, 'user_id' => $input['user_id']])->first();*/
 
         if (!$user_shop) {
             $this->userShopRepository->create($input);
@@ -227,9 +237,11 @@ class CallBackEventController extends Controller
         if (isset($UserBind->user_id) AND $user_shop) {
             $this->userShopRepository->update(['user_id' => $UserBind->user_id], $user_shop->id);
         }
-    }*/
+        return true;
+    }
 
-    /*// 点击会员卡
+
+    // 点击会员卡
     protected function user_view_card($input)
     {
         if ($user = UserBind::where(['open_id' => $input['open_id']])->first()) {
@@ -249,12 +261,12 @@ class CallBackEventController extends Controller
             }
         };
 
-    }*/
+    }
 
-    /*// 删除会员卡
+    // 删除会员卡
     protected function user_del_card($input)
     {
-        Log::info('del');
+        \Log::info('del');
         $this->cardCodeRepository->deleteWhere(['openid' => $input['open_id'], 'code' => $input['code']]);
-    }*/
+    }
 }
