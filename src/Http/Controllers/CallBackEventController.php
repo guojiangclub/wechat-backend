@@ -11,7 +11,7 @@
 
 namespace iBrand\Wechat\Backend\Http\Controllers;
 
-//use iBrand\Component\User\Models\UserBind;
+use ElementVip\Component\User\Models\UserBind;
 use iBrand\Wechat\Backend\Facades\CardService;
 use iBrand\Wechat\Backend\Facades\FanService;
 use iBrand\Wechat\Backend\Facades\MessageService;
@@ -190,7 +190,7 @@ class CallBackEventController extends Controller
         }
     }
 
-    /*//领取卡券事件
+    //领取卡券事件
     protected function user_get_card($input)
     {
         unset($input['event_type']);
@@ -203,7 +203,7 @@ class CallBackEventController extends Controller
             $input['user_id'] = $user->user_id;
         };
         return $this->cardCodeRepository->create($input);
-    }*/
+    }
 
     /*//领取会员门店扫描
     protected function userShopScan($key, $openid)
