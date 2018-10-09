@@ -71,6 +71,14 @@
                             </div>
                         </div>
 
+                        @if(request('m_type')==3)
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label text-right">自定义跳转url</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="url" id=""  v-model="url"   class="form-control" placeholder="自定义跳转url">
+                                </div>
+                            </div>
+                        @endif
 
                         @if(request('m_type')==1)
                         <div class="form-group">

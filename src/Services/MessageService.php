@@ -52,14 +52,14 @@ class MessageService
                             break;
                         case 'article':
                             if ($article_list = Material::where('account_id', $accountId)->where('id', $item->material->id)->with('childrens')->first()) {
-                                if ($article_list and count($article_list) > 0) {
+                                if ($article_list and !empty($article_list)) {
                                     $return[$k]['type'] = 'article';
                                     $return[$k]['app_id'] = $app_id;
                                     $return[$k]['open_id'] = $open_id;
                                     $return[$k]['article'][0] = ['type' => 'article',
                                           'title' => $article_list->title,
                                           'description' => $article_list->description,
-                                          'url' => $article_list->wechat_url,
+                                          'url' => $item->url?$item->url:$article_list->wechat_url,
                                           'image' => $article_list->cover_url,
                                           ];
 

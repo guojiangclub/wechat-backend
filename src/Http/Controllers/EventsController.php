@@ -154,6 +154,7 @@ class EventsController extends Controller
         $rule = request('rule');
         $key = !empty(request('key')) ? request('key') : [];
         $type = request('type');
+        $url = request('url');
         if (count($key) > 1) {
             $keys = implode(' ', $key);
         } else {
@@ -161,9 +162,9 @@ class EventsController extends Controller
         }
 
         if (self::CARD_TEXT !== intval(request('m_type'))) {
-            $res = $this->eventRepository->create(['key' => $keys, 'account_id' => $account_id, 'type' => 'material', 'material_type' => $type, 'value' => request('material_id'), 'rule' => $rule]);
+            $res = $this->eventRepository->create(['key' => $keys, 'account_id' => $account_id, 'type' => 'material', 'material_type' => $type, 'value' => request('material_id'), 'rule' => $rule,'url'=>$url]);
         } else {
-            $res = $this->eventRepository->create(['key' => $keys, 'account_id' => $account_id, 'type' => 'addon', 'material_type' => 'text', 'value' => request('value'), 'rule' => $rule]);
+            $res = $this->eventRepository->create(['key' => $keys, 'account_id' => $account_id, 'type' => 'addon', 'material_type' => 'text', 'value' => request('value'), 'rule' => $rule,'url'=>$url]);
         }
 
         return $this->api(true, 200, '', $res);
@@ -240,6 +241,7 @@ class EventsController extends Controller
         $key = !empty(request('key')) ? request('key') : [];
         $type = request('type');
         $material_id = request('material_id');
+        $url = request('url');
         if (count($key) > 1) {
             $keys = implode(' ', $key);
         } else {
@@ -247,9 +249,9 @@ class EventsController extends Controller
         }
 
         if (self::CARD_TEXT !== intval(request('m_type'))) {
-            $res = $this->eventRepository->update(['key' => $keys, 'account_id' => $account_id, 'type' => 'material', 'material_type' => $type, 'value' => $material_id, 'rule' => $rule], $id);
+            $res = $this->eventRepository->update(['key' => $keys, 'account_id' => $account_id, 'type' => 'material', 'material_type' => $type, 'value' => $material_id, 'rule' => $rule,'url'=>$url], $id);
         } else {
-            $res = $this->eventRepository->update(['key' => $keys, 'account_id' => $account_id, 'type' => 'addon', 'material_type' => 'text', 'value' => request('value'), 'rule' => $rule], $id);
+            $res = $this->eventRepository->update(['key' => $keys, 'account_id' => $account_id, 'type' => 'addon', 'material_type' => 'text', 'value' => request('value'), 'rule' => $rule,'url'=>$url], $id);
         }
 
         return $this->api(true, 200, '', $res);

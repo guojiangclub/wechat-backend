@@ -203,12 +203,12 @@
 
     <script>
         $(function () {
-            $('input').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-                increaseArea: '20%' // optional
-
-            })
+            // $('input').iCheck({
+            //     checkboxClass: 'icheckbox_square-green',
+            //     radioClass: 'iradio_square-green',
+            //     increaseArea: '20%' // optional
+            //
+            // })
 
             LoadCSS('{{env("APP_URL").'/assets/wechat-backend/libs/icheck/custom.css'}}');
             LoadCSS('{{env("APP_URL").'/assets/wechat-backend/css/reply.css'}}');
