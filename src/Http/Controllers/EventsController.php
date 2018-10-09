@@ -52,7 +52,7 @@ class EventsController extends Controller
             $content->breadcrumb(
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
-                ['text' => '自动回复', 'url' => 'wechat/base/events','no-pjax'=>1]
+                ['text' => '自动回复', 'url' => 'wechat/base/events','no-pjax'=>1,'left-menu-active' => '自动回复']
             );
             $content->body(view('Wechat::events.index'));
         });
@@ -138,7 +138,7 @@ class EventsController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
                 ['text' => '自动回复', 'url' => 'wechat/base/events','no-pjax'=>1],
-                ['text' => '创建回复消息']
+                ['text' => '创建回复消息','left-menu-active' => '自动回复']
             );
 
             $content->body(view('Wechat::events.includes.create.index', compact('m_type')));
@@ -154,6 +154,7 @@ class EventsController extends Controller
         $rule = request('rule');
         $key = !empty(request('key')) ? request('key') : [];
         $type = request('type');
+        $url = request('url');
         if (count($key) > 1) {
             $keys = implode(' ', $key);
         } else {
@@ -161,9 +162,9 @@ class EventsController extends Controller
         }
 
         if (self::CARD_TEXT !== intval(request('m_type'))) {
-            $res = $this->eventRepository->create(['key' => $keys, 'account_id' => $account_id, 'type' => 'material', 'material_type' => $type, 'value' => request('material_id'), 'rule' => $rule]);
+            $res = $this->eventRepository->create(['key' => $keys, 'account_id' => $account_id, 'type' => 'material', 'material_type' => $type, 'value' => request('material_id'), 'rule' => $rule,'url'=>$url]);
         } else {
-            $res = $this->eventRepository->create(['key' => $keys, 'account_id' => $account_id, 'type' => 'addon', 'material_type' => 'text', 'value' => request('value'), 'rule' => $rule]);
+            $res = $this->eventRepository->create(['key' => $keys, 'account_id' => $account_id, 'type' => 'addon', 'material_type' => 'text', 'value' => request('value'), 'rule' => $rule,'url'=>$url]);
         }
 
         return $this->api(true, 200, '', $res);
@@ -218,7 +219,21 @@ class EventsController extends Controller
         $m_type = !empty(request('m_type')) ? request('m_type') : 0;
 
         return Admin::content(function (Content $content) use ($id, $m_type) {
-           $content->body(view('Wechat::events.includes.create.index', compact('id', 'm_type')));
+
+            $content->description('编辑回复消息');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
+                ['text' => '自动回复', 'url' => 'wechat/base/events','no-pjax'=>1],
+                ['text' => '编辑回复消息','left-menu-active' => '自动回复']
+            );
+
+            $content->body(view('Wechat::events.includes.create.index', compact('id', 'm_type')));
         });
 
 
@@ -240,6 +255,7 @@ class EventsController extends Controller
         $key = !empty(request('key')) ? request('key') : [];
         $type = request('type');
         $material_id = request('material_id');
+        $url = request('url');
         if (count($key) > 1) {
             $keys = implode(' ', $key);
         } else {
@@ -247,9 +263,9 @@ class EventsController extends Controller
         }
 
         if (self::CARD_TEXT !== intval(request('m_type'))) {
-            $res = $this->eventRepository->update(['key' => $keys, 'account_id' => $account_id, 'type' => 'material', 'material_type' => $type, 'value' => $material_id, 'rule' => $rule], $id);
+            $res = $this->eventRepository->update(['key' => $keys, 'account_id' => $account_id, 'type' => 'material', 'material_type' => $type, 'value' => $material_id, 'rule' => $rule,'url'=>$url], $id);
         } else {
-            $res = $this->eventRepository->update(['key' => $keys, 'account_id' => $account_id, 'type' => 'addon', 'material_type' => 'text', 'value' => request('value'), 'rule' => $rule], $id);
+            $res = $this->eventRepository->update(['key' => $keys, 'account_id' => $account_id, 'type' => 'addon', 'material_type' => 'text', 'value' => request('value'), 'rule' => $rule,'url'=>$url], $id);
         }
 
         return $this->api(true, 200, '', $res);

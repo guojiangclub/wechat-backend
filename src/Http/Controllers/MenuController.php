@@ -54,11 +54,11 @@ class MenuController extends Controller
             $content->breadcrumb(
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
-                ['text' => '自定义菜单', 'url' => 'wechat/base/menu','no-pjax'=>1]
+                ['text' => '自定义菜单', 'url' => 'wechat/base/menu','no-pjax'=>1,'left-menu-active' => '自定义菜单']
 
             );
-            $menu='基础功能';
-            $view = view('Wechat::menu.index', compact('menus', 'push_time','menu'))->render();
+
+            $view = view('Wechat::menu.index', compact('menus', 'push_time'))->render();
             $content->row($view);
         });
     }
@@ -85,11 +85,11 @@ class MenuController extends Controller
                     ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                     ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
                     ['text' => '自定义菜单', 'url' => 'wechat/base/menu','no-pjax'=>1],
-                    ['text' => '添加菜单',]
+                    ['text' => '添加菜单','left-menu-active' => '自定义菜单']
 
                 );
-                $menu='基础功能';
-                $view = view('Wechat::menu.create',compact('menu'))->render();
+
+                $view = view('Wechat::menu.create')->render();
                 $content->row($view);
             });
         }
@@ -180,12 +180,10 @@ class MenuController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
                 ['text' => '自定义菜单', 'url' => 'wechat/base/menu','no-pjax'=>1],
-                ['text' => '编辑菜单',]
-
+                ['text' => '编辑菜单','left-menu-active' => '自定义菜单']
             );
             $menuinfo=$menu;
-            $menu='基础功能';
-            $content->body(view('Wechat::menu.edit', compact('menuinfo', 'material','menu')));
+            $content->body(view('Wechat::menu.edit', compact('menuinfo', 'material')));
         });
     }
 

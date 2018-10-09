@@ -54,11 +54,11 @@ class ScansController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '二维码管理', 'url' => 'wechat/QRCode','no-pjax'=>1],
                 ['text' => '二维码列表', 'url' => 'wechat/QRCode','no-pjax'=>1],
-                ['text' => '扫码统计']
+                ['text' => '扫码统计','left-menu-active' => '扫码统计']
 
             );
-            $menu='二维码管理';
-            $content->body(view('Wechat::scans.index', compact('menu','type', 'AllCount', 'DEFAULT_SCANS_Count', 'FOLLOW_SCANS_Count')));
+
+            $content->body(view('Wechat::scans.index', compact('type', 'AllCount', 'DEFAULT_SCANS_Count', 'FOLLOW_SCANS_Count')));
         });
     }
 

@@ -61,10 +61,10 @@ class FansController extends Controller
             $content->breadcrumb(
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '粉丝管理', 'url' => 'wechat/fans','no-pjax'=>1],
-                ['text' => '粉丝列表', 'url' => 'wechat/fans','no-pjax'=>1]
+                ['text' => '粉丝列表', 'url' => 'wechat/fans','no-pjax'=>1,'left-menu-active' => '粉丝列表']
 
             );
-            $menu='粉丝管理';
+
             $content->body(view('Wechat::fans.index', compact('pull_time', 'count','menu')));
         });
     }

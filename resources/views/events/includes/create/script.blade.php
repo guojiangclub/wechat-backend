@@ -38,6 +38,7 @@
             rule:'',
             keyArr:[],
             value:'',
+            url:'',
 
 
         },
@@ -402,6 +403,7 @@
                         data.material_id=that.selected;
                         data.m_type=that.m_type;
                         data.type='article';
+                        data.url=that.url;
                         break;
                     case 4:
                         if(that.selected==""){
@@ -482,6 +484,7 @@
                                 case 'article':
                                     that.data_img=res.data.material.cover_url;
                                     that.data_title=res.data.material.title;
+                                    that.url=res.data.url;
                                     that.type='article';
                                     break;
                                 case 'video':

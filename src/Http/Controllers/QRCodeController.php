@@ -65,11 +65,11 @@ class QRCodeController extends Controller
             $content->breadcrumb(
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '二维码管理', 'url' => 'wechat/QRCode','no-pjax'=>1],
-                ['text' => '二维码列表', 'url' => 'wechat/QRCode','no-pjax'=>1]
+                ['text' => '二维码列表', 'url' => 'wechat/QRCode','no-pjax'=>1,'left-menu-active' => '二维码列表']
 
             );
-            $menu='二维码管理';
-            $content->body(view('Wechat::QRCode.index', compact('menu','codes', 'type', 'forever_count', 'temporary_count')));
+
+            $content->body(view('Wechat::QRCode.index', compact('codes', 'type', 'forever_count', 'temporary_count')));
         });
     }
 
@@ -117,11 +117,11 @@ class QRCodeController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '二维码管理', 'url' => 'wechat/QRCode','no-pjax'=>1],
                 ['text' => '二维码列表', 'url' => 'wechat/QRCode','no-pjax'=>1],
-                ['text' => '扫码统计']
+                ['text' => '扫码统计','left-menu-active' => '二维码列表']
 
             );
-            $menu='二维码管理';
-            $content->body(view('Wechat::QRCode.scans.index', compact('menu','ticket', 'type', 'AllCount', 'DEFAULT_SCANS_Count', 'FOLLOW_SCANS_Count')));
+
+            $content->body(view('Wechat::QRCode.scans.index', compact('ticket', 'type', 'AllCount', 'DEFAULT_SCANS_Count', 'FOLLOW_SCANS_Count')));
         });
     }
 
@@ -171,11 +171,11 @@ class QRCodeController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '二维码管理', 'url' => 'wechat/QRCode','no-pjax'=>1],
                 ['text' => '二维码列表', 'url' => 'wechat/QRCode','no-pjax'=>1],
-                ['text' => '创建二维码']
+                ['text' => '创建二维码','left-menu-active' => '二维码列表']
 
             );
-            $menu='二维码管理';
-            $content->body(view('Wechat::QRCode.create',compact('menu')));
+
+            $content->body(view('Wechat::QRCode.create'));
         });
     }
 
@@ -242,11 +242,11 @@ class QRCodeController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '二维码管理', 'url' => 'wechat/QRCode','no-pjax'=>1],
                 ['text' => '二维码列表', 'url' => 'wechat/QRCode','no-pjax'=>1],
-                ['text' => '编辑二维码']
+                ['text' => '编辑二维码','left-menu-active' => '二维码列表']
 
             );
-            $menu='二维码管理';
-            $content->body(view('Wechat::QRCode.edit', compact('id', 'data','menu')));
+
+            $content->body(view('Wechat::QRCode.edit', compact('id', 'data')));
 
         });
 
