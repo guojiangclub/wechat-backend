@@ -52,7 +52,7 @@ class EventsController extends Controller
             $content->breadcrumb(
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
-                ['text' => '自动回复', 'url' => 'wechat/base/events','no-pjax'=>1]
+                ['text' => '自动回复', 'url' => 'wechat/base/events','no-pjax'=>1,'left-menu-active' => '自动回复']
             );
             $content->body(view('Wechat::events.index'));
         });
@@ -138,7 +138,7 @@ class EventsController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
                 ['text' => '自动回复', 'url' => 'wechat/base/events','no-pjax'=>1],
-                ['text' => '创建回复消息']
+                ['text' => '创建回复消息','left-menu-active' => '自动回复']
             );
 
             $content->body(view('Wechat::events.includes.create.index', compact('m_type')));
@@ -219,7 +219,21 @@ class EventsController extends Controller
         $m_type = !empty(request('m_type')) ? request('m_type') : 0;
 
         return Admin::content(function (Content $content) use ($id, $m_type) {
-           $content->body(view('Wechat::events.includes.create.index', compact('id', 'm_type')));
+
+            $content->description('编辑回复消息');
+
+            if(wechat_name()){
+                $content->header(wechat_name());
+            }
+
+            $content->breadcrumb(
+                ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
+                ['text' => '基础功能', 'url' => 'wechat/base/menu','no-pjax'=>1],
+                ['text' => '自动回复', 'url' => 'wechat/base/events','no-pjax'=>1],
+                ['text' => '编辑回复消息','left-menu-active' => '自动回复']
+            );
+
+            $content->body(view('Wechat::events.includes.create.index', compact('id', 'm_type')));
         });
 
 

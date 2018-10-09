@@ -143,10 +143,9 @@ class WechatController extends Controller
             $content->breadcrumb(
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '公众号管理', 'url' => 'wechat/account','no-pjax'=>1],
-                ['text' => '微信设置']
+                ['text' => '微信设置','left-menu-active' => '微信设置']
             );
-            $menu='公众号管理';
-            $content->body(view('Wechat::index',compact('menu')));
+            $content->body(view('Wechat::index'));
         });
     }
 

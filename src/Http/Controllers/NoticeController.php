@@ -44,10 +44,9 @@ class NoticeController extends Controller
             $content->breadcrumb(
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '模板消息', 'url' => 'wechat/notice','no-pjax'=>1],
-                ['text' => '我的模板', 'url' => 'wechat/notice','no-pjax'=>1]
+                ['text' => '我的模板', 'url' => 'wechat/notice','no-pjax'=>1,'left-menu-active' => '我的模板']
             );
-            $menu='模板消息';
-            $content->body(view('Wechat::notice.index', compact('notices','menu')));
+            $content->body(view('Wechat::notice.index', compact('notices')));
         });
     }
 
@@ -71,9 +70,8 @@ class NoticeController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '模板消息', 'url' => 'wechat/notice','no-pjax'=>1],
                 ['text' => '我的模板', 'url' => 'wechat/notice','no-pjax'=>1],
-                ['text' => '模板详情']
+                ['text' => '模板详情','left-menu-active' => '我的模板']
             );
-            $menu='模板消息';
 
             $content->body(view('Wechat::notice.show', compact('notice','menu')));
         });
@@ -100,10 +98,10 @@ class NoticeController extends Controller
                 ['text' => '微信管理', 'url' => 'wechat','no-pjax'=>1],
                 ['text' => '模板消息', 'url' => 'wechat/notice','no-pjax'=>1],
                 ['text' => '我的模板', 'url' => 'wechat/notice','no-pjax'=>1],
-                ['text' => '发送模板']
+                ['text' => '发送模板','left-menu-active' => '我的模板']
             );
-            $menu='模板消息';
-            $content->body(view('Wechat::notice.sendout', compact('notice', 'name', 'id','menu')));
+
+            $content->body(view('Wechat::notice.sendout', compact('notice', 'name', 'id')));
         });
     }
 
