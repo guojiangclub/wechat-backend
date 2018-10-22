@@ -88,10 +88,10 @@ class CallBackEventController extends Controller
 		}
 		$accountId  = $account->id;
 		$event_type = $input['event_type'];
-		switch ($input['event_type']) {
+		unset($input['event_type']);
+		switch ($event_type) {
 			// 关注事件处理
 			case 'subscribe':
-				unset($input['event_type']);
 				$openid = $input['openid'];
 				$info   = FanService::getFansInfo(["$openid"], $input['app_id']);
 				if (isset($info->user_info_list) && count($info->user_info_list) > 0) {
@@ -150,7 +150,6 @@ class CallBackEventController extends Controller
 				break;
 			// 点击扫描事件处理
 			case 'SCAN':
-				unset($input['event_type']);
 				$code          = $this->QRCodeRepository->findWhere(['ticket' => $input['ticket']])->first();
 				$input['type'] = self::DEFAULT_SCANS;
 				if (isset($code->name)) {
@@ -167,7 +166,9 @@ class CallBackEventController extends Controller
 				}
 
 				if (false !== strpos($key, 'wechat_scan_login')) {
-					event('ibrandcc.wechat.login', [$input, $event_type, null]);
+					$openid = $input['openid'];
+					$info   = FanService::getFansInfo(["$openid"], $input['app_id']);
+					event('ibrandcc.wechat.login', [$input, $event_type, $info]);
 
 					return;
 				}
