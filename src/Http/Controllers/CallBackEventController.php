@@ -120,6 +120,12 @@ class CallBackEventController extends Controller
                     return;
                 }
 
+	            if (false !== strpos($input['key'], 'shop_id')) {
+		            event('ibrand.wanyou.clerk.bind', [$input, $info]);
+
+		            return;
+	            }
+
                 //会员门店扫描
                 $key = $input['key'];
                 if (substr($key, 8, 10) == 'O2O_shop##') {
@@ -170,6 +176,14 @@ class CallBackEventController extends Controller
 
                     return;
                 }
+
+	            if (false !== strpos($input['key'], 'shop_id')) {
+		            $openid = $input['openid'];
+		            $info   = FanService::getFansInfo(["$openid"], $input['app_id']);
+		            event('ibrand.wanyou.clerk.bind', [$input, $info]);
+
+		            return;
+	            }
 
                 return MessageService::CallBack($accountId, $keyword, $input['app_id'], $input['openid']);
                 break;
