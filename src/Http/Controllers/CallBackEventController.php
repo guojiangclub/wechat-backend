@@ -135,6 +135,13 @@ class CallBackEventController extends Controller
                 $key_name='关注自动回复';
                 if(!empty($input['key'])){
                     $key_name=$input['key'];
+                    $key_str = str_replace("qrscene_",'',$key);
+                    if(is_numeric($key_str)){
+                       $qr=$this->QRCodeRepository->findWhere(['scene_id' => $key_str])->first();
+                    }else{
+                       $qr=$this->QRCodeRepository->findWhere(['scene_str' => $key_str])->first();
+                    }
+                    $key_name=isset($qr->key)&&!empty($qr->key)?$qr->key:'关注自动回复';
                 }
 
                 return MessageService::CallBack($accountId, $key_name, $input['app_id'], $openid);
