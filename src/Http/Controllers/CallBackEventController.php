@@ -132,7 +132,12 @@ class CallBackEventController extends Controller
                     $this->userShopScan($input['key'], $openid, $input['app_id']);
                 }
 
-                return MessageService::CallBack($accountId, '关注自动回复', $input['app_id'], $openid);
+                $key_name='关注自动回复';
+                if(!empty($input['key'])){
+                    $key_name=$input['key'];
+                }
+
+                return MessageService::CallBack($accountId, $key_name, $input['app_id'], $openid);
                 break;
             // 取消关注事件处理
             case 'unsubscribe':
