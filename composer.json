@@ -18,7 +18,6 @@
 	"require": {
 		"php": ">=5.5",
 		"laravel/framework": "5.5.*",
-		"ibrand/backend": "dev-master",
 		"overtrue/wechat": "~4.0",
 		"prettus/l5-repository": "^2.1",
 		"arrilot/laravel-widgets": "^3.7",
