@@ -31,5 +31,13 @@
 			"iBrand\\Wechat\\Backend\\": "src/"
 		}
 	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"iBrand\\Wechat\\Backend\\Providers\\BackendServiceProvider"
+
+			]
+		}
+	},
 	"license": "MIT"
 }
