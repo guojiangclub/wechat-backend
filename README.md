@@ -9,7 +9,7 @@
 composer require ibrand/wechat-backend:~1.0 -vvv
 ```
 
-####配置
+#### 配置
 
 >在 config/app.php 注册 ServiceProvider (Laravel 5.5 无需手动注册)
 ```
