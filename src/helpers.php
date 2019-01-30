@@ -176,3 +176,25 @@ function generate_export_cache_name($prefix)
 {
     return $prefix . time() . '_' . generate_random_string();
 }
+
+if (!function_exists('ibrand_count')) {
+    function ibrand_count($obj){
+
+        if(is_array($obj)){
+            return count($obj);
+        }
+
+        if(is_object($obj)){
+
+            return $obj->count();
+        }
+
+        if($obj){
+
+            return 1;
+        }
+
+        return 0;
+
+    }
+}

@@ -156,7 +156,7 @@ class MenuController extends Controller
             $materials = $this->materialRepository->findWhere(['media_id' => $menu->key])->first();
         }
 
-        if (count($materials) > 0) {
+        if (ibrand_count($materials) > 0) {
             $material['data_selected'] = $materials->id;
             $material['data_type'] = $materials->type;
             $material['data_img'] = $materials->source_url;
