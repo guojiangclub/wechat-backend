@@ -105,6 +105,8 @@ class CallBackEventController extends Controller
                     }
                 }
 
+	            event('user.subscribe.official_account', [$input]);
+
                 $input['type'] = self::FOLLOW_SCANS;
                 if (!empty($input['ticket'])) {
                     $code = $this->QRCodeRepository->findWhere(['ticket' => $input['ticket']])->first();
