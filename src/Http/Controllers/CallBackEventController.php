@@ -199,6 +199,8 @@ class CallBackEventController extends Controller
 		            return;
 	            }
 
+                event('user.scan.official_account', [$input]);
+
                 return MessageService::CallBack($accountId, $keyword, $input['app_id'], $input['openid']);
                 break;
             // 领取卡券件处理
