@@ -86,6 +86,7 @@ class CallBackEventController extends Controller
         }
         $accountId = $account->id;
         $event_type = $input['event_type'];
+        $eventData = $input;
         switch ($input['event_type']) {
             // 关注事件处理
             case 'subscribe':
@@ -105,7 +106,7 @@ class CallBackEventController extends Controller
                     }
                 }
 
-	            event('user.subscribe.official_account', [$input]);
+	            event('user.subscribe.official_account', [$eventData]);
 
                 $input['type'] = self::FOLLOW_SCANS;
                 if (!empty($input['ticket'])) {
@@ -150,7 +151,7 @@ class CallBackEventController extends Controller
                 break;
             // 取消关注事件处理
             case 'unsubscribe':
-                event('user.unsubscribe.official_account', [$input]);
+                event('user.unsubscribe.official_account', [$eventData]);
                 //$this->fanRepository->deleteWhere(['account_id' => $accountId, 'openid' => $input['openid']]);
 
                 break;
@@ -199,7 +200,7 @@ class CallBackEventController extends Controller
 		            return;
 	            }
 
-                event('user.scan.official_account', [$input]);
+                event('user.scan.official_account', [$eventData]);
 
                 return MessageService::CallBack($accountId, $keyword, $input['app_id'], $input['openid']);
                 break;
