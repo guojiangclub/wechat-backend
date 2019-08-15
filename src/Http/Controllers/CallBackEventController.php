@@ -150,7 +150,6 @@ class CallBackEventController extends Controller
                 break;
             // 取消关注事件处理
             case 'unsubscribe':
-                unset($input['event_type']);
                 event('user.unsubscribe.official_account', [$input]);
                 //$this->fanRepository->deleteWhere(['account_id' => $accountId, 'openid' => $input['openid']]);
 
