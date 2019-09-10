@@ -28,9 +28,15 @@ use iBrand\Wechat\Backend\Services\DataService;
 use iBrand\Wechat\Backend\WechatBackend;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use iBrand\Wechat\Backend\Console\InstallCommand;
 
 class BackendServiceProvider extends ServiceProvider
 {
+
+    protected $commands = [
+        InstallCommand::class,
+    ];
+
 	/**
 	 * This namespace is applied to your controller routes.
 	 *
@@ -144,6 +150,8 @@ class BackendServiceProvider extends ServiceProvider
 		});
 
 		$this->registerRouteMiddleware();
+
+        $this->commands($this->commands);
 	}
 
 	/**

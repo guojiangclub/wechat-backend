@@ -227,12 +227,5 @@ $router->group(['middleware' => 'web'], function () use ($router) {
         });
     });
 
-    ////微信登录
-//$router->group(['prefix' => 'auth'], function () use ($router) {
-//
-//    $router->get('/wechat/code', 'WechatSocialiteController@wechatAuthorize')->name('pc.auth.wecaht.login');
-//
-//    $router->get('/wechat/login', 'WechatSocialiteController@wechatCallback')->name('pc.auth.wecaht.callback');
-//
-//});
+
 });

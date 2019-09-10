@@ -188,7 +188,7 @@ class AccountRepository extends BaseRepository
 
     public function updateAccount($data, $id)
     {
-        if (count($data > 0)) {
+        if (ibrand_count($data > 0)) {
             $app_id = Account::find($id)->app_id;
 
             $main = $this->getAccountMain();
