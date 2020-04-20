@@ -11,7 +11,7 @@
 
 namespace iBrand\Wechat\Backend\Http\Controllers;
 
-use ElementVip\Component\User\Models\UserBind;
+use GuoJiangClub\Component\User\Models\UserBind;
 use iBrand\Wechat\Backend\Facades\CardService;
 use iBrand\Wechat\Backend\Facades\FanService;
 use iBrand\Wechat\Backend\Facades\MessageService;
@@ -22,10 +22,9 @@ use iBrand\Wechat\Backend\Repository\FanRepository;
 use iBrand\Wechat\Backend\Repository\QRCodeRepository;
 use iBrand\Wechat\Backend\Repository\ScanRepository;
 use Illuminate\Http\Request;
-use ElementVip\Component\Point\Repository\PointRepository;
-use ElementVip\Component\User\Repository\UserRepository;
-use ElementVip\Component\Balance\Repository\BalanceRepository;
-use ElementVip\Shop\Core\Repositories\UserShopRepository;
+use GuoJiangClub\Component\Point\Repository\PointRepository;
+use GuoJiangClub\Component\User\Repository\UserRepository;
+use GuoJiangClub\Component\Balance\BalanceRepository;
 
 /**
  * 回调事件处理.
@@ -45,8 +44,6 @@ class CallBackEventController extends Controller
 
 	protected $fanRepository;
 
-	protected $userShopRepository;
-
 	protected $pointRepository;
 
 	protected $userRepository;
@@ -61,8 +58,7 @@ class CallBackEventController extends Controller
 		FanRepository $fanRepository,
 		PointRepository $pointRepository,
 		UserRepository $userRepository,
-		BalanceRepository $balanceRepository,
-		UserShopRepository $userShopRepository
+		BalanceRepository $balanceRepository
 	)
 	{
 		$this->accountRepository  = $accountRepository;
@@ -73,7 +69,6 @@ class CallBackEventController extends Controller
 		$this->pointRepository    = $pointRepository;
 		$this->userRepository     = $userRepository;
 		$this->balanceRepository  = $balanceRepository;
-		$this->userShopRepository = $userShopRepository;
 	}
 
 	// 事件处理
@@ -257,34 +252,6 @@ class CallBackEventController extends Controller
 		};
 
 		return $this->cardCodeRepository->create($input);
-	}
-
-	//领取会员门店扫描
-	protected function userShopScan($key, $openid, $appID)
-	{
-		$str     = $key . '##' . $openid;
-		$arr     = explode('##', $str);
-		$shop_id = $arr[1];
-		$clerk   = explode('_', $arr[2]);
-		$open_id = last($arr);
-		$input   = ['shop_id' => $shop_id, 'clerk_id' => $clerk[0], 'open_id' => $open_id];
-
-		if ($UserBind = UserBind::where('open_id', $open_id)->whereNotNull('user_id')->first()) {
-			$input['user_id'] = $UserBind->user_id;
-		}
-
-		$user_shop = $this->userShopRepository->findWhere(['shop_id' => $shop_id, 'open_id' => $open_id])->first();
-		/*$user_shop = $this->userShopRepository->findWhere(['shop_id' => $shop_id, 'user_id' => $input['user_id']])->first();*/
-
-		if (!$user_shop) {
-			$this->userShopRepository->create($input);
-		}
-
-		if (isset($UserBind->user_id) AND $user_shop) {
-			$this->userShopRepository->update(['user_id' => $UserBind->user_id], $user_shop->id);
-		}
-
-		return true;
 	}
 
 	// 点击会员卡

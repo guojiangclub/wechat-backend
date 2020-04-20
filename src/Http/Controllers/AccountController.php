@@ -13,7 +13,6 @@ namespace iBrand\Wechat\Backend\Http\Controllers;
 
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
-use  iBrand\Wechat\Backend\Models\Account;
 use iBrand\Wechat\Backend\Repository\AccountRepository;
 use Illuminate\Http\Request;
 use Session;

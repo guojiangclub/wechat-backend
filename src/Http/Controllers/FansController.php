@@ -13,7 +13,6 @@ namespace iBrand\Wechat\Backend\Http\Controllers;
 
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
-//use iBrand\Component\User\Models\UserBind;
 use iBrand\Wechat\Backend\Facades\FanService;
 use iBrand\Wechat\Backend\Models\Fan;
 use iBrand\Wechat\Backend\Models\FanGroup;
