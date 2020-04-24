@@ -16,7 +16,7 @@ class CreateWeMessagesTable extends Migration
             $table->increments('id');
             $table->integer('account_id')->comment('公众号ID');
             $table->integer('fans_id')->nullable()->comment('粉丝ID 不存在时为公众号回复');
-            $table->timestamp('sent_at')->comment('消息发送时间 OR 消息回复时间');
+            $table->timestamp('sent_at')->nullable()->comment('消息发送时间 OR 消息回复时间');
             $table->integer('resource_id')->nullable()->comment('对应消息资源');
             $table->integer('reply_id')->nullable()->default(0)->comment('消息回复ID');
             $table->string('content',500)->comment('消息内容');
