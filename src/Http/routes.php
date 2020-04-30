@@ -31,7 +31,7 @@ $router->group(['middleware' => 'web'], function () use ($router) {
 
         $router->get('/{app_id}/management', 'AccountController@getChangeAccount')->name('admin.wechat.management');
 
-        Route::any('/api', 'ServerController@server');
+        //Route::any('/api', 'ServerController@server');
 
 //        $router->get('/base/{html}', function (){
 //
