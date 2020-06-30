@@ -44,7 +44,7 @@ class PlatformService
 
     public function getWechatAccounts()
     {
-        $url = $_SERVER['APP_URL'];
+        $url = config('app.url');
 
         return $this->wxCurl(self::$appUrl.'api/authorizers?client_id='.self::$CLIENT_ID.'&call_back_url='.$url, null);
     }
