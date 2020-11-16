@@ -23,7 +23,7 @@
 		"doctrine/dbal": "^2.7",
 		"overtrue/laravel-ueditor":"~1.0",
 		"laravelcollective/html": "^6.2.0 | ^5.5",
-		"ibrand/laravel-active": "^3.0"
+		"ibrand/laravel-active": "^3.0 | ~2.0"
 	},
 	"autoload": {
 		"files": [
